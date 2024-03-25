@@ -1,0 +1,295 @@
+// Define generator and datasource
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+//define enums
+
+enum UserRole{
+  MOTHER
+  MANAGER
+  RECEPTION
+  HEALTH_PROFETIONAL
+
+}
+
+enum AdminRole {
+  SUPER
+  ADMIN
+}
+
+
+
+// Define model for administrators
+model Admins {
+  id Int @id @default(autoincrement())
+  email String @unique
+  phone String @unique
+  role AdminRole @default(SUPER)
+  password String
+  activeStatus Boolean @default(true)
+  createdAt DateTime @default(now())
+  otp String?
+  otpCreatedAt DateTime?
+  otpExpiry DateTime?
+  // References
+  profile AdminProfiles?
+  healthStation HealthStations[]
+  newsPost News[]
+  vaccines Vaccines[]
+
+  @@map("admins")
+}
+
+// Define model for administrator profiles
+model AdminProfiles {
+  id Int @id @default(autoincrement())
+  adminId Int @unique
+  firstName String
+  middleName String
+  lastName String
+  imageUrl String?
+  // References
+  admin Admins @relation(fields: [adminId], references: [id])
+
+  @@map("adminProfiles")
+}
+
+// Define model for health stations
+model HealthStations {
+  id Int @id @default(autoincrement())
+  registeredBy Int
+  name String
+  type String
+  city String
+  subcity String
+  kebele String
+  houseNumber String
+  createdAt DateTime @default(now())
+  // Ref
+  info HealthStationInfos[]
+  users Users[]
+  appointment  Appointments[]
+  // Reference
+  admin Admins @relation(fields: [registeredBy], references: [id])
+
+  @@map("healthStations")
+}
+
+// Define model for health station information
+model HealthStationInfos {
+  id Int @id @default(autoincrement())
+  healthStationId Int
+  serviceAm String
+  serviceOr String
+  descriptionAm String
+  descriptionOr String
+  createdAt DateTime @default(now())
+  // Reference
+  healthStation HealthStations @relation(fields: [healthStationId], references: [id])
+
+  @@map("healthStationInfos")
+}
+
+// Define model for news posts
+model News {
+  id Int @id @default(autoincrement())
+  writerId Int
+  titleAm String
+  titleOr String
+  descriptionAm String
+  descriptionOr String
+  imageUrl String?
+  createdAt DateTime @default(now())
+  // Reference
+  writer Admins @relation(fields: [writerId], references: [id])
+
+  @@map("news")
+}
+
+// Define model for vaccines
+model Vaccines {
+  id Int @id @default(autoincrement())
+  registeredBy Int
+  name String
+  category String
+  dose Int
+  duration Int
+  description String
+  ageRange String
+  createdAt DateTime @default(now())
+  //ref
+  motherVaccine MotherVaccines[]
+  childVaccine ChildrenVaccines[]
+  appointment  Appointments[]
+  // Reference
+  registrar Admins @relation(fields: [registeredBy], references: [id])
+
+  @@map("vaccines")
+}
+
+// Define model for users
+model Users {
+  id Int @id @default(autoincrement())
+  healthStationId Int?
+  email String @unique
+  phone String @unique
+  role UserRole @default(MOTHER)
+  password String
+  activeStatus Boolean @default(true)
+  createdAt DateTime @default(now())
+  otp String?
+  otpCreatedAt DateTime?
+  otpExpiry DateTime?
+  // Ref
+  profile UserProfiles?
+  proProfile ProfessionalProfiles?
+  motherProfile MothersProfile?
+  appointment  Appointments[]
+  // Reference
+  healthStation HealthStations? @relation(fields: [healthStationId], references: [id])
+
+  @@map("users")
+}
+
+// Define model for user profiles
+model UserProfiles {
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  firstName String
+  middleName String
+  lastName String
+  sex String
+  imageUrl String?
+  // Reference
+  user Users @relation(fields: [userId], references: [id])
+
+  @@map("userProfiles")
+}
+
+// Define model for professional profiles
+model ProfessionalProfiles {
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  healthStationId Int
+  title String
+  position String
+  // Reference
+  user Users @relation(fields: [userId], references: [id])
+
+  @@map("professionalProfiles")
+}
+
+// Define model for mother's profiles
+model MothersProfile {
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  birthdate DateTime
+  bloodType String
+  RH String
+
+  // Ref
+  child Childrens[]
+  vaccine MotherVaccines[]
+  appointment  Appointments[]
+
+  // Reference
+  user Users @relation(fields: [userId], references: [id])
+
+  @@map("mothersProfiles")
+}
+
+// Define model for children
+model Childrens {
+  id Int @id @default(autoincrement())
+  motherId Int
+  registeredBy Int
+  firstName String
+  middleName String
+  lastName String
+  birthdate DateTime
+  bloodType String
+  isVaccineCompleted Boolean
+  createdAt DateTime
+  //Ref
+  certificate Certifications?
+   appointment  Appointments[]
+  // Reference
+  mother MothersProfile @relation(fields: [motherId], references: [id])
+
+  @@map("childrens")
+}
+
+// Define model for motherVaccine 
+model MotherVaccines {
+  id Int @id @default(autoincrement())
+  motherId Int
+  vaccineId Int
+  createdDateTime DateTime
+  healthStationId Int
+  registerdBy Int
+
+  //reference
+  vaccine Vaccines @relation(fields: [vaccineId], references: [id])
+  motherProfile MothersProfile @relation(fields: [motherId], references: [userId])
+
+
+  @@map("motherVaccines")
+
+}
+
+// Define model for childrenVaccine 
+
+model ChildrenVaccines {
+  id Int @id @default(autoincrement())
+  childId Int
+  vaccineId Int
+  createdDateTime DateTime
+  healthStationId Int
+  registerdBy Int
+  //Reference
+
+  vaccine Vaccines @relation(fields: [vaccineId], references: [id])
+
+  @@map("childrenVaccines")
+
+}
+
+model Certifications {
+  id Int @id @default(autoincrement())
+  childId Int @unique
+  name  String
+  issuedDate DateTime
+  healthStationId Int
+  registerdBy Int
+  //reference
+  child Childrens @relation(fields:[childId], references:[id])
+
+  @@map("certification")
+}
+
+model Appointments {
+    id Int @id @default(autoincrement())
+    motherId Int 
+    childId Int
+    healthStationId Int
+    registerdBy Int
+    createdDateTime DateTime
+    appointmentDate DateTime
+    description String
+    vaccineId Int
+    //reference
+
+    mother MothersProfile @relation(fields: [motherId], references: [id])
+    child Childrens @relation(fields: [childId], references: [id])
+    station HealthStations @relation(fields: [healthStationId], references: [id])
+    registrar Users @relation(fields: [registerdBy], references: [id])
+    vaccine Vaccines @relation(fields: [vaccineId], references: [id])
+ 
+    @@map("appointments")
+}
+

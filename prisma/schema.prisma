@@ -126,13 +126,23 @@ model News {
   titleOr String
   descriptionAm String
   descriptionOr String
-  imageUrl String?
   createdAt DateTime @default(now())
+  //ref
+  images NewsImage[]
   // Reference
   writer Admins @relation(fields: [writerId], references: [id])
 
   @@map("news")
 }
+//define news image
+model NewsImage{
+  id Int @id @default(autoincrement())
+  newsId Int
+  imageUrl String
+   //reference 
+  news News @relation(fields:[newsId], references:[id])
+}
+
 
 // Define model for vaccines
 model Vaccines {

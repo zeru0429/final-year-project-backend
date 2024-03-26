@@ -10,7 +10,7 @@ import { any } from "zod";
 import { NotFound } from "../exceptions/notFound.js";
 import { AdminRole, Admins, UserRole, Users } from "@prisma/client";
 
-const adminAuth = async (req:Request,res:Response,next:NextFunction)=>{
+const adminAuth:any = async (req:Request,res:Response,next:NextFunction)=>{
    const token = req.headers.authorization;
    if(!token){
      return next(new UnprocessableEntity('Token not found',404,ErrorCode.TOKEN_NOT_FOUND,null))
@@ -33,7 +33,7 @@ const adminAuth = async (req:Request,res:Response,next:NextFunction)=>{
 
 }
 
-const userAuth = async (req:Request,res:Response,next:NextFunction)=>{
+const userAuth:any = async (req:Request,res:Response,next:NextFunction)=>{
    const token = req.headers.authorization;
    if(!token){
      return next(new UnprocessableEntity('Token not found',404,ErrorCode.TOKEN_NOT_FOUND,null))
@@ -56,7 +56,7 @@ const userAuth = async (req:Request,res:Response,next:NextFunction)=>{
 
 }
 
-const isSuperAdmin = async (req:Request,res:Response,next:NextFunction)=>{
+const isSuperAdmin:any = async (req:Request,res:Response,next:NextFunction)=>{
    const  admin : Admins |undefined = req.admin;
    if(admin && admin.role !== AdminRole.SUPER){
       return next(new Unauthorized('user not admin',401,ErrorCode.USER_NOT_FOUND,null))
@@ -64,7 +64,7 @@ const isSuperAdmin = async (req:Request,res:Response,next:NextFunction)=>{
    next();
 }
 
-const isAdmin = async (req:Request,res:Response,next:NextFunction)=>{
+const isAdmin :any = async (req:Request,res:Response,next:NextFunction)=>{
    const  admin : Admins | undefined = req.admin;
    if(admin && admin.role !== AdminRole.ADMIN){
       return next(new Unauthorized('user not admin',401,ErrorCode.USER_NOT_FOUND,null))
@@ -72,7 +72,7 @@ const isAdmin = async (req:Request,res:Response,next:NextFunction)=>{
    next();
 }
 
-const isHealthProfetional = async (req:Request,res:Response,next:NextFunction)=>{
+const isHealthProfetional:any = async (req:Request,res:Response,next:NextFunction)=>{
    const  user : Users | undefined= req.user;
    if(user && user.role !==  UserRole.HEALTH_PROFETIONAL){
       return next(new Unauthorized('user not admin',401,ErrorCode.USER_NOT_FOUND,null))
@@ -80,14 +80,14 @@ const isHealthProfetional = async (req:Request,res:Response,next:NextFunction)=>
    next();
 }
 
-const isManager = async (req:Request,res:Response,next:NextFunction)=>{
+const isManager:any = async (req:Request,res:Response,next:NextFunction)=>{
    const  user : Users | undefined= req.user;
    if(user && user.role !==  UserRole.MANAGER){
       return next(new Unauthorized('user not admin',401,ErrorCode.USER_NOT_FOUND,null))
    }
    next();
 }
-const isReception = async (req:Request,res:Response,next:NextFunction)=>{
+const isReception:any = async (req:Request,res:Response,next:NextFunction)=>{
    const  user : Users | undefined= req.user;
    if(user && user.role !==  UserRole.RECEPTION){
       return next(new Unauthorized('user not admin',401,ErrorCode.USER_NOT_FOUND,null))
@@ -95,7 +95,7 @@ const isReception = async (req:Request,res:Response,next:NextFunction)=>{
    next();
 }
 
-const isMother = async (req:Request,res:Response,next:NextFunction)=>{
+const isMother:any = async (req:Request,res:Response,next:NextFunction)=>{
    const  user : Users | undefined= req.user;
    if(user && user.role !==  UserRole.MOTHER){
       return next(new Unauthorized('user not admin',401,ErrorCode.USER_NOT_FOUND,null))

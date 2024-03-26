@@ -17,12 +17,15 @@ const employeeController ={
       if(isEmployeeExist){
          return next(new UnprocessableEntity('Email or Phone has been registered before',403,ErrorCode.USER_ALLREDY_EXIST,null));
       }
+
       //create the employee
       const  newUser=await prisma.users.create({
          data:{
             email: req.body.email,
             password: req.body.password,
             phone: req.body.phone,
+            role: req.body.role,
+            healthStationId: req.body.healthStationId,
             profile:{
                create:{
                   firstName: req.body.firstName,

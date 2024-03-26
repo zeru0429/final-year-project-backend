@@ -1,21 +1,20 @@
-import express, { Express,Request,Response } from "express";
+import express from "express";
 import { HOST, PORT } from "./config/secrets.js";
 import { errorMiddleware } from "./middlewares/error.js";
 
-const app: Express = express();
-//middle ware
+const app = express() as express.Application; // Explicitly specify the type
+
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 
-//routes
+// Routes
 import appRouter from "./routes/index.js";
-app.use('/api',appRouter);
+app.use('/api', appRouter);
 
-app.get('/',(req:Request,res:Response)=>{
+app.get('/', (req, res) => {
    res.send("app working");
 });
 
-
-
-app.listen(PORT,()=>console.log(`server is running http://${HOST}:${PORT}`))
+app.listen(PORT, () => console.log(`Server is running http://${HOST}:${PORT}`));

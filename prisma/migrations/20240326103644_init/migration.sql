@@ -67,8 +67,16 @@ CREATE TABLE `news` (
     `titleOr` VARCHAR(191) NOT NULL,
     `descriptionAm` VARCHAR(191) NOT NULL,
     `descriptionOr` VARCHAR(191) NOT NULL,
-    `imageUrl` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `NewsImage` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `newsId` INTEGER NOT NULL,
+    `imageUrl` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -99,8 +107,8 @@ CREATE TABLE `users` (
     `activeStatus` BOOLEAN NOT NULL DEFAULT true,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `otp` VARCHAR(191) NULL,
-    `otpCreatedAt` DATETIME(3) NULL,
-    `otpExpiry` DATETIME(3) NULL,
+    `otpCreatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `otpExpiry` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `users_email_key`(`email`),
     UNIQUE INDEX `users_phone_key`(`phone`),
@@ -114,7 +122,7 @@ CREATE TABLE `userProfiles` (
     `firstName` VARCHAR(191) NOT NULL,
     `middleName` VARCHAR(191) NOT NULL,
     `lastName` VARCHAR(191) NOT NULL,
-    `sex` VARCHAR(191) NOT NULL,
+    `sex` ENUM('MALE', 'FEMALE') NOT NULL,
     `imageUrl` VARCHAR(191) NULL,
 
     UNIQUE INDEX `userProfiles_userId_key`(`userId`),
@@ -224,6 +232,9 @@ ALTER TABLE `healthStationInfos` ADD CONSTRAINT `healthStationInfos_healthStatio
 
 -- AddForeignKey
 ALTER TABLE `news` ADD CONSTRAINT `news_writerId_fkey` FOREIGN KEY (`writerId`) REFERENCES `admins`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `NewsImage` ADD CONSTRAINT `NewsImage_newsId_fkey` FOREIGN KEY (`newsId`) REFERENCES `news`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `vaccines` ADD CONSTRAINT `vaccines_registeredBy_fkey` FOREIGN KEY (`registeredBy`) REFERENCES `admins`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

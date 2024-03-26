@@ -34,7 +34,7 @@ const motherController ={
             },
             motherProfile:{
                create:{
-                  birthdate: req.body.birthdate,
+                  birthdate: new Date(req.body.birthdate),
                   bloodType: req.body.bloodType,
                   RH: req.body.RH,  
                }

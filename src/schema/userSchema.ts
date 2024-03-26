@@ -32,7 +32,7 @@ const userSchema ={
       sex: z.enum(['MALE', 'FEMALE']),
       imageUrl: z.string(),
       //mother related
-      birthdate: z.date(),
+      birthdate: z.string(),
       bloodType:  z.string(),
       RH: z.string(),
 

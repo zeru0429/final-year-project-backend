@@ -22,6 +22,28 @@ enum AdminRole {
   ADMIN
 }
 
+enum HealthStationType {
+   GENERAL_HOSPITAL 
+   CLINIC
+   HEALTH_CENTER
+   SPECIALTY_HOSPITAL
+   REHABILITATION_CENTER
+   DIAGNOSTIC_CENTER
+   MATERNITY_HOSPITAL
+   PSYCHIATRIC_HOSPITAL
+   MEDICAL_LABORATORY 
+   PHARMACY
+   PEDIATRIC_CLINIC
+   SPORTS_MEDICINE_CLINIC
+   CHIROPRACTIC_CLINIC 
+   VETERINARY_CLINIC 
+}
+
+enum gender{
+  MALE
+  FEMALE
+}
+
 
 
 // Define model for administrators
@@ -29,13 +51,13 @@ model Admins {
   id Int @id @default(autoincrement())
   email String @unique
   phone String @unique
-  role AdminRole @default(SUPER)
+  role AdminRole @default(ADMIN)
   password String
   activeStatus Boolean @default(true)
   createdAt DateTime @default(now())
   otp String?
-  otpCreatedAt DateTime?
-  otpExpiry DateTime?
+  otpCreatedAt DateTime? @default(now())
+  otpExpiry DateTime? @default(now())
   // References
   profile AdminProfiles?
   healthStation HealthStations[]
@@ -63,7 +85,8 @@ model AdminProfiles {
 model HealthStations {
   id Int @id @default(autoincrement())
   registeredBy Int
-  name String
+  name String 
+  email String @unique
   type String
   city String
   subcity String
@@ -143,8 +166,8 @@ model Users {
   activeStatus Boolean @default(true)
   createdAt DateTime @default(now())
   otp String?
-  otpCreatedAt DateTime?
-  otpExpiry DateTime?
+  otpCreatedAt DateTime? @default(now())
+  otpExpiry DateTime? @default(now())
   // Ref
   profile UserProfiles?
   proProfile ProfessionalProfiles?
@@ -163,7 +186,7 @@ model UserProfiles {
   firstName String
   middleName String
   lastName String
-  sex String
+  sex gender
   imageUrl String?
   // Reference
   user Users @relation(fields: [userId], references: [id])

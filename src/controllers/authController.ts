@@ -7,63 +7,96 @@ import { BadRequest } from '../exceptions/badRequest.js'
 import { ErrorCode } from '../exceptions/root.js'
 import { STATUS_CODES } from 'http'
 import { UnprocessableEntity } from '../exceptions/validation.js'
-import authSchema from '../schema/auth.js'
+import authSchema from '../schema/authSchema.js'
+import { generateOTP } from '../util/generateor.js'
 
 const authController = {
-   signup:async (req:Request,res:Response,next:NextFunction)=>{
-     
-         authSchema.signup.parse(req.body);
-         const {email,password,firstName,lastName,middleName} = req.body;
-         const User = await prisma.users.findFirst({
-            where:{
-               email:email
-            }
-         });
-         if(User){
-            next(new BadRequest("User already exist", 400, ErrorCode.USER_ALLREDY_EXIST, null))
-         }
-
-         const salt = await bcrypt.genSalt(10);
-         const hashedPassword = await bcrypt.hashSync(password, salt);
-
-         const newUser = await prisma.users.create({
-            data:{
-               email,
-               password:hashedPassword,
-               firstName,
-               lastName,
-               middleName
-            }
-         });
-         return res.status(201).send({message:"User created successfully",data:newUser})
-      
-
-   },
-   login: async (req:Request,res:Response,next:NextFunction)=>{
-      try {
-         const {email,password} = req.body;
-
-         const User = await prisma.users.findFirst({
-            where:{
-               email:email
-            }
-         });
-         if(!User){
-            next( new BadRequest("User does not exist", 400, ErrorCode.USER_NOT_FOUND, null)) 
-         }
-
-         const isMatch = await bcrypt.compareSync(password, User.password);
-         if(!isMatch){
-            next( new BadRequest("Incorrect password", 400, ErrorCode.INCORRECT_PASSWORD, null))
-         }
-         const token = jwt.sign({email:User.Id}, SECRET!, { expiresIn: '1h' });
-         return res.status(200).send({message:"Login successful",data:User,token})
-         
-      } catch (error) {
-         next(new UnprocessableEntity('server error',500,ErrorCode.USER_NOT_FOUND,null));
+   //register
+   registerAdmin:async (req:Request,res:Response,next:NextFunction)=>{
+      authSchema.registerAdmin.parse(req.body);
+      //check if the email or phone used befor
+      const isAdminExist= await prisma.admins.findFirst({where:{
+         OR:[
+            {email: req.body.email},
+            {phone:req.body.phone}
+         ]
+       
+      }});
+      if(isAdminExist){
+       return next(new UnprocessableEntity('Email or Phone has been registered before',403,ErrorCode.USER_ALLREDY_EXIST,null));
       }
-
+      // create the admin
+      const otp= generateOTP();
+      const password = bcrypt.hashSync(req.body.password, 10);
+      const newAdmin = await prisma.admins.create({
+         data: {
+            email: req.body.email,
+            phone: req.body.phone,
+            password: password,
+            otp: otp,
+            profile: {
+               create: {
+                  firstName: req.body.firstName,
+                  middleName: req.body.middleName,
+                  lastName: req.body.lastName,
+                  imageUrl:req.body.imageUrl
+               }
+            }
+         },
+         include: {
+            profile: true
+         }
+      });
+      res.status(201).json(newAdmin);
    },
+   //login user
+   loginUser: async (req: Request, res: Response, next: NextFunction) => {
+      authSchema.login.parse(req.body);
+      const user = await prisma.users.findFirst({ where: { email: req.body.email } });
+      if (!user) {
+         return next(new UnprocessableEntity("No account found with this email", 403, ErrorCode.USER_NOT_FOUND, null));
+      }
+      const isMatch = bcrypt.compareSync(req.body.password, user.password);
+      if (!isMatch) {
+         return next(new UnprocessableEntity('Incorrect password', 403, ErrorCode.INCORRECT_PASSWORD, null));
+      }
+      const userProfile = await prisma.userProfiles.findFirst({ where: { userId: user.id } });
+      // Create token
+      const payload = {
+         id: user.id,
+         role: user.role,
+         firstName: userProfile?.firstName
+      };
+      const token = jwt.sign(payload, SECRET!);
+      return res.status(200).json({
+         token,
+         message: "Login successfully"
+      });
+   },
+   //login admin
+   loginAdmin: async (req: Request, res: Response, next: NextFunction) => {
+      authSchema.login.parse(req.body);
+      const admin = await prisma.admins.findFirst({ where: { email: req.body.email } });
+      if (!admin) {
+         return next(new UnprocessableEntity("No account found with this email", 403, ErrorCode.USER_NOT_FOUND, null));
+      }
+      const isMatch = bcrypt.compareSync(req.body.password, admin.password);
+      if (!isMatch) {
+         return next(new UnprocessableEntity('Incorrect password', 403, ErrorCode.INCORRECT_PASSWORD, null));
+      }
+      const adminProfiles = await prisma.adminProfiles.findFirst({ where: { adminId: admin.id } });
+      // Create token
+      const payload = {
+         id: admin.id,
+         role: admin.role,
+         firstName: adminProfiles?.firstName
+      };
+      const token = jwt.sign(payload, SECRET!);
+      return res.status(200).json({
+         token,
+         message: "Login successfully"
+      });
+   }
 
 }
 

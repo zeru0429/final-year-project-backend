@@ -74,9 +74,9 @@ model AdminProfiles {
   firstName String
   middleName String
   lastName String
-  imageUrl String?  @db.VarChar(10000)
+  imageUrl String? 
   // References
-  admin Admins @relation(fields: [adminId], references: [id])
+  admin Admins @relation(fields: [adminId], references:[id],onDelete: Cascade)
 
   @@map("adminProfiles")
 }
@@ -84,7 +84,7 @@ model AdminProfiles {
 // Define model for health stations
 model HealthStations {
   id Int @id @default(autoincrement())
-  registeredBy Int
+  registeredBy Int?
   name String 
   email String @unique
   type String
@@ -97,8 +97,11 @@ model HealthStations {
   info HealthStationInfos[]
   users Users[]
   appointment  Appointments[]
+  childVaccine ChildrenVaccines[]
+  motherVaccine MotherVaccines[]
+  certification Certifications[]
   // Reference
-  admin Admins @relation(fields: [registeredBy], references: [id])
+  admin Admins? @relation(fields: [registeredBy], references:[id],onDelete: SetNull)
 
   @@map("healthStations")
 }
@@ -109,11 +112,11 @@ model HealthStationInfos {
   healthStationId Int
   serviceAm String
   serviceOr String
-  descriptionAm String  @db.VarChar(10000)
-  descriptionOr String  @db.VarChar(10000)
+  descriptionAm String 
+  descriptionOr String 
   createdAt DateTime @default(now())
   // Reference
-  healthStation HealthStations @relation(fields: [healthStationId], references: [id])
+  healthStation HealthStations @relation(fields: [healthStationId], references:[id],onDelete: Cascade)
 
   @@map("healthStationInfos")
 }
@@ -121,38 +124,37 @@ model HealthStationInfos {
 // Define model for news posts
 model News {
   id Int @id @default(autoincrement())
-  writerId Int
+  writerId Int?
   titleAm String 
   titleOr String 
-  descriptionAm String  @db.VarChar(10000)
-  descriptionOr String  @db.VarChar(10000)
+  descriptionAm String 
+  descriptionOr String 
   createdAt DateTime @default(now())
   //ref
   images NewsImage[]
   // Reference
-  writer Admins @relation(fields: [writerId], references: [id])
-
+  writer Admins? @relation(fields: [writerId], references:[id],onDelete: SetNull)
   @@map("news")
 }
 //define news image
 model NewsImage{
   id Int @id @default(autoincrement())
   newsId Int
-  imageUrl String  @db.VarChar(10000)
+  imageUrl String 
    //reference 
-  news News @relation(fields:[newsId], references:[id])
+  news News @relation(fields:[newsId], references:[id],onDelete: Cascade)
 }
 
 
 // Define model for vaccines
 model Vaccines {
   id Int @id @default(autoincrement())
-  registeredBy Int
+  registeredBy Int?
   name String
   category String
   dose Int
   duration Int
-  description String  @db.VarChar(10000)
+  description String 
   ageRange String
   createdAt DateTime @default(now())
   //ref
@@ -160,8 +162,7 @@ model Vaccines {
   childVaccine ChildrenVaccines[]
   appointment  Appointments[]
   // Reference
-  registrar Admins @relation(fields: [registeredBy], references: [id])
-
+  registrar Admins? @relation(fields: [registeredBy], references:[id],onDelete: SetNull)
   @@map("vaccines")
 }
 
@@ -182,10 +183,13 @@ model Users {
   profile UserProfiles?
   proProfile ProfessionalProfiles?
   motherProfile MothersProfile?
+  child  Childrens[]
   appointment  Appointments[]
+  certifications  Certifications[]
+  childVaccine  ChildrenVaccines[]
+  motherVaccine MotherVaccines[]
   // Reference
-  healthStation HealthStations? @relation(fields: [healthStationId], references: [id])
-
+  healthStation HealthStations? @relation(fields: [healthStationId], references:[id],onDelete: SetNull)
   @@map("users")
 }
 
@@ -197,10 +201,9 @@ model UserProfiles {
   middleName String
   lastName String
   sex gender
-  imageUrl String?  @db.VarChar(10000)
+  imageUrl String? 
   // Reference
-  user Users @relation(fields: [userId], references: [id])
-
+  user Users @relation(fields: [userId], references:[id],onDelete: Cascade)
   @@map("userProfiles")
 }
 
@@ -212,7 +215,7 @@ model ProfessionalProfiles {
   title String
   position String
   // Reference
-  user Users @relation(fields: [userId], references: [id])
+  user Users @relation(fields: [userId], references:[id],onDelete: Cascade)
 
   @@map("professionalProfiles")
 }
@@ -224,23 +227,20 @@ model MothersProfile {
   birthdate DateTime
   bloodType String
   RH String
-
   // Ref
   child Childrens[]
   vaccine MotherVaccines[]
   appointment  Appointments[]
-
   // Reference
-  user Users @relation(fields: [userId], references: [id])
-
+  user Users @relation(fields: [userId], references:[id],onDelete: Cascade)
   @@map("mothersProfiles")
 }
 
 // Define model for children
 model Childrens {
   id Int @id @default(autoincrement())
-  motherId Int
-  registeredBy Int
+  motherId Int?
+  registeredBy Int?
   firstName String
   middleName String
   lastName String
@@ -249,11 +249,12 @@ model Childrens {
   isVaccineCompleted Boolean
   createdAt DateTime
   //Ref
-  certificate Certifications?
+   certificate Certifications?
    appointment  Appointments[]
+   vaccine ChildrenVaccines[]
   // Reference
-  mother MothersProfile @relation(fields: [motherId], references: [id])
-
+  mother MothersProfile? @relation(fields: [motherId], references:[id],onDelete: SetNull)
+  registrar Users? @relation(fields: [registeredBy], references:[id],onDelete: SetNull)
   @@map("childrens")
 }
 
@@ -261,33 +262,34 @@ model Childrens {
 model MotherVaccines {
   id Int @id @default(autoincrement())
   motherId Int
-  vaccineId Int
+  vaccineId Int?
+  healthStationId Int?
+  registerdBy Int?
   createdDateTime DateTime
-  healthStationId Int
-  registerdBy Int
-
+  isGiven Boolean
   //reference
-  vaccine Vaccines @relation(fields: [vaccineId], references: [id])
-  motherProfile MothersProfile @relation(fields: [motherId], references: [userId])
-
-
+   motherProfile MothersProfile @relation(fields: [motherId], references:[userId],onDelete: Cascade)
+  vaccine Vaccines? @relation(fields: [vaccineId], references:[id],onDelete: SetNull)
+  healthStation HealthStations? @relation(fields: [healthStationId],references: [id],onDelete: SetNull)
+  registrar Users? @relation(fields: [registerdBy], references:[id],onDelete: SetNull)
   @@map("motherVaccines")
 
 }
 
 // Define model for childrenVaccine 
-
 model ChildrenVaccines {
   id Int @id @default(autoincrement())
   childId Int
-  vaccineId Int
+  vaccineId Int?
+  healthStationId Int?
+  registerdBy Int?
   createdDateTime DateTime
-  healthStationId Int
-  registerdBy Int
+  isGiven Boolean
   //Reference
-
-  vaccine Vaccines @relation(fields: [vaccineId], references: [id])
-
+  child Childrens @relation(fields: [childId], references:[id],onDelete: Cascade)
+  vaccine Vaccines? @relation(fields: [vaccineId], references:[id],onDelete: SetNull)
+  healthStation HealthStations? @relation(fields: [healthStationId],references: [id],onDelete: SetNull)
+  registrar Users? @relation(fields: [registerdBy], references:[id],onDelete: SetNull)
   @@map("childrenVaccines")
 
 }
@@ -295,13 +297,14 @@ model ChildrenVaccines {
 model Certifications {
   id Int @id @default(autoincrement())
   childId Int @unique
-  name  String
+  registerdBy Int?
+  healthStationId Int?
+  name String
   issuedDate DateTime
-  healthStationId Int
-  registerdBy Int
   //reference
-  child Childrens @relation(fields:[childId], references:[id])
-
+  child Childrens @relation(fields:[childId], references:[id],onDelete: Cascade)
+  registrar Users? @relation(fields: [registerdBy], references:[id],onDelete: SetNull)
+  healthStation HealthStations? @relation(fields: [healthStationId],references: [id],onDelete: SetNull)
   @@map("certification")
 }
 
@@ -309,20 +312,18 @@ model Appointments {
     id Int @id @default(autoincrement())
     motherId Int 
     childId Int
-    healthStationId Int
-    registerdBy Int
+    healthStationId Int?
+    registerdBy Int?
+    vaccineId Int?
     createdDateTime DateTime
     appointmentDate DateTime
-    description String  @db.VarChar(10000)
-    vaccineId Int
+    description String 
     //reference
-
-    mother MothersProfile @relation(fields: [motherId], references: [id])
-    child Childrens @relation(fields: [childId], references: [id])
-    station HealthStations @relation(fields: [healthStationId], references: [id])
-    registrar Users @relation(fields: [registerdBy], references: [id])
-    vaccine Vaccines @relation(fields: [vaccineId], references: [id])
- 
+    registrar Users? @relation(fields: [registerdBy], references:[id],onDelete: SetNull)
+    vaccine Vaccines? @relation(fields: [vaccineId], references:[id],onDelete: SetNull)
+    station HealthStations? @relation(fields: [healthStationId], references:[id],onDelete: SetNull)
+    mother MothersProfile @relation(fields: [motherId], references:[id],onDelete: Cascade)
+    child Childrens @relation(fields: [childId], references:[id],onDelete: Cascade)
     @@map("appointments")
 }
 

@@ -1,12 +1,12 @@
 import { Router } from "express";
-const authRouter:Router = Router();
-import authController from "../controllers/authController.js";
+const adminRouter:Router = Router();
+import authController from "../controllers/adminController.js";
 import errorHandler from "../config/errorHandler.js";
 import { adminAuth, isSuperAdmin } from "../middlewares/auth.js";
 
 //routes
-authRouter.post("/admin/register",[adminAuth,isSuperAdmin], errorHandler(authController.registerAdmin));
-authRouter.post("/user/login", errorHandler(authController.loginUser));
-authRouter.post("/admin/login", errorHandler(authController.loginAdmin));
+adminRouter.post("/register",[adminAuth,isSuperAdmin], errorHandler(authController.registerAdmin));
+// adminRouter.post("/user/login", errorHandler(authController.loginUser));
+adminRouter.post("/login", errorHandler(authController.loginAdmin));
 
-export default authRouter;
+export default adminRouter;

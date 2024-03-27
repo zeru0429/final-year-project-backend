@@ -17,7 +17,6 @@ const employeeController ={
       if(isEmployeeExist){
          return next(new UnprocessableEntity('Email or Phone has been registered before',403,ErrorCode.USER_ALLREDY_EXIST,null));
       }
-
       //create the employee
       const  newUser=await prisma.users.create({
          data:{

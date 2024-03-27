@@ -74,7 +74,7 @@ model AdminProfiles {
   firstName String
   middleName String
   lastName String
-  imageUrl String?
+  imageUrl String?  @db.VarChar(10000)
   // References
   admin Admins @relation(fields: [adminId], references: [id])
 
@@ -109,8 +109,8 @@ model HealthStationInfos {
   healthStationId Int
   serviceAm String
   serviceOr String
-  descriptionAm String
-  descriptionOr String
+  descriptionAm String  @db.VarChar(10000)
+  descriptionOr String  @db.VarChar(10000)
   createdAt DateTime @default(now())
   // Reference
   healthStation HealthStations @relation(fields: [healthStationId], references: [id])
@@ -122,10 +122,10 @@ model HealthStationInfos {
 model News {
   id Int @id @default(autoincrement())
   writerId Int
-  titleAm String
-  titleOr String
-  descriptionAm String
-  descriptionOr String
+  titleAm String 
+  titleOr String 
+  descriptionAm String  @db.VarChar(10000)
+  descriptionOr String  @db.VarChar(10000)
   createdAt DateTime @default(now())
   //ref
   images NewsImage[]
@@ -138,7 +138,7 @@ model News {
 model NewsImage{
   id Int @id @default(autoincrement())
   newsId Int
-  imageUrl String
+  imageUrl String  @db.VarChar(10000)
    //reference 
   news News @relation(fields:[newsId], references:[id])
 }
@@ -152,7 +152,7 @@ model Vaccines {
   category String
   dose Int
   duration Int
-  description String
+  description String  @db.VarChar(10000)
   ageRange String
   createdAt DateTime @default(now())
   //ref
@@ -197,7 +197,7 @@ model UserProfiles {
   middleName String
   lastName String
   sex gender
-  imageUrl String?
+  imageUrl String?  @db.VarChar(10000)
   // Reference
   user Users @relation(fields: [userId], references: [id])
 
@@ -313,7 +313,7 @@ model Appointments {
     registerdBy Int
     createdDateTime DateTime
     appointmentDate DateTime
-    description String
+    description String  @db.VarChar(10000)
     vaccineId Int
     //reference
 

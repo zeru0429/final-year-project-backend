@@ -22,7 +22,9 @@ export enum ErrorCode {
 
    INTERNAL_EXCEPTION=500,
    UNPROCESSABLE = 422,
-   TOKEN_NOT_FOUND = 404
+   TOKEN_NOT_FOUND = 404,
+
+   NEWS_NOT_FOUND =3001
 
 
 }

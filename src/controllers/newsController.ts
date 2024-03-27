@@ -1,8 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import newsSchema from "../schema/newsSchema.js";
 import { prisma } from "../config/prisma.js";
+import { UnprocessableEntity } from "../exceptions/validation.js";
+import { ErrorCode } from "../exceptions/root.js";
 
 const newsController = {
+  //create news
    createNews: async (req:Request,res:Response,nex:NextFunction)=>{
       newsSchema.createNews.parse(req.body);
       const theNewNews = await prisma.news.create({
@@ -20,16 +23,69 @@ const newsController = {
            images: true
          }
        });
-       
-      
-
+      res.status(200).json(theNewNews);
    },
+   //update news
    updateNews: async (req:Request,res:Response,nex:NextFunction)=>{
+    req.newsId=+req.params.id;
+    newsSchema.updateNews.parse(req.body);
+    const foundNews=await prisma.news.findFirstOrThrow({
+      where:{
+        id: +req.newsId
+      }
+    });
+    if(!foundNews){
+     return nex(new UnprocessableEntity("This News Doesn't Exist",404,ErrorCode.NEWS_NOT_FOUND,null));
+    }
+    const  updatedNews = await prisma.news.update({
+      data: req.body,
+      where:{
+        id : foundNews.id
+      }
+    });
+    res.status(200).json(updatedNews);
 
    },
+   //delete news
    deleteNews:async (req:Request,res:Response,nex:NextFunction)=>{
+    req.newsId=+req.params.id;
+    const foundNews=await prisma.news.findFirstOrThrow({
+      where:{
+        id: +req.newsId
+      }
+    });
+    if(!foundNews){
+     return nex(new UnprocessableEntity("This News Doesn't Exist",404,ErrorCode.NEWS_NOT_FOUND,null));
+    }
+    const  deletedNews=await prisma.news.delete({where:{id:foundNews.id}});
+    res.status(200).json(deletedNews);
+   },
+   //get public news
+   getPublicNews:async (req:Request,res:Response,nex:NextFunction)=>{
+    const news = await prisma.news.findMany({
+      orderBy:{
+        createdAt:"desc"
+      }
+    });
+    
+    return res.status(200).json(news);
 
    },
+   //get single news  detaile
+   getSingleNews: async (req:Request,res:Response,nex:NextFunction)=>{
+    req.newsId=+req.params.id;
+    const foundNews=await prisma.news.findFirstOrThrow({
+      where:{
+        id: +req.newsId
+      }
+    });
+    if(!foundNews){
+      return nex(new UnprocessableEntity("This News Doesn't Exist",404,ErrorCode.NEWS_NOT_FOUND,null));
+     }
+
+    res.status(200).json(foundNews);
+
+   }
 
 }
 

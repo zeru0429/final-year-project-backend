@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import newsSchema from "../schema/newsSchema.js";
-import { prisma } from "../config/prisma.js";
-import { UnprocessableEntity } from "../exceptions/validation.js";
-import { ErrorCode } from "../exceptions/root.js";
+import newsSchema from "./newsSchema.js";
+import { prisma } from "../../config/prisma.js";
+import { UnprocessableEntity } from "../../exceptions/validation.js";
+import { ErrorCode } from "../../exceptions/root.js";
 
 const newsController = {
   //create news
@@ -86,6 +86,7 @@ const newsController = {
     res.status(200).json(foundNews);
 
    }
+   
 
 }
 

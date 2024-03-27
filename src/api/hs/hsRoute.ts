@@ -1,7 +1,7 @@
 import { Router } from "express";
-import hsController from "../controllers/hsController.js";
-import errorHandler from "../config/errorHandler.js";
-import { adminAuth, isAdmin, isSuperAdmin } from "../middlewares/auth.js";
+import hsController from "./hsController.js";
+import errorHandler from "../../config/errorHandler.js";
+import { adminAuth, isAdmin, isSuperAdmin } from "../../middlewares/auth.js";
 
 const healthStationRouter:Router = Router();
 

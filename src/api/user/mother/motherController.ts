@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import userSchema from "../schema/userSchema.js";
-import { prisma } from "../config/prisma.js";
-import { UnprocessableEntity } from "../exceptions/validation.js";
-import { ErrorCode } from "../exceptions/root.js";
+import userSchema from "../userSchema.js";
+import { prisma } from "../../../config/prisma.js";
+import { UnprocessableEntity } from "../../../exceptions/validation.js";
+import { ErrorCode } from "../../../exceptions/root.js";
 
 const motherController ={
    register: async (req:Request,res:Response,next:NextFunction): Promise<void> =>{
@@ -48,7 +48,11 @@ const motherController ={
    });
    res.status(201).json(newMother);
    },
-   
+   update: async (req:Request,res:Response,next:NextFunction)=>{},
+   delete: async (req:Request,res:Response,next:NextFunction)=>{},
+   getAll: async (req:Request,res:Response,next:NextFunction)=>{},
+   getSingle: async (req:Request,res:Response,next:NextFunction)=>{},
+   getByHs: async (req:Request,res:Response,next:NextFunction)=>{},
 }
 
 export default motherController;

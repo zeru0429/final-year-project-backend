@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { NextFunction, Request, Response } from 'express'
-import {prisma} from '../config/prisma.js'
-import { SECRET } from '../config/secrets.js'
-import { BadRequest } from '../exceptions/badRequest.js'
-import { ErrorCode } from '../exceptions/root.js'
+import {prisma} from '../../config/prisma.js'
+import { SECRET } from '../../config/secrets.js'
+import { BadRequest } from '../../exceptions/badRequest.js'
+import { ErrorCode } from '../../exceptions/root.js'
 import { STATUS_CODES } from 'http'
-import { UnprocessableEntity } from '../exceptions/validation.js'
-import authSchema from '../schema/authSchema.js'
-import { generateOTP } from '../util/generateor.js'
+import { UnprocessableEntity } from '../../exceptions/validation.js'
+import authSchema from './authSchema.js'
+import { generateOTP } from '../../util/generateor.js'
 
 const authController = {
    //register

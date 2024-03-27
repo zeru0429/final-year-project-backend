@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import newsSchema from "../schema/newsSchema.js";
-import { prisma } from "../config/prisma.js";
-import { UnprocessableEntity } from "../exceptions/validation.js";
-import { ErrorCode } from "../exceptions/root.js";
-import vaccineSchema from "../schema/vaccineSchema.js";
+import newsSchema from "../news/newsSchema.js";
+import { prisma } from "../../config/prisma.js";
+import { UnprocessableEntity } from "../../exceptions/validation.js";
+import { ErrorCode } from "../../exceptions/root.js";
+import vaccineSchema from "./vaccineSchema.js";
 
 const vaccineController = {
    register: async (req:Request,res:Response,nex:NextFunction)=>{

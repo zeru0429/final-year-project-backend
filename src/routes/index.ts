@@ -2,12 +2,12 @@ import { Router } from "express";
 const appRouter = Router();
 
 //importing all app routes
-import adminRouter from "./adminRoute.js";
-import healthStationRouter from "./healthStationRoute.js";
-import employeeRouter from "./employee.js";
-import motherRouter from "./motherRoute.js";
-import newsRouter from "./newsRoute.js";
-import vaccineRouter from "./vaccineRoute.js";
+import adminRouter from "../api/admin/adminRoute.js";
+import healthStationRouter from "../api/hs/hsRoute.js";
+import employeeRouter from "../api/user/employee/employeeRoute.js";
+import motherRouter from "../api/user/mother/motherRoute.js";
+import newsRouter from "../api/news/newsRoute.js";
+import vaccineRouter from "../api/vaccine/vaccineRoute.js";
 
 
 appRouter.use("/admin", adminRouter);

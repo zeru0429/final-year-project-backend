@@ -1,7 +1,7 @@
 import { Router } from "express";
-import newsController from "../controllers/newsController.js";
-import { adminAuth, isAdmin, isSuperAdmin } from "../middlewares/auth.js";
-import errorHandler from "../config/errorHandler.js";
+import newsController from "./newsController.js";
+import { adminAuth, isAdmin, isSuperAdmin } from "../../middlewares/auth.js";
+import errorHandler from "../../config/errorHandler.js";
 
 const newsRouter = Router();
 newsRouter.post('/',[adminAuth,isSuperAdmin],errorHandler(newsController.createNews));

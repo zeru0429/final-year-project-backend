@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import errorHandler from "../config/errorHandler.js";
-import { adminAuth, isAdmin, isSuperAdmin, userAuth } from "../middlewares/auth.js";
-import vaccineController from "../controllers/vaccineController.js";
+import errorHandler from "../../config/errorHandler.js";
+import { adminAuth, isAdmin, isSuperAdmin, userAuth } from "../../middlewares/auth.js";
+import vaccineController from "./vaccineController.js";
 
 const vaccineRouter:Router = Router();
 

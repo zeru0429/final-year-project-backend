@@ -9,8 +9,11 @@ const childRouter:Router = Router();
 childRouter.post('/',[userAuth], errorHandler(childController.register));
 childRouter.put('/:id',[userAuth], errorHandler(childController.update));
 childRouter.delete('/:id',[userAuth], errorHandler(childController.delete));
+
+// Get all children of a specific parent or
 childRouter.get('/',[userAuth], errorHandler(childController.getAll));
 childRouter.get('/:id',[userAuth], errorHandler(childController.getSingle));
-childRouter.get('/:hsId',[userAuth], errorHandler(childController.getByHs));
+childRouter.get('/hs/:id',[userAuth], errorHandler(childController.getByHs));
+childRouter.get('/mother/:id',[userAuth], errorHandler(childController.getAllByMother));
 
 export default childRouter;

@@ -38,7 +38,13 @@ const newsController = {
      return nex(new UnprocessableEntity("This News Doesn't Exist",404,ErrorCode.NEWS_NOT_FOUND,null));
     }
     const  updatedNews = await prisma.news.update({
-      data: req.body,
+      data: {
+        titleAm: req.body.titleAm,
+        titleOr: req.body.titleOr,
+        descriptionAm: req.body.descriptionAm,
+        descriptionOr: req.body.descriptionOr,
+        
+      },
       where:{
         id : foundNews.id
       }
@@ -65,6 +71,9 @@ const newsController = {
     const news = await prisma.news.findMany({
       orderBy:{
         createdAt:"desc"
+      },
+      include:{
+        images: true
       }
     });
     
@@ -77,6 +86,9 @@ const newsController = {
     const foundNews=await prisma.news.findFirstOrThrow({
       where:{
         id: +req.newsId
+      },
+      include:{
+        images: true
       }
     });
     if(!foundNews){
@@ -85,10 +97,29 @@ const newsController = {
 
     res.status(200).json(foundNews);
 
-   }
-   
+   },
+   getSingleNewsDetail: async (req:Request,res:Response,nex:NextFunction)=>{
+    req.newsId=+req.params.id;
+    const foundNews=await prisma.news.findFirstOrThrow({
+      where:{
+        id: +req.newsId
+      },
+      include:{
+        images: true,
+        writer:true,
+        _count:true
+      }
 
+    });
+    if(!foundNews){
+      return nex(new UnprocessableEntity("This News Doesn't Exist",404,ErrorCode.NEWS_NOT_FOUND,null));
+     }
+
+    res.status(200).json(foundNews);
+
+   }
 }
+
 
 
 export default newsController;

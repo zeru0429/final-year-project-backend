@@ -40,7 +40,7 @@ const hsController = {
 
    },
    delete: async (req:Request,res:Response,next:NextFunction)=>{
-      
+      req.hsId=+req.params.id;
    //check if the hs exist before
    const hs= await prisma.healthStations.findFirst({
       where:{

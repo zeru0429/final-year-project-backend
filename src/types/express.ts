@@ -9,9 +9,16 @@ declare module 'express'{
       Vaccine?: Vaccines
       registeredBy: Number
       hsInfo?: HealthStationInfos
+      userId?: Number
       hsInfoId: Number
       newsId: Number
       vaccineId: Number
       hsId: Number
+      mId: Number
+      childId: Number
+      cvId: Number
+      mvId: Number
+      chatId: Number
+      files: any
    }
 }

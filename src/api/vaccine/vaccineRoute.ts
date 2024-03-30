@@ -3,6 +3,7 @@ import { Router } from "express";
 import errorHandler from "../../config/errorHandler.js";
 import { adminAuth, isAdmin, isSuperAdmin, userAuth } from "../../middlewares/auth.js";
 import vaccineController from "./vaccineController.js";
+import childVaccineRouter from "./childVaccine/childVaccineRoute.js";
 
 const vaccineRouter:Router = Router();
 
@@ -11,4 +12,9 @@ vaccineRouter.put('/:id',[adminAuth,isAdmin], errorHandler(vaccineController.upd
 vaccineRouter.delete('/:id',[adminAuth,isAdmin], errorHandler(vaccineController.delete));
 vaccineRouter.get('/',[adminAuth,isAdmin], errorHandler(vaccineController.getAll));
 vaccineRouter.get('/:id',[adminAuth,isAdmin], errorHandler(vaccineController.getSingle));
+
+vaccineRouter.use('/child',childVaccineRouter);
+
+
+
 export default vaccineRouter;

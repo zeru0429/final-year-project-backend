@@ -5,7 +5,7 @@ import { UnprocessableEntity } from "../../../exceptions/validation.js";
 import { ErrorCode } from "../../../exceptions/root.js";
 
 const employeeController ={
-   register: async (req:Request,res:Response,next:NextFunction): Promise<void> =>{
+   register: async (req:Request,res:Response,next:NextFunction)=>{
       userSchema.registerEmployee.parse(req.body);
       //check if the employye exist before
       const isEmployeeExist = await prisma.users.findFirst({where:{
@@ -50,11 +50,73 @@ const employeeController ={
    });
    res.status(201).json(newUser);
    },
-   update: async (req:Request,res:Response,next:NextFunction)=>{},
-   delete: async (req:Request,res:Response,next:NextFunction)=>{},
-   getAll: async (req:Request,res:Response,next:NextFunction)=>{},
-   getSingle: async (req:Request,res:Response,next:NextFunction)=>{},
-   getByHs: async (req:Request,res:Response,next:NextFunction)=>{},
+   update: async (req:Request,res:Response,next:NextFunction)=>{
+      req.userId = + req.params.id;
+      const user = await prisma.users.findFirst({where: {id: +req.userId}});
+      if(!user){
+         return next(new UnprocessableEntity('no user found in this id',404,ErrorCode.USER_NOT_FOUND,null));
+      }
+      const updatedUser = await prisma.users.update({where: {id: +req.userId},data:{
+         profile:{
+            update:{
+               firstName: req.body.firstName,
+               middleName: req.body.middleName,
+               lastName: req.body.lastName,
+               imageUrl: req.body.imageUrl,
+               sex:req.body.sex
+            }
+         },
+         proProfile: {
+            update:{
+               position: req.body.position,
+               title: req.body.title
+            }
+
+         }
+         
+
+      }});
+      res.status(200).json(updatedUser);
+   },
+   delete: async (req:Request,res:Response,next:NextFunction)=>{
+      req.userId = + req.params.id;
+      const user = await prisma.users.findFirst({where: {id: +req.userId}});
+      if(!user){
+         return next(new UnprocessableEntity('no user found in this id',404,ErrorCode.USER_NOT_FOUND,null));
+      }
+      const deletedUser = await prisma.users.delete({where: {id: +req.userId}});
+      res.status(200).json({
+         message: "sucessfully deleted",
+         sucess: true
+      });
+   },
+   getAll: async (req:Request,res:Response,next:NextFunction)=>{
+      const employee = await prisma.users.findMany({where: {
+         NOT:{role: "MOTHER"}
+      }});
+      res.status(200).json(employee);
+   },
+   getSingle: async (req:Request,res:Response,next:NextFunction)=>{
+      req.userId = + req.params.id;
+      const user = await prisma.users.findFirst({where: {id: +req.userId}});
+      if(!user){
+         return next(new UnprocessableEntity('no user found in this id',404,ErrorCode.USER_NOT_FOUND,null));
+      }
+      res.status(200).json(user);
+
+   },
+   getByHs: async (req:Request,res:Response,next:NextFunction)=>{
+      req.hsId = +req.params.id;
+      const employee = await prisma.users.findMany({where: {
+         AND: [
+            {healthStationId: +req.hsId},
+            {NOT:{
+               role: "MOTHER"
+            }},
+         ]
+      }});
+      res.status(200).json(employee);
+   },
 }
 
 export default employeeController;

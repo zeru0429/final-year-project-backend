@@ -53,8 +53,9 @@ const hsInfoController = {
 
    },
    getAll: async (req:Request,res:Response,next:NextFunction)=>{
-   const hsInfo = await prisma.healthStationInfos.findMany();
-   res.status(200).json(hsInfo);
+      console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjj");
+   // const hsInfo = await prisma.healthStationInfos.findMany();
+   // res.status(200).json(hsInfo);
    },
    getSingle: async (req:Request,res:Response,next:NextFunction)=>{
       req.hsInfoId=+req.params.id;

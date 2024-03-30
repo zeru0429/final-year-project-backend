@@ -10,5 +10,6 @@ newsRouter.delete("/:id",[adminAuth,isSuperAdmin],errorHandler(newsController.de
 
 newsRouter.get("/",errorHandler(newsController.getPublicNews));
 newsRouter.get("/:id",errorHandler(newsController.getSingleNews));
+newsRouter.get("/detail/:id",errorHandler(newsController.getSingleNewsDetail));
 
 export default newsRouter;

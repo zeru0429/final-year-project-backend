@@ -4,16 +4,16 @@ import errorHandler from "../../../config/errorHandler.js";
 import hsInfoController from "./hsInfoController.js";
 
 
-const healthStationRouter:Router = Router();
+const healthStationInfoRouter:Router = Router();
 
-healthStationRouter.post('/',[userAuth], errorHandler(hsInfoController.register));
-healthStationRouter.put('/:id',[userAuth], errorHandler(hsInfoController.update));
-healthStationRouter.delete('/:id',[userAuth], errorHandler(hsInfoController.delete));
-healthStationRouter.get('/', errorHandler(hsInfoController.getAll));
-healthStationRouter.get('/:id', errorHandler(hsInfoController.getSingle));
-healthStationRouter.get('/:hsId', errorHandler(hsInfoController.getByHs));
+healthStationInfoRouter.post('/',[userAuth], errorHandler(hsInfoController.register));
+healthStationInfoRouter.put('/:id',[userAuth], errorHandler(hsInfoController.update));
+healthStationInfoRouter.delete('/:id',[userAuth], errorHandler(hsInfoController.delete));
 
-healthStationRouter.get('/', errorHandler(hsInfoController.getAllDetaile));
-healthStationRouter.get('/:hsId', errorHandler(hsInfoController.getSingleDetaile));
+healthStationInfoRouter.get('/',[userAuth], errorHandler(hsInfoController.getAll));
+healthStationInfoRouter.get('/:id', errorHandler(hsInfoController.getSingle));
+healthStationInfoRouter.get('/hs/:hsId', errorHandler(hsInfoController.getByHs));
+healthStationInfoRouter.get('/detail/', errorHandler(hsInfoController.getAllDetaile));
+healthStationInfoRouter.get('/detail/:hsId', errorHandler(hsInfoController.getSingleDetaile));
 
-export default healthStationRouter;
+export default healthStationInfoRouter;

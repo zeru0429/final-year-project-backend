@@ -188,8 +188,17 @@ model Users {
   certifications  Certifications[]
   childVaccine  ChildrenVaccines[]
   motherVaccine MotherVaccines[]
+  notification Notification[]
+  report Report[]
+  participantInChats Chats[] @relation("ParticipantInChats")
+  adminOfChats Chats[] @relation("AdminOfChats")
+  sentMessages Messages[] @relation("SentMessages")
+
+  
+ 
   // Reference
   healthStation HealthStations? @relation(fields: [healthStationId], references:[id],onDelete: SetNull)
+
   @@map("users")
 }
 
@@ -246,7 +255,7 @@ model Childrens {
   lastName String
   birthdate DateTime
   bloodType String
-  isVaccineCompleted Boolean
+  isVaccineCompleted Boolean @default(false)
   createdAt DateTime
   //Ref
    certificate Certifications?
@@ -326,4 +335,68 @@ model Appointments {
     child Childrens @relation(fields: [childId], references:[id],onDelete: Cascade)
     @@map("appointments")
 }
+
+
+// Define model for chat
+model Chats {
+  id Int @id @default(autoincrement())
+  name String
+  isGroupChat Boolean
+  lastMessage Messages?
+  createdAt DateTime @default(now())
+  // Reference to admin
+  adminId Int?
+  admin Users? @relation("AdminOfChats", fields: [adminId], references: [id], onDelete: Cascade)
+  
+  // Define participants as a many-to-many relation with Users
+  participants Users[] @relation("ParticipantInChats")
+  
+  @@map("chats")
+}
+
+// Define model for message attachments
+model MessageAttachment {
+  id Int @id @default(autoincrement())
+  url String
+  // Reference to the message
+  message Messages @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  messageId Int
+  @@map("messageAttachments")
+}
+
+
+
+// Define model for messages
+model Messages {
+  id Int @id @default(autoincrement())
+  senderId Int
+  content String
+  sentTime DateTime
+  chatId Int @unique
+  // Reference to sender user
+  sender Users @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  // Reference to chat
+  chat Chats  @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  // Define attachments as an array of MessageAttachments
+  attachments MessageAttachment[]
+  @@map("messages")
+}
+
+
+model Notification {
+  id Int @id @default(autoincrement())
+  userId Int
+  message String
+  user Users @relation(fields: [userId],references: [id],onDelete: Cascade)
+}
+
+model Report {
+  id Int @id @default(autoincrement())
+  userId Int
+  message String
+  user Users @relation(fields: [userId],references: [id],onDelete: Cascade)
+}
+
+
+
 

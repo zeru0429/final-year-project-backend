@@ -11,6 +11,6 @@ motherRouter.put('/:id',[userAuth], errorHandler(motherController.update));
 motherRouter.delete('/:id',[userAuth], errorHandler(motherController.delete));
 motherRouter.get('/',[userAuth], errorHandler(motherController.getAll));
 motherRouter.get('/:id',[userAuth], errorHandler(motherController.getSingle));
-motherRouter.get('/:hsId',[userAuth], errorHandler(motherController.getByHs));
+motherRouter.get('/hs/:id',[userAuth], errorHandler(motherController.getByHs));
 
 export default motherRouter;

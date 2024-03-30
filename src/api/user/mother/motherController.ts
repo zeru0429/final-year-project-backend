@@ -48,11 +48,95 @@ const motherController ={
    });
    res.status(201).json(newMother);
    },
-   update: async (req:Request,res:Response,next:NextFunction)=>{},
-   delete: async (req:Request,res:Response,next:NextFunction)=>{},
-   getAll: async (req:Request,res:Response,next:NextFunction)=>{},
-   getSingle: async (req:Request,res:Response,next:NextFunction)=>{},
-   getByHs: async (req:Request,res:Response,next:NextFunction)=>{},
+   update: async (req:Request,res:Response,next:NextFunction)=>{
+      req.mId=+req.params.id;
+      userSchema.updateMother.parse(req.body);
+      const isMother = await prisma.users.findFirst({
+         where: {
+            AND:[
+               {id:+req.mId},{role: "MOTHER"}
+            ]
+         }
+      });
+      if(!isMother){
+         return next(new UnprocessableEntity('no mother found in this id',404,ErrorCode.USER_NOT_FOUND,null));
+      }
+      //update the user info
+      const updatedMother = await prisma.users.update({
+         where: {
+            id: +req.mId
+         },
+         data:{
+            profile:{
+               update:{
+                  firstName: req.body.firstName,
+                  middleName: req.body.middleName,
+                  lastName: req.body.lastName,
+                  imageUrl: req.body.imageUrl,
+                  sex:req.body.sex
+               }
+            },
+            motherProfile:{
+               update:{
+                  birthdate: new Date(req.body.birthdate),
+                  bloodType: req.body.bloodType,}}}
+      })
+      res.status(200).json(updatedMother);
+   
+
+   },
+   delete: async (req:Request,res:Response,next:NextFunction)=>{
+      req.mId=+req.params.id;
+      userSchema.updateMother.parse(req.body);
+      const isMother = await prisma.users.findFirst({
+         where: {
+            AND:[
+               {id:+req.mId},{role: "MOTHER"}
+            ]
+         }
+      });
+      if(!isMother){
+         return next(new UnprocessableEntity('no mother found in this id',404,ErrorCode.USER_NOT_FOUND,null));
+      }
+      //start deleting
+      const isDeleted = await prisma.users.delete({where: {
+         id: +req.mId
+      }});
+      res.status(200).json({
+         message: "sucessfully deleted",
+         sucess: true
+      });
+
+   },
+   getAll: async (req:Request,res:Response,next:NextFunction)=>{
+      const allMothers = await prisma.users.findMany({
+         where: {role: "MOTHER"}
+      });
+      res.status(200).json(allMothers);
+   },
+   getSingle: async (req:Request,res:Response,next:NextFunction)=>{
+      req.mId=+req.params.id;
+      const isMother = await prisma.users.findFirst({
+         where: {
+            AND:[
+               {id:+req.mId},{role: "MOTHER"}
+            ]
+         }
+      });
+      if(!isMother){
+         return next(new UnprocessableEntity('no mother found in this id',404,ErrorCode.USER_NOT_FOUND,null));
+      }
+      res.status(200).json(isMother);
+   },
+   getByHs: async (req:Request,res:Response,next:NextFunction)=>{
+      req.hsId = +req.params.id;
+      const allMothers = await prisma.users.findMany({
+         where: {
+            AND: [{role: "MOTHER"}, {healthStationId: +req.hsId}]
+         }
+      });
+      res.status(200).json(allMothers);
+   },
 }
 
 export default motherController;

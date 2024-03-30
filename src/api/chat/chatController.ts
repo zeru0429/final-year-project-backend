@@ -77,6 +77,54 @@ const chatController = {
 
 
    },
+   //create one to one chat
+   createOneToOneChat: async (req:Request, res:Response, next:NextFunction) => {
+      const { receiverId } = req.params;  
+       // Check if it's a valid receiver
+       const receiver = await prisma.users.findFirst({
+          where:{
+            id: +receiverId
+          }
+       });
+       if(!receiver){
+         return next(new UnprocessableEntity('Receiver does not exist', 404, ErrorCode.USER_NOT_FOUND, null));
+       }
+      // check if receiver is not the user who is requesting a chat
+      if (receiver.id.toString() === req.user?.id.toString()) {
+         return next(new UnprocessableEntity('you can not send message to yourself', 404, ErrorCode.USER_NOT_FOUND, null));        
+       }
+       //check if the one to one exist befor
+       const oneToOneChat = await prisma.chats.findFirst({
+         where:{
+            isGroupChat: false,
+            participants: {
+               every: {
+                  id: {
+                     in: [req.user!.id, +receiverId]
+                  }
+               }
+            }
+         }
+       });
+       if(oneToOneChat){
+         return res.status(200).json(oneToOneChat);
+       }
+       //create one to one chat
+       const newOneToOneChat = await prisma.chats.create({
+         data:{
+            isGroupChat: false,
+            participants: {
+               connect: [
+                  { id: req.user?.id },
+                  { id: +receiverId }
+               ]
+            },
+            name:"single"
+         }
+       });
+      return res.status(200).json(newOneToOneChat);
+   },
+   //delete chat
    deleteGroupChat: async (req:Request, res:Response, next:NextFunction) =>{
       req.chatId = +req.params.id;
 
@@ -116,6 +164,7 @@ const chatController = {
        });
 
    },
+   //rename chat
    renameGroupChat: async (req:Request, res:Response, next:NextFunction) =>{
       req.chatId = +req.params.id;
       const { name } = req.body;
@@ -144,6 +193,7 @@ const chatController = {
             sucess: true
        });
    },
+   //add new member
    addNewParticipantInGroupChat: async (req:Request, res:Response, next:NextFunction) =>{
       req.chatId = +req.params.id;
       const { participantId  } = req.body;
@@ -188,6 +238,7 @@ const chatController = {
 
 
    },
+   //remove the member
    removeParticipantFromGroupChat: async (req:Request, res:Response, next:NextFunction) =>{
       req.chatId = +req.params.id;
       const { participantId  } = req.body;

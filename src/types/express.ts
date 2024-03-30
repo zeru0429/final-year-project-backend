@@ -20,5 +20,8 @@ declare module 'express'{
       mvId: Number
       chatId: Number
       files: any
+      certificateId: Number
+      appId: Number
+      notificationId: Number
    }
 }

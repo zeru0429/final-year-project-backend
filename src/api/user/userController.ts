@@ -7,6 +7,7 @@ import userSchema from "./userSchema.js";
 import bcrypt from 'bcrypt'
 import { SECRET } from "../../config/secrets.js";
 const usersController ={
+
    updatedEmailAndPhone: async  (req:Request,res:Response,next:NextFunction)=>{
       req.userId = + req.params.id;
       userSchema.updateEmailAndPhone.parse(req.body);
@@ -98,8 +99,6 @@ const usersController ={
       const allUsersInHs = await prisma.users.findMany({where: {healthStationId: +req.hsId}});
       res.status(200).json(allUsersInHs);
    },
-
-   //login
    //login user
    loginUser: async (req: Request, res: Response, next: NextFunction) => {
       userSchema.login.parse(req.body);
@@ -124,6 +123,33 @@ const usersController ={
          message: "Login successfully"
       });
    },
+   me: async (req: Request, res: Response, next: NextFunction) => {
+      console.log("hihi");
+      // console.log(req.user);
+      // console.log(req.user!.id);
+      // const user = await prisma.users.findFirst({ 
+      //    where: 
+      //    { id: +req.user!.id },
+      //    include:{
+      //       _count:true,
+      //       profile: true,
+      //       motherProfile: true,
+      //       proProfile: true, 
+      //       adminOfChats: true,
+      //       appointment:true,
+      //       certifications:true,
+      //       child: true,
+      //       childVaccine: true,
+      //       healthStation: true,
+      //       motherVaccine: true,
+      //       notification: true,
+      //       participantInChats: true,
+      //       sentMessages: true,
+      //       report: true
+      //     }
+      //     });
+      //     res.status(200).json(user);
+   }
 }
 
 export default usersController;

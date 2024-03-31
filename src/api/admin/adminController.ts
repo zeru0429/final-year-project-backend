@@ -49,30 +49,6 @@ const authController = {
       });
       res.status(201).json(newAdmin);
    },
-   //login user
-   loginUser: async (req: Request, res: Response, next: NextFunction) => {
-      authSchema.login.parse(req.body);
-      const user = await prisma.users.findFirst({ where: { email: req.body.email } });
-      if (!user) {
-         return next(new UnprocessableEntity("No account found with this email", 403, ErrorCode.USER_NOT_FOUND, null));
-      }
-      const isMatch = bcrypt.compareSync(req.body.password, user.password);
-      if (!isMatch) {
-         return next(new UnprocessableEntity('Incorrect password', 403, ErrorCode.INCORRECT_PASSWORD, null));
-      }
-      const userProfile = await prisma.userProfiles.findFirst({ where: { userId: user.id } });
-      // Create token
-      const payload = {
-         id: user.id,
-         role: user.role,
-         firstName: userProfile?.firstName
-      };
-      const token = jwt.sign(payload, SECRET!);
-      return res.status(200).json({
-         token,
-         message: "Login successfully"
-      });
-   },
    //login admin
    loginAdmin: async (req: Request, res: Response, next: NextFunction) => {
       authSchema.login.parse(req.body);
@@ -96,6 +72,16 @@ const authController = {
          token,
          message: "Login successfully"
       });
+   },
+   me: async (req: Request, res: Response, next: NextFunction) =>{
+      const admin = await prisma.admins.findFirst({
+         where:{id:req.user!.id},
+         include: {
+            _count: true,
+            profile:true,
+         }
+      });
+      res.status(200).json(admin);
    }
 
 }

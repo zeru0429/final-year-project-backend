@@ -6,7 +6,7 @@ import { adminAuth, isSuperAdmin } from "../../middlewares/auth.js";
 
 //routes
 adminRouter.post("/register",[adminAuth,isSuperAdmin], errorHandler(authController.registerAdmin));
-// adminRouter.post("/user/login", errorHandler(authController.loginUser));
 adminRouter.post("/login", errorHandler(authController.loginAdmin));
+adminRouter.get('/me',[adminAuth], errorHandler(authController.me));
 
 export default adminRouter;

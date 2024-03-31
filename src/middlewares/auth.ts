@@ -40,7 +40,7 @@ const userAuth:any = async (req:Request,res:Response,next:NextFunction)=>{
    }
    try {
       const payload = await jwt.verify(token, SECRET!) as any;
-      const user =  await prisma.admins.findUnique({
+      const user =  await prisma.users.findUnique({
          where:{
             id:(payload).id
          }
@@ -49,8 +49,13 @@ const userAuth:any = async (req:Request,res:Response,next:NextFunction)=>{
          return next(new NotFound('user not found',404,ErrorCode.USER_NOT_FOUND,null))
       }
       req.user = (payload);
+      console.log(req.user);
       next();
-   } catch (error) {
+      //  next();
+   } catch (error: any) {
+      console.log("?????????????????????????????????????????????");
+      console.log(error.mssage);
+      console.log("?????????????????????????????????????????????");
       return next(new UnprocessableEntity('invalide token',404,ErrorCode.TOKEN_NOT_FOUND,null))
    }
 
@@ -102,7 +107,5 @@ const isMother:any = async (req:Request,res:Response,next:NextFunction)=>{
    }
    next();
 }
-
-
 
 export {adminAuth,userAuth,isSuperAdmin,isAdmin,isManager,isHealthProfetional,isReception,isMother};

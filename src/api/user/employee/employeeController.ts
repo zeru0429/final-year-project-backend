@@ -3,6 +3,7 @@ import userSchema from "../userSchema.js";
 import { prisma } from "../../../config/prisma.js";
 import { UnprocessableEntity } from "../../../exceptions/validation.js";
 import { ErrorCode } from "../../../exceptions/root.js";
+import bcrypt from 'bcrypt'
 
 const employeeController ={
    register: async (req:Request,res:Response,next:NextFunction)=>{
@@ -17,6 +18,8 @@ const employeeController ={
       if(isEmployeeExist){
          return next(new UnprocessableEntity('Email or Phone has been registered before',403,ErrorCode.USER_ALLREDY_EXIST,null));
       }
+
+      req.body.password = bcrypt.hashSync(req.body.password, 10);
       //create the employee
       const  newUser=await prisma.users.create({
          data:{

@@ -10,7 +10,16 @@ const appointmantController = {
       appointmantSchema.register.parse(req.body);
       //start store
       const newAppointments = await prisma.appointments.create({
-         data: req.body
+         data: {
+            appointmentDate: new Date(req.body.appointmentDate),
+            childId: +req.body.childId,
+            healthStationId: +req.body.healthStationId,
+            motherId: +req.body.motherId,
+            description: req.body.description,
+            registerdBy: req.user!.id,
+            vaccineId: +req.body.vaccineId,
+            createdDateTime: new Date(),
+         }
       });
       return res.status(200).json(newAppointments);
    },
@@ -30,7 +39,14 @@ const appointmantController = {
          where: {
             id: +req.appId
          },
-         data: req.body
+         data: {
+            description: req.body.description,
+            healthStationId: +req.body.healthStationId,
+            childId: +req.body.childId,
+            motherId: +req.body.motherId,
+            appointmentDate: new Date(req.body.appointmentDate),
+            registerdBy: req.user?.id,
+         }
       });
       return res.status(200).json(updateAppointments);     
    },
@@ -64,6 +80,15 @@ const appointmantController = {
             id: +req.appId
          }
       });
+      if(!appointment){
+         return next(new UnprocessableEntity('This appointment not found',404,ErrorCode.APPOINTMENT_NOT_FOUND,null));
+      }
+      return res.status(200).json(appointment);
+    
+   },
+   getAllAppointments: async (req: Request, res: Response,next : NextFunction) => {
+      //check if the appointment exist
+      const appointment = await prisma.appointments.findMany();
       if(!appointment){
          return next(new UnprocessableEntity('This appointment not found',404,ErrorCode.APPOINTMENT_NOT_FOUND,null));
       }

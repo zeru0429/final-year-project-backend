@@ -1,13 +1,13 @@
 -- CreateTable
 CREATE TABLE `admins` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `email` VARCHAR(255) NOT NULL,
-    `phone` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `phone` VARCHAR(191) NOT NULL,
     `role` ENUM('SUPER', 'ADMIN') NOT NULL DEFAULT 'ADMIN',
-    `password` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
     `activeStatus` BOOLEAN NOT NULL DEFAULT true,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `otp` VARCHAR(255) NULL,
+    `otp` VARCHAR(191) NULL,
     `otpCreatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `otpExpiry` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -20,10 +20,10 @@ CREATE TABLE `admins` (
 CREATE TABLE `adminProfiles` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `adminId` INTEGER NOT NULL,
-    `firstName` VARCHAR(255) NOT NULL,
-    `middleName` VARCHAR(255) NOT NULL,
-    `lastName` VARCHAR(255) NOT NULL,
-    `imageUrl` TEXT NULL,
+    `firstName` VARCHAR(191) NOT NULL,
+    `middleName` VARCHAR(191) NOT NULL,
+    `lastName` VARCHAR(191) NOT NULL,
+    `imageUrl` VARCHAR(191) NULL,
 
     UNIQUE INDEX `adminProfiles_adminId_key`(`adminId`),
     PRIMARY KEY (`id`)
@@ -33,13 +33,13 @@ CREATE TABLE `adminProfiles` (
 CREATE TABLE `healthStations` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `registeredBy` INTEGER NULL,
-    `name` VARCHAR(255) NOT NULL,
-    `email` VARCHAR(255) NOT NULL,
-    `type` VARCHAR(255) NOT NULL,
-    `city` VARCHAR(255) NOT NULL,
-    `subcity` VARCHAR(255) NOT NULL,
-    `kebele` VARCHAR(255) NOT NULL,
-    `houseNumber` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `type` VARCHAR(191) NOT NULL,
+    `city` VARCHAR(191) NOT NULL,
+    `subcity` VARCHAR(191) NOT NULL,
+    `kebele` VARCHAR(191) NOT NULL,
+    `houseNumber` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `healthStations_email_key`(`email`),
@@ -50,10 +50,10 @@ CREATE TABLE `healthStations` (
 CREATE TABLE `healthStationInfos` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `healthStationId` INTEGER NOT NULL,
-    `serviceAm` VARCHAR(255) NOT NULL,
-    `serviceOr` VARCHAR(255) NOT NULL,
-    `descriptionAm` TEXT NOT NULL,
-    `descriptionOr` TEXT NOT NULL,
+    `serviceAm` VARCHAR(191) NOT NULL,
+    `serviceOr` VARCHAR(191) NOT NULL,
+    `descriptionAm` VARCHAR(191) NOT NULL,
+    `descriptionOr` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
@@ -63,10 +63,10 @@ CREATE TABLE `healthStationInfos` (
 CREATE TABLE `news` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `writerId` INTEGER NULL,
-    `titleAm` VARCHAR(255) NOT NULL,
-    `titleOr` VARCHAR(255) NOT NULL,
-    `descriptionAm` TEXT NOT NULL,
-    `descriptionOr` TEXT NOT NULL,
+    `titleAm` VARCHAR(191) NOT NULL,
+    `titleOr` VARCHAR(191) NOT NULL,
+    `descriptionAm` VARCHAR(191) NOT NULL,
+    `descriptionOr` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
@@ -76,7 +76,7 @@ CREATE TABLE `news` (
 CREATE TABLE `NewsImage` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `newsId` INTEGER NOT NULL,
-    `imageUrl` TEXT NOT NULL,
+    `imageUrl` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -85,12 +85,12 @@ CREATE TABLE `NewsImage` (
 CREATE TABLE `vaccines` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `registeredBy` INTEGER NULL,
-    `name` VARCHAR(255) NOT NULL,
-    `category` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `category` VARCHAR(191) NOT NULL,
     `dose` INTEGER NOT NULL,
     `duration` INTEGER NOT NULL,
-    `description` TEXT NOT NULL,
-    `ageRange` VARCHAR(255) NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
+    `ageRange` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
@@ -100,13 +100,13 @@ CREATE TABLE `vaccines` (
 CREATE TABLE `users` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `healthStationId` INTEGER NULL,
-    `email` VARCHAR(255) NOT NULL,
-    `phone` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `phone` VARCHAR(191) NOT NULL,
     `role` ENUM('MOTHER', 'MANAGER', 'RECEPTION', 'HEALTH_PROFETIONAL') NOT NULL DEFAULT 'MOTHER',
-    `password` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
     `activeStatus` BOOLEAN NOT NULL DEFAULT true,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `otp` VARCHAR(255) NULL,
+    `otp` VARCHAR(191) NULL,
     `otpCreatedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `otpExpiry` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -119,11 +119,11 @@ CREATE TABLE `users` (
 CREATE TABLE `userProfiles` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
-    `firstName` VARCHAR(255) NOT NULL,
-    `middleName` VARCHAR(255) NOT NULL,
-    `lastName` VARCHAR(255) NOT NULL,
+    `firstName` VARCHAR(191) NOT NULL,
+    `middleName` VARCHAR(191) NOT NULL,
+    `lastName` VARCHAR(191) NOT NULL,
     `sex` ENUM('MALE', 'FEMALE') NOT NULL,
-    `imageUrl` TEXT NULL,
+    `imageUrl` VARCHAR(191) NULL,
 
     UNIQUE INDEX `userProfiles_userId_key`(`userId`),
     PRIMARY KEY (`id`)
@@ -134,8 +134,8 @@ CREATE TABLE `professionalProfiles` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
     `healthStationId` INTEGER NOT NULL,
-    `title` VARCHAR(255) NOT NULL,
-    `position` VARCHAR(255) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `position` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `professionalProfiles_userId_key`(`userId`),
     PRIMARY KEY (`id`)
@@ -146,8 +146,8 @@ CREATE TABLE `mothersProfiles` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
     `birthdate` DATETIME(3) NOT NULL,
-    `bloodType` VARCHAR(255) NOT NULL,
-    `RH` VARCHAR(255) NOT NULL,
+    `bloodType` VARCHAR(191) NOT NULL,
+    `RH` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `mothersProfiles_userId_key`(`userId`),
     PRIMARY KEY (`id`)
@@ -158,12 +158,12 @@ CREATE TABLE `childrens` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `motherId` INTEGER NULL,
     `registeredBy` INTEGER NULL,
-    `firstName` VARCHAR(255) NOT NULL,
-    `middleName` VARCHAR(255) NOT NULL,
-    `lastName` VARCHAR(255) NOT NULL,
+    `firstName` VARCHAR(191) NOT NULL,
+    `middleName` VARCHAR(191) NOT NULL,
+    `lastName` VARCHAR(191) NOT NULL,
     `birthdate` DATETIME(3) NOT NULL,
-    `bloodType` VARCHAR(255) NOT NULL,
-    `isVaccineCompleted` BOOLEAN NOT NULL,
+    `bloodType` VARCHAR(191) NOT NULL,
+    `isVaccineCompleted` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -201,8 +201,9 @@ CREATE TABLE `certification` (
     `childId` INTEGER NOT NULL,
     `registerdBy` INTEGER NULL,
     `healthStationId` INTEGER NULL,
-    `name` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `issuedDate` DATETIME(3) NOT NULL,
+    `fileUrl` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `certification_childId_key`(`childId`),
     PRIMARY KEY (`id`)
@@ -218,9 +219,67 @@ CREATE TABLE `appointments` (
     `vaccineId` INTEGER NULL,
     `createdDateTime` DATETIME(3) NOT NULL,
     `appointmentDate` DATETIME(3) NOT NULL,
-    `description` TEXT NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `chats` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `isGroupChat` BOOLEAN NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `adminId` INTEGER NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `messageAttachments` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `url` VARCHAR(191) NOT NULL,
+    `messageId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `messages` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `senderId` INTEGER NOT NULL,
+    `content` VARCHAR(191) NOT NULL,
+    `sentTime` DATETIME(3) NOT NULL,
+    `chatId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Notification` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `message` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Report` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `message` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `_ParticipantInChats` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_ParticipantInChats_AB_unique`(`A`, `B`),
+    INDEX `_ParticipantInChats_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
@@ -306,3 +365,27 @@ ALTER TABLE `appointments` ADD CONSTRAINT `appointments_motherId_fkey` FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE `appointments` ADD CONSTRAINT `appointments_childId_fkey` FOREIGN KEY (`childId`) REFERENCES `childrens`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `chats` ADD CONSTRAINT `chats_adminId_fkey` FOREIGN KEY (`adminId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `messageAttachments` ADD CONSTRAINT `messageAttachments_messageId_fkey` FOREIGN KEY (`messageId`) REFERENCES `messages`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `messages` ADD CONSTRAINT `messages_senderId_fkey` FOREIGN KEY (`senderId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `messages` ADD CONSTRAINT `messages_chatId_fkey` FOREIGN KEY (`chatId`) REFERENCES `chats`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Notification` ADD CONSTRAINT `Notification_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Report` ADD CONSTRAINT `Report_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_ParticipantInChats` ADD CONSTRAINT `_ParticipantInChats_A_fkey` FOREIGN KEY (`A`) REFERENCES `chats`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_ParticipantInChats` ADD CONSTRAINT `_ParticipantInChats_B_fkey` FOREIGN KEY (`B`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

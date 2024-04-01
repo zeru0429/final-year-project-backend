@@ -11,6 +11,7 @@ apointmentRouter.delete('/:id',[userAuth], errorHandler(appointmantController.de
 
 // Get all children of a specific parent or
 apointmentRouter.get('/:id',[userAuth], errorHandler(appointmantController.getSingleAppointments));
+apointmentRouter.get('/',[userAuth], errorHandler(appointmantController.getAllAppointments));
 apointmentRouter.get('/hs/:id',[userAuth], errorHandler(appointmantController.getAppointmentsByHs));
 apointmentRouter.get('/mother/:id',[userAuth], errorHandler(appointmantController.getAppointmentsByMotherId));
 apointmentRouter.get('/child/:id',[userAuth], errorHandler(appointmantController.getAppointmentsByChildId));

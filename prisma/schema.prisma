@@ -1,6 +1,7 @@
 // Define generator and datasource
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["clientExtensions"]
 }
 
 datasource db {
@@ -14,7 +15,6 @@ enum UserRole{
   MANAGER
   RECEPTION
   HEALTH_PROFETIONAL
-
 }
 
 enum AdminRole {
@@ -309,6 +309,7 @@ model Certifications {
   healthStationId Int?
   name String
   issuedDate DateTime
+  fileUrl String
   //reference
   child Childrens @relation(fields:[childId], references:[id],onDelete: Cascade)
   registrar Users? @relation(fields: [registerdBy], references:[id],onDelete: SetNull)
@@ -341,12 +342,11 @@ model Chats {
   id Int @id @default(autoincrement())
   name String
   isGroupChat Boolean
-  lastMessage Messages?
+  lastMessage Messages[]
   createdAt DateTime @default(now())
   // Reference to admin
   adminId Int?
-  admin Users? @relation("AdminOfChats", fields: [adminId], references: [id], onDelete: Cascade)
-  
+  admin Users? @relation("AdminOfChats", fields: [adminId], references: [id], onDelete: Cascade) 
   // Define participants as a many-to-many relation with Users
   participants Users[] @relation("ParticipantInChats")
   
@@ -363,15 +363,13 @@ model MessageAttachment {
   @@map("messageAttachments")
 }
 
-
-
 // Define model for messages
 model Messages {
   id Int @id @default(autoincrement())
   senderId Int
   content String
   sentTime DateTime
-  chatId Int @unique
+  chatId Int
   // Reference to sender user
   sender Users @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
   // Reference to chat
@@ -380,7 +378,6 @@ model Messages {
   attachments MessageAttachment[]
   @@map("messages")
 }
-
 
 model Notification {
   id Int @id @default(autoincrement())
@@ -395,7 +392,3 @@ model Report {
   message String
   user Users @relation(fields: [userId],references: [id],onDelete: Cascade)
 }
-
-
-
-

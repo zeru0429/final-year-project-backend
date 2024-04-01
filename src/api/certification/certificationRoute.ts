@@ -10,6 +10,7 @@ certificationRouter.put('/:id',[userAuth], errorHandler(certificationController.
 certificationRouter.delete('/:id',[userAuth], errorHandler(certificationController.deleteCertificate));
 
 // Get all children of a specific parent or
+certificationRouter.get('/getall',[userAuth], errorHandler(certificationController.getAllCertificate));
 certificationRouter.get('/:id',[userAuth], errorHandler(certificationController.getSingleCertificate));
 certificationRouter.get('/hs/:id',[userAuth], errorHandler(certificationController.getCertificateByHs));
 certificationRouter.get('/mother/:id',[userAuth], errorHandler(certificationController.getCertificateByMotherId));

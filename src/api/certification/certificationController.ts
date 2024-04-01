@@ -7,6 +7,18 @@ import { UnprocessableEntity } from "../../exceptions/validation.js";
 const certificationController = {
    generateCertificate: async (req: Request, res: Response,next : NextFunction) => {
       certificationSchema.register.parse(req.body);
+      //check if child exist
+      const child = await prisma.childrens.findFirst({
+         where: {
+            id: +req.body.childId
+         }
+      });
+      if(!child){
+         return next(new UnprocessableEntity('This child not found',404,ErrorCode.CHILD_NOT_FOUND,null));
+      }
+      if(!child.isVaccineCompleted){
+         return next(new UnprocessableEntity('This child not vaccine completed',404,ErrorCode.CHILD_NOT_VACCINE_COMPLETED,null));
+      }
       //check if the child have certificate befor
       const certificate = await prisma.certifications.findFirst({
          where: {
@@ -18,7 +30,13 @@ const certificationController = {
       }
       //create a new certificate
       const newCertificate = await prisma.certifications.create({
-         data: req.body
+         data: {
+            issuedDate: new Date(),
+            name: req.body.name,
+            childId: +req.body.childId,
+            healthStationId: +req.body.healthStationId,
+            registerdBy: req.user!.id,
+         }
       });
       return res.status(200).json(newCertificate);
    },
@@ -31,7 +49,7 @@ const certificationController = {
             id: +req.certificateId
          }
       });
-      if(certificate){
+      if(!certificate){
          return next(new UnprocessableEntity('This certificate not found',404,ErrorCode.CERTIFICATE_NOT_FOUND,null));
       }
       // start updating
@@ -39,7 +57,10 @@ const certificationController = {
          where:{
             id: +req.certificateId
          },
-         data:req.body
+         data:{
+            name: req.body.name,
+            childId: +req.body.childId,  
+         }
       });
       return res.status(200).json(updatedCertificate);
       
@@ -52,7 +73,7 @@ const certificationController = {
             id: +req.certificateId
          }
       });
-      if(certificate){
+      if(!certificate){
          return next(new UnprocessableEntity('This certificate not found',404,ErrorCode.CERTIFICATE_NOT_FOUND,null));
       }
       // start deleting
@@ -75,6 +96,11 @@ const certificationController = {
             id: +req.certificateId
          }
       });
+      return res.status(200).json(certificate);
+   },
+   getAllCertificate: async (req: Request, res: Response,next : NextFunction) => {
+      //check certificate exist 
+      const certificate = await prisma.certifications.findMany();
       return res.status(200).json(certificate);
    },
    getCertificateByHs: async (req: Request, res: Response,next : NextFunction) => {

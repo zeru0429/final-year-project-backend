@@ -28,18 +28,17 @@ const messageController = {
       }
       // Prepare attachments
       const messageFiles = req.files?.attachments?.map((attachment: any) => ({ url: attachment.url }));
-
+      
       // Create a new message instance with appropriate metadata
       const newMessage = await prisma.messages.create({
           data: {
               chatId: +req.chatId,
               senderId: req.user!.id,
               sentTime: new Date(),
-              content: content,
-              attachments: { create: messageFiles }
+              content: content
           }
       });
-      console.log(newMessage);
+    //   console.log(newMessage);
       // Update the chat's last message
       await prisma.chats.update({
           where: {
@@ -55,7 +54,7 @@ const messageController = {
       });
 
       // Emit socket event about the new message created to the other participants
-      chat.participants.forEach((participantObjectId) => {
+      chat.participants.forEach((participantObjectId: any) => {
           // Avoid emitting event to the user who is sending the message
           if (participantObjectId.toString() === req.user?.id.toString()) return;
 
@@ -89,7 +88,7 @@ const messageController = {
          return next(new UnprocessableEntity('no chat found in this id',404,ErrorCode.CHAT_NOT_FOUND,null));
       }
        // Check if the participant being added is already a part of the group
-     if(chat.participants.find((participant) => participant.id === req.user?.id) === undefined){
+     if(chat.participants.find((participant: any) => participant.id === req.user?.id) === undefined){
          return next(new UnprocessableEntity('you are not a participant of this chat',404,ErrorCode.CHAT_NOT_FOUND,null));
       }
       const messages = await prisma.messages.findMany({

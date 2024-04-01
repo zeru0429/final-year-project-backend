@@ -81,6 +81,29 @@ const employeeController ={
       }});
       res.status(200).json(updatedUser);
    },
+   updateStatus: async (req:Request,res:Response,next:NextFunction)=>{
+      req.userId = + req.params.id;
+      const user = await prisma.users.findFirst({where: {id: +req.userId}});
+      if(!user){
+         return next(new UnprocessableEntity('no user found in this id',404,ErrorCode.USER_NOT_FOUND,null));
+      }
+      const updatedUser = await prisma.users.update({where: {id: +req.userId},data:{
+         activeStatus: req.body.activeStatus
+      }});
+      res.status(200).json(updatedUser);
+   },
+   assignRole: async (req:Request,res:Response,next:NextFunction)=>{
+      req.userId = + req.params.id;
+      const user = await prisma.users.findFirst({where: {id: +req.userId}});
+      if(!user){
+         return next(new UnprocessableEntity('no user found in this id',404,ErrorCode.USER_NOT_FOUND,null));
+      }
+      const updatedUser = await prisma.users.update({where: {id: +req.userId},data:{
+         role: req.body.role
+      }});
+   
+      res.status(200).json(updatedUser);
+   },
    delete: async (req:Request,res:Response,next:NextFunction)=>{
       req.userId = + req.params.id;
       const user = await prisma.users.findFirst({where: {id: +req.userId}});

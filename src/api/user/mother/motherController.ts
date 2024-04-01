@@ -25,6 +25,8 @@ const motherController ={
             email: req.body.email,
             password: req.body.password,
             phone: req.body.phone,
+            role: "MOTHER",
+            healthStationId: req.user!.healthStationId,
             profile:{
                create:{
                   firstName: req.body.firstName,

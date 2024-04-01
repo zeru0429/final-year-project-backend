@@ -115,10 +115,20 @@ model HealthStationInfos {
   descriptionAm String 
   descriptionOr String 
   createdAt DateTime @default(now())
+  //reference
+  iamges  HealthStationsImage[]
   // Reference
   healthStation HealthStations @relation(fields: [healthStationId], references:[id],onDelete: Cascade)
 
   @@map("healthStationInfos")
+}
+model HealthStationsImage{
+    id Int @id @default(autoincrement())
+     healthStationInfoId Int
+     imageUrl String
+    //reference
+    hsInfo  HealthStationInfos @relation(fields: [healthStationInfoId], references:[id])
+    @@map("healthstationsImage")
 }
 
 // Define model for news posts

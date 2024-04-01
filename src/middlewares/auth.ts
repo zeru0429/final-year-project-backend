@@ -26,6 +26,7 @@ const adminAuth:any = async (req:Request,res:Response,next:NextFunction)=>{
          return next(new NotFound('user not found',404,ErrorCode.USER_NOT_FOUND,null))
       }
       req.admin =admin;
+    
       next();
    } catch (error) {
       return next(new UnprocessableEntity('invalide token',404,ErrorCode.TOKEN_NOT_FOUND,null))
@@ -48,7 +49,7 @@ const userAuth: any = async (req: Request, res: Response, next: NextFunction) =>
          return next(new NotFound('User not found', 404, ErrorCode.USER_NOT_FOUND, null));
       }
       req.user = user;
-      console.log(req.user);
+      // console.log(req.user);
       next();
    } catch (error) {
       return next(new UnprocessableEntity('Invalid token', 404, ErrorCode.TOKEN_NOT_FOUND, null));
@@ -91,7 +92,7 @@ const isManager:any = async (req:Request,res:Response,next:NextFunction)=>{
 const isReception:any = async (req:Request,res:Response,next:NextFunction)=>{
    const  user : Users | undefined= req.user;
    if(user && user.role !==  UserRole.RECEPTION){
-      return next(new Unauthorized('user not admin',401,ErrorCode.USER_NOT_FOUND,null))
+      return next(new Unauthorized('user not reception',401,ErrorCode.USER_NOT_FOUND,null))
    }
    next();
 }
@@ -104,4 +105,12 @@ const isMother:any = async (req:Request,res:Response,next:NextFunction)=>{
    next();
 }
 
-export {adminAuth,userAuth,isSuperAdmin,isAdmin,isManager,isHealthProfetional,isReception,isMother};
+const isEmployee:any = async (req:Request,res:Response,next:NextFunction)=>{
+   const  user : Users | undefined= req.user;
+   if(user && user.role ===  UserRole.MOTHER){
+      return next(new Unauthorized('user not admin',401,ErrorCode.USER_NOT_FOUND,null))
+   }
+   next();
+}
+
+export {adminAuth,userAuth,isSuperAdmin,isAdmin,isManager,isHealthProfetional,isReception,isMother,isEmployee};

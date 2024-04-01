@@ -36,6 +36,7 @@ const certificationController = {
             childId: +req.body.childId,
             healthStationId: +req.body.healthStationId,
             registerdBy: req.user!.id,
+            fileUrl: req.body.fileUrl,
          }
       });
       return res.status(200).json(newCertificate);

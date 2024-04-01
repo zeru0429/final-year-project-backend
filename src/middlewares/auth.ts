@@ -25,41 +25,37 @@ const adminAuth:any = async (req:Request,res:Response,next:NextFunction)=>{
       if(!admin){
          return next(new NotFound('user not found',404,ErrorCode.USER_NOT_FOUND,null))
       }
-      req.admin = (payload);
+      req.admin =admin;
       next();
    } catch (error) {
       return next(new UnprocessableEntity('invalide token',404,ErrorCode.TOKEN_NOT_FOUND,null))
    }
 
 }
-
-const userAuth:any = async (req:Request,res:Response,next:NextFunction)=>{
+const userAuth: any = async (req: Request, res: Response, next: NextFunction) => {
    const token = req.headers.authorization;
-   if(!token){
-     return next(new UnprocessableEntity('Token not found',404,ErrorCode.TOKEN_NOT_FOUND,null))
+   if (!token) {
+      return next(new UnprocessableEntity('Token not found', 404, ErrorCode.TOKEN_NOT_FOUND, null));
    }
    try {
       const payload = await jwt.verify(token, SECRET!) as any;
-      const user =  await prisma.users.findUnique({
-         where:{
-            id:(payload).id
+      const user = await prisma.users.findFirst({
+         where: {
+            id: payload.id
          }
-      })
-      if(!user){
-         return next(new NotFound('user not found',404,ErrorCode.USER_NOT_FOUND,null))
+      });
+      if (!user) {
+         return next(new NotFound('User not found', 404, ErrorCode.USER_NOT_FOUND, null));
       }
-      req.user = (payload);
+      req.user = user;
       console.log(req.user);
       next();
-      //  next();
-   } catch (error: any) {
-      console.log("?????????????????????????????????????????????");
-      console.log(error.mssage);
-      console.log("?????????????????????????????????????????????");
-      return next(new UnprocessableEntity('invalide token',404,ErrorCode.TOKEN_NOT_FOUND,null))
+   } catch (error) {
+      return next(new UnprocessableEntity('Invalid token', 404, ErrorCode.TOKEN_NOT_FOUND, null));
    }
+};
 
-}
+
 
 const isSuperAdmin:any = async (req:Request,res:Response,next:NextFunction)=>{
    const  admin : Admins |undefined = req.admin;

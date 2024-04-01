@@ -9,8 +9,8 @@ const healthStationRouter:Router = Router();
 healthStationRouter.post('/',[adminAuth], errorHandler(hsController.register));
 healthStationRouter.put('/:id',[adminAuth], errorHandler(hsController.update));
 healthStationRouter.delete('/:id',[adminAuth], errorHandler(hsController.delete));
-healthStationRouter.get('/',[adminAuth], errorHandler(hsController.getAll));
-healthStationRouter.get('/:id',[adminAuth], errorHandler(hsController.getSingle));
+healthStationRouter.get('/all', errorHandler(hsController.getAll));
+healthStationRouter.get('/:id', errorHandler(hsController.getSingle));
 
 healthStationRouter.use('/info',healthStationInfoRouter);
 

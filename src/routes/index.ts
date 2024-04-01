@@ -11,6 +11,7 @@ import childRouter from "../api/child/childRoute.js";
 import certificationRouter from "../api/certification/certificationRoute.js";
 import apointmentRouter from "../api/appointment/appointmantRoute.js";
 import notificationRouter from "../api/notification/notificationRoute.js";
+import chatRouter from "../api/chat/chatRouter.js";
 
 
 appRouter.use("/admin", adminRouter);
@@ -21,6 +22,7 @@ appRouter.use('/news',newsRouter);
 appRouter.use('/vaccine',vaccineRouter);
 appRouter.use('/certification',certificationRouter);
 appRouter.use('/appintment',apointmentRouter);
+appRouter.use('/chat',chatRouter);
 appRouter.use('/notification',notificationRouter);
 
 export default appRouter;

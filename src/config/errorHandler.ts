@@ -1,15 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorCode, HttpExecption } from "../exceptions/root.js";
-import { UnprocessableEntity } from "../exceptions/validation.js";
 import { InternalException } from "../exceptions/internalException.js";
-import { any } from "zod";
 
 const errorHandler:any =(method:Function)=> {
    return async (req:Request,res:Response,next:NextFunction)=>{
       try {
         await method(req,res,next);
       } catch (error:any) {
-          console.log(error.message)
+          console.log(error)
          let exception:HttpExecption;
          if(error instanceof HttpExecption){
             exception = error;

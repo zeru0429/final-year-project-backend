@@ -123,32 +123,29 @@ const usersController ={
          message: "Login successfully"
       });
    },
-   me: async (req: Request, res: Response, next: NextFunction) => {
-      console.log("hihi");
-      // console.log(req.user);
-      // console.log(req.user!.id);
-      // const user = await prisma.users.findFirst({ 
-      //    where: 
-      //    { id: +req.user!.id },
-      //    include:{
-      //       _count:true,
-      //       profile: true,
-      //       motherProfile: true,
-      //       proProfile: true, 
-      //       adminOfChats: true,
-      //       appointment:true,
-      //       certifications:true,
-      //       child: true,
-      //       childVaccine: true,
-      //       healthStation: true,
-      //       motherVaccine: true,
-      //       notification: true,
-      //       participantInChats: true,
-      //       sentMessages: true,
-      //       report: true
-      //     }
-      //     });
-      //     res.status(200).json(user);
+   myInfo: async (req: Request, res: Response, next: NextFunction) => {
+      const user = await prisma.users.findFirst({ 
+         where: 
+         { id: +req.user!.id },
+         include:{
+            _count:true,
+            profile: true,
+            motherProfile: true,
+            proProfile: true, 
+            adminOfChats: true,
+            appointment:true,
+            certifications:true,
+            child: true,
+            childVaccine: true,
+            healthStation: true,
+            motherVaccine: true,
+            notification: true,
+            participantInChats: true,
+            sentMessages: true,
+            report: true
+          }
+          });
+          res.status(200).json(user);
    }
 }
 

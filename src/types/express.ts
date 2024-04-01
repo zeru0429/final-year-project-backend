@@ -3,8 +3,8 @@ import {Admins, HealthStationInfos, News, Users, Vaccines} from  '@prisma/client
 
 declare module 'express'{
    export interface Request {
-      admin?: Admins
       user?: Users
+      admin?: Admins
       news?: News
       Vaccine?: Vaccines
       registeredBy: Number

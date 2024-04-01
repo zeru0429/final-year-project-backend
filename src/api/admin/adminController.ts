@@ -73,9 +73,10 @@ const authController = {
          message: "Login successfully"
       });
    },
-   me: async (req: Request, res: Response, next: NextFunction) =>{
+   myInfo: async (req: Request, res: Response, next: NextFunction) =>{
+      console.log(req.admin)
       const admin = await prisma.admins.findFirst({
-         where:{id:req.user!.id},
+         where:{id:req.admin!.id},
          include: {
             _count: true,
             profile:true,

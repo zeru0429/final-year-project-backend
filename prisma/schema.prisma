@@ -194,8 +194,7 @@ model Users {
   adminOfChats Chats[] @relation("AdminOfChats")
   sentMessages Messages[] @relation("SentMessages")
 
-  
- 
+
   // Reference
   healthStation HealthStations? @relation(fields: [healthStationId], references:[id],onDelete: SetNull)
 

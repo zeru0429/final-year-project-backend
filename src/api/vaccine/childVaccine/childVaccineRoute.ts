@@ -9,7 +9,7 @@ childVaccineRouter.post('/',[adminAuth,isAdmin], errorHandler(ChildVaccineContro
 childVaccineRouter.put('/:id',[adminAuth,isAdmin], errorHandler(ChildVaccineController.update));
 childVaccineRouter.delete('/:id',[adminAuth,isAdmin], errorHandler(ChildVaccineController.delete));
 
-childVaccineRouter.get('/',[adminAuth,isAdmin], errorHandler(ChildVaccineController.getAll));
+childVaccineRouter.get('/all', errorHandler(ChildVaccineController.getAll));
 childVaccineRouter.get('/:id',[adminAuth,isAdmin], errorHandler(ChildVaccineController.getAllByChildVaccineId));
 childVaccineRouter.get('/chid/:id',[adminAuth,isAdmin], errorHandler(ChildVaccineController.getAllByChildId));
 

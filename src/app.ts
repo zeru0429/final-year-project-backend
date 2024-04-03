@@ -41,10 +41,85 @@ app.use(
 
 // Routes
 import appRouter from "./routes/index.js";
+import axios from "axios";
 app.use('/api', appRouter);
 //testing route
-app.get('/', (req, res) => {
-   res.send("app working");
+app.get('/', async (req, res) => {
+  // sendSMS('+251904825407','ye yoseph lij endet nesh ' );
+  // sendSMS22('+251904825407','ye yoseph lij mohanud endet nesh ' );
+  // const mess= {
+  //   "secret": UNCG_API,
+  //   "mode": "devices",
+  //   "device": "00000000-0000-0000-d57d-f30cb6a89289",
+  //   "sim": 1,
+  //   "priority": 1,
+  //   "phone": "+251965199682",
+  //   "message": "Hello World!"
+  // }
+  // try {
+  //   const response = await axios.post('https://sms.uncgateway.com/api/send/sms',{params: mess});
+  //   console.log(response.data);
+    
+  // } catch (error: any) {
+  //   console.log(error.message)
+  // }
+
+  //sikar
+  // const bd = {
+  //   "template_id": "EntertemplateID",
+  //   "short_url": "1 (On) or 0 (Off)",
+  //   "recipients": [
+  //     {
+  //       "mobiles": "251904825407",
+  //       "VAR1": "VALUE 1",
+  //       "VAR2": "VALUE 2"
+  //     }
+  //   ]
+  // };
+  
+  // try {
+  //   const response = await axios.post('https://control.msg91.com/api/v5/flow/', bd, {
+  //   headers: {
+  //     "authkey": SIKAR_API,
+  //     "content-type": "application/json" // Changed to lowercase 'json'
+  //   }
+  // });
+  // console.log(response.data);
+    
+  // } catch (error: any) {
+  //   console.log(error.message)
+  // }
+  
+  //my
+  // let username = 'zeru0429';
+  // let password = 'OpenAi@2023';
+  // let postData = JSON.stringify({
+  //   'to' : ['+251904825407', '+251965199682'],
+  //   'body': 'Hello Yosi!'
+  // });
+
+
+  // let auth = Buffer.from(`${username}:${password}`).toString('base64');
+  // let config = {
+  //   method: 'post',
+  //   url: 'https://api.bulksms.com/v1/messages',
+  //   headers: { 
+  //     'Content-Type': 'application/json', 
+  //     'Authorization': `Basic ${auth}`
+  //   },
+  //   data : postData
+  // };
+  // axios(config)
+  // .then((response) => {
+  //   console.log('statusCode:', response.status);
+  //   console.log("Response:", response.data);
+  // })
+  // .catch((error) => {
+  //   console.error(error);
+  // });
+  
+
+  res.send("app working");
 });
 
 const startServer = () => {

@@ -5,9 +5,9 @@ import certificationController from "./certificationController.js";
 
 const certificationRouter:Router = Router();
 
-certificationRouter.post('/',[userAuth], errorHandler(certificationController.generateCertificate));
-certificationRouter.put('/:id',[userAuth], errorHandler(certificationController.updateCertificate));
-certificationRouter.delete('/:id',[userAuth], errorHandler(certificationController.deleteCertificate));
+// certificationRouter.post('/',[userAuth], errorHandler(certificationController.generateCertificate));
+// certificationRouter.put('/:id',[userAuth], errorHandler(certificationController.updateCertificate));
+// certificationRouter.delete('/:id',[userAuth], errorHandler(certificationController.deleteCertificate));
 
 // Get all children of a specific parent or
 certificationRouter.get('/getall',[userAuth], errorHandler(certificationController.getAllCertificate));

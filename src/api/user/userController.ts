@@ -28,7 +28,7 @@ const usersController ={
          ]
       }});
       if(isEmailAndPhoneUsed){
-         return next(new UnprocessableEntity('Email or Phone has been registered before',403,ErrorCode.USER_ALLREDY_EXIST,null));
+         return next(new UnprocessableEntity('Email or Phone has been registered before',403,ErrorCode.USER_ALREADY_EXIST,null));
       }
       //start updateing
       const updatedUser = await prisma.users.update({where: {id: +req.userId},data:{email: req.body.email,phone: req.body.phone}});

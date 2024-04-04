@@ -18,7 +18,7 @@ const vaccineController = {
          }
       }) ;
       if(vaccine){
-         return next(new UnprocessableEntity('the vaccine is already registerd',403,ErrorCode.VACCINE_ALLREDY_EXIST,null));
+         return next(new UnprocessableEntity('the vaccine is already registerd',403,ErrorCode.VACCINE_ALREADY_EXIST,null));
       }
       req.body.registeredBy= req.admin?.id;
       const newVaccine = await prisma.vaccines.create({data: req.body});

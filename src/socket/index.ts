@@ -53,19 +53,13 @@ const initializeSocketIO = (io: Socket) => {
   io.on("connection", async (socket: Socket) => {
     try {
       // Parse cookies from handshake headers
-      const cookies = cookie.parse(socket.handshake.headers?.cookie || "");
-      let token = cookies?.accessToken;
-      
-      // If token not found in cookies, check handshake auth
-      if (!token) {
-        token = socket.handshake.auth?.token;
-      }
-      
+      let token = socket.handshake.headers.authorization;
       // If token still not found, throw error
       if (!token) {
+        console.log("-------------- no token for socket ------------------")
         throw new UnprocessableEntity("Un-authorized handshake. Token is missing", 500, ErrorCode.TOKEN_NOT_FOUND, null);
       }
-      
+      console.log("--++++++++++++++++++++++++------------  token is there  for socket ------++++++++++++------------")
       // Verify and decode the token
       const decodedToken = jwt.verify(token, SECRET!) as any; 
       

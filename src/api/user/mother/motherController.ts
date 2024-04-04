@@ -16,7 +16,7 @@ const motherController ={
          ]
       }});
       if(isMotherExist){
-         return next(new UnprocessableEntity('Email or Phone has been registered before',403,ErrorCode.USER_ALLREDY_EXIST,null));
+         return next(new UnprocessableEntity('Email or Phone has been registered before',403,ErrorCode.USER_ALREADY_EXIST,null));
       }
       req.body.password = bcrypt.hashSync(req.body.password, 10);
       //create the employee

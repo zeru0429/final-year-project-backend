@@ -14,7 +14,7 @@ const hsController = {
          }
       });
       if(hs){
-         return next(new UnprocessableEntity('health station is all redy  registered',403,ErrorCode.USER_ALLREDY_EXIST,null));
+         return next(new UnprocessableEntity('health station is all redy  registered',403,ErrorCode.USER_ALREADY_EXIST,null));
       }
       // create  a new health station
       req.body.registeredBy= req.admin!.id;

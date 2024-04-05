@@ -2,12 +2,13 @@ import { Router } from "express";
 import { userAuth } from "../../middlewares/auth.js";
 import errorHandler from "../../config/errorHandler.js";
 import certificationController from "./certificationController.js";
+import { upload } from "../../config/multer.js";
 
 const certificationRouter:Router = Router();
 
-// certificationRouter.post('/',[userAuth], errorHandler(certificationController.generateCertificate));
-// certificationRouter.put('/:id',[userAuth], errorHandler(certificationController.updateCertificate));
-// certificationRouter.delete('/:id',[userAuth], errorHandler(certificationController.deleteCertificate));
+// certificationRouter.post('/',[userAuth],upload.fields([{ name: "attachment", maxCount: 5 }]), errorHandler(certificationController.generateCertificate));
+certificationRouter.put('/:id',[userAuth], errorHandler(certificationController.updateCertificate));
+certificationRouter.delete('/:id',[userAuth], errorHandler(certificationController.deleteCertificate));
 
 // Get all children of a specific parent or
 certificationRouter.get('/getall',[userAuth], errorHandler(certificationController.getAllCertificate));

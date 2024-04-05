@@ -1,7 +1,7 @@
 import { Request } from "express";
 import jwt from "jsonwebtoken";
 import { Server, Socket } from "socket.io";
-import cookie from "cookie";
+import {io} from '../app.js'
 import { UnprocessableEntity } from "../exceptions/validation.js";
 import { ErrorCode } from "../exceptions/root.js";
 import { DATABASE_URL, SECRET } from "../config/secrets.js";
@@ -49,68 +49,12 @@ const emitSocketEvent = (req:Request, roomId:String, event: ChatEventEnum, paylo
 };
 
 // Function to initialize Socket.IO
-const initializeSocketIO = (io: Socket) => {
-  io.on("connection", async (socket: Socket) => {
-    try {
-      // Parse cookies from handshake headers
-      let token = socket.handshake.headers.authorization;
-      // If token still not found, throw error
-      if (!token) {
-        console.log("-------------- no token for socket ------------------")
-        throw new UnprocessableEntity("Un-authorized handshake. Token is missing", 500, ErrorCode.TOKEN_NOT_FOUND, null);
-      }
-      console.log("--++++++++++++++++++++++++------------  token is there  for socket ------++++++++++++------------")
-      // Verify and decode the token
-      const decodedToken = jwt.verify(token, SECRET!) as any; 
-      
-      // Fetch user details from database using decoded token
-      const user = await prisma.users.findFirst({
-        where: {
-          id: +decodedToken.id,
-        },
-        include:{
-          participantInChats: true,
-          sentMessages: true,
-          profile: true,
-          _count:true
-        }
-      });
-      
-      // If user not found, throw error
-      if (!user) {
-        throw new UnprocessableEntity("Un-authorized handshake.", 500, ErrorCode.TOKEN_NOT_FOUND, null);
-      }
-      
-      // Assign user object to socket
-      socket.user = user;
-      
-      // Join a room with user ID
-      socket.join(user.id.toString());
-      
-      // Emit connected event
-      socket.emit(ChatEventEnum.CONNECTED_EVENT);
-      console.log("User connected 🗼. userId: ", user.id.toString());
-      
-      // Mount common event handlers
-      mountJoinChatEvent(socket);
-      mountParticipantTypingEvent(socket);
-      mountParticipantStoppedTypingEvent(socket);
-      
-      // Handle disconnection event
-      socket.on(ChatEventEnum.DISCONNECT_EVENT, () => {
-        console.log("user has disconnected 🚫. userId: " + socket.user?.id);
-        if (socket.user?.id) {
-          socket.leave(socket.user.id.toString());
-        }
-      });
-    } catch (error: any) {
-      // Emit socket error event if any error occurs during connection
-      socket.emit(ChatEventEnum.SOCKET_ERROR_EVENT, error?.message || "Something went wrong while connecting to the socket.");
-    }
-  });
+const initializeSocketIO = (io: Server) => {
+  
 };
 
 
+
 // Export enum and functions for external use
-export { ChatEventEnum, initializeSocketIO, emitSocketEvent };
+export { ChatEventEnum,initializeSocketIO, emitSocketEvent,mountJoinChatEvent,mountParticipantStoppedTypingEvent,mountParticipantTypingEvent, };
 

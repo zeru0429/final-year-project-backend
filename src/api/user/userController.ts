@@ -140,7 +140,14 @@ const usersController ={
             healthStation: true,
             motherVaccine: true,
             notification: true,
-            participantInChats: true,
+            participantInChats: {
+               include: {
+                  lastMessage: true,
+                  admin: true,
+                  participants: true,
+                  _count: true,
+               }
+            },
             sentMessages: true,
             report: true
           }

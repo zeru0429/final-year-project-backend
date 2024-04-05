@@ -3,6 +3,7 @@ import errorHandler from "../../config/errorHandler.js";
 import chatController from "./chatController.js";
 import messageController from "./messageController.js";
 import { userAuth } from "../../middlewares/auth.js";
+import { upload } from "../../config/multer.js";
 
 
 const chatRouter: Router = Router();
@@ -17,7 +18,7 @@ const chatRouter: Router = Router();
  chatRouter.delete('/delete/:id', [userAuth] ,errorHandler(chatController.deleteChat));
  // messages
  chatRouter.get('/message/:id',[userAuth] , errorHandler(messageController.getMessages));
- chatRouter.post('/message/send/:id', [userAuth],errorHandler(messageController.sendMessage));
+ chatRouter.post('/message/send/:id', [userAuth],upload.fields([{ name: "attachments", maxCount: 5 }]),errorHandler(messageController.sendMessage));
 
 
 export default chatRouter;

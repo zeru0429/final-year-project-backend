@@ -80,6 +80,21 @@ const newsController = {
     return res.status(200).json(news);
 
    },
+   getPublicNewsPagenation:async (req:Request,res:Response,nex:NextFunction)=>{
+    const news = await prisma.news.findMany({
+      orderBy: {
+        id: "desc"
+      },
+      skip: +req.query.skip!,
+      take: +req.query.take!,
+      include:{
+        images: true
+      }
+    });
+    
+    return res.status(200).json(news);
+
+   },
    //get single news  detaile
    getSingleNews: async (req:Request,res:Response,nex:NextFunction)=>{
     req.newsId=+req.params.id;

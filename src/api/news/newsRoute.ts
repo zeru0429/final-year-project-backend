@@ -8,7 +8,7 @@ newsRouter.post('/',[adminAuth,isSuperAdmin],errorHandler(newsController.createN
 newsRouter.put("/:id",[adminAuth,isSuperAdmin],errorHandler(newsController.updateNews));
 newsRouter.delete("/:id",[adminAuth,isSuperAdmin],errorHandler(newsController.deleteNews));
 
-newsRouter.get("/",errorHandler(newsController.getPublicNews));
+newsRouter.get("/",errorHandler(newsController.getPublicNewsPagenation));
 newsRouter.get("/:id",errorHandler(newsController.getSingleNews));
 newsRouter.get("/detail/:id",errorHandler(newsController.getSingleNewsDetail));
 

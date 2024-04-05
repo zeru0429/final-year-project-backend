@@ -92,9 +92,14 @@ const messageController = {
          return next(new UnprocessableEntity('you are not a participant of this chat',404,ErrorCode.CHAT_NOT_FOUND,null));
       }
       const messages = await prisma.messages.findMany({
+        orderBy: {
+            id: "desc"
+          },
          where: {
             chatId: +req.chatId
          },
+         skip: +req.query.skip!,
+         take:  +req.query.take!,
          include:{
             _count:true,
             attachments: true,

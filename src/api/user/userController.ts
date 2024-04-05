@@ -144,7 +144,11 @@ const usersController ={
                include: {
                   lastMessage: true,
                   admin: true,
-                  participants: true,
+                  participants: {
+                     include:{
+                        profile: true,
+                     }
+                  },
                   _count: true,
                }
             },

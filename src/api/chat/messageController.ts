@@ -12,9 +12,10 @@ const messageController = {
       // Check if content or attachments are provided
       if (!content && (!req.files?.attachments || req.files.attachments.length === 0)) {
           return next(new UnprocessableEntity('Content or attachments are required', 422, ErrorCode.CONTENT_AND_ATTACHMENTS_REQUIRED, null));
-      }
+      } 
+  
       // Find the chat
-      const chat = await prisma.chats.findFirstOrThrow({
+      const chat = await prisma.chats.findFirst({
           where: {
               id: +req.chatId
           },
@@ -22,7 +23,6 @@ const messageController = {
               participants: true,
           }
       });
-
       if (!chat) {
           return next(new UnprocessableEntity('No chat found with this id', 404, ErrorCode.CHAT_NOT_FOUND, null));
       }

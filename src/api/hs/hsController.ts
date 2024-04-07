@@ -76,9 +76,7 @@ const hsController = {
                },
 
             },
-            orderBy:{
-               id: "desc"
-            }
+            
             
          }
       );

@@ -93,6 +93,7 @@ model HealthStations {
   kebele String
   houseNumber String
   createdAt DateTime @default(now())
+  imageUrl  String
   // Ref
   info HealthStationInfos[]
   users Users[]

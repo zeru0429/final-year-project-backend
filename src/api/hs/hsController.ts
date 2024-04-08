@@ -87,6 +87,9 @@ const hsController = {
       req.hsId=+req.params.id;
       //get hs
       const hs = await prisma.healthStations.findFirstOrThrow({
+         include:{
+            info: true,
+         },
          where:{
             id: +req.hsId
          }

@@ -24,16 +24,21 @@ const chatController = {
    getAllMyChat: async (req:Request, res:Response, next:NextFunction) => {
       const chat = await prisma.chats.findMany({
          include:{
-            lastMessage:{
-               include:{
-                  sender: true,
-                  attachments: true
-               }
-            },
             participants:{
                include:{
                    profile: true,
                    _count:true
+               }
+            },
+            admin:{
+               include:{
+                  profile:true,
+               }
+            },
+            messages: {
+               include:{
+                  attachments: true,
+                  _count:true,
                }
             }
          },
@@ -65,6 +70,7 @@ const chatController = {
       //  // Create a group chat with provided members
        const newChat = await prisma.chats.create({
          data: {
+            lastMessageI: 1,
             name,
             isGroupChat: true,
             adminId: req.user?.id,
@@ -139,6 +145,7 @@ const chatController = {
       //  //create one to one chat
        const newOneToOneChat = await prisma.chats.create({
          data:{
+            lastMessageI: 1,
             isGroupChat: false,
             participants: {
                connect: [

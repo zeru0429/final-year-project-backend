@@ -1,3 +1,4 @@
+-- Active: 1697504068815@@176.58.119.63@3306@huludeig_sampleInfant
 -- CreateTable
 CREATE TABLE `admins` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -41,6 +42,7 @@ CREATE TABLE `healthStations` (
     `kebele` VARCHAR(191) NOT NULL,
     `houseNumber` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `imageUrl` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `healthStations_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -55,6 +57,15 @@ CREATE TABLE `healthStationInfos` (
     `descriptionAm` VARCHAR(191) NOT NULL,
     `descriptionOr` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `healthstationsImage` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `healthStationInfoId` INTEGER NOT NULL,
+    `imageUrl` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -229,8 +240,21 @@ CREATE TABLE `chats` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `isGroupChat` BOOLEAN NOT NULL,
+    `lastMessageI` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `adminId` INTEGER NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `messages` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `senderId` INTEGER NOT NULL,
+    `content` VARCHAR(191) NOT NULL,
+    `sentTime` DATETIME(3) NOT NULL,
+    `chatId` INTEGER NOT NULL,
+    `seen` BOOLEAN NOT NULL DEFAULT false,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -245,21 +269,12 @@ CREATE TABLE `messageAttachments` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `messages` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `senderId` INTEGER NOT NULL,
-    `content` VARCHAR(191) NOT NULL,
-    `sentTime` DATETIME(3) NOT NULL,
-    `chatId` INTEGER NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `Notification` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
     `message` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `seen` BOOLEAN NOT NULL DEFAULT false,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -269,6 +284,8 @@ CREATE TABLE `Report` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
     `message` VARCHAR(191) NOT NULL,
+    `seen` BOOLEAN NOT NULL DEFAULT false,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -290,6 +307,9 @@ ALTER TABLE `healthStations` ADD CONSTRAINT `healthStations_registeredBy_fkey` F
 
 -- AddForeignKey
 ALTER TABLE `healthStationInfos` ADD CONSTRAINT `healthStationInfos_healthStationId_fkey` FOREIGN KEY (`healthStationId`) REFERENCES `healthStations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `healthstationsImage` ADD CONSTRAINT `healthstationsImage_healthStationInfoId_fkey` FOREIGN KEY (`healthStationInfoId`) REFERENCES `healthStationInfos`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `news` ADD CONSTRAINT `news_writerId_fkey` FOREIGN KEY (`writerId`) REFERENCES `admins`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -370,13 +390,13 @@ ALTER TABLE `appointments` ADD CONSTRAINT `appointments_childId_fkey` FOREIGN KE
 ALTER TABLE `chats` ADD CONSTRAINT `chats_adminId_fkey` FOREIGN KEY (`adminId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `messageAttachments` ADD CONSTRAINT `messageAttachments_messageId_fkey` FOREIGN KEY (`messageId`) REFERENCES `messages`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `messages` ADD CONSTRAINT `messages_senderId_fkey` FOREIGN KEY (`senderId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `messages` ADD CONSTRAINT `messages_chatId_fkey` FOREIGN KEY (`chatId`) REFERENCES `chats`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `messageAttachments` ADD CONSTRAINT `messageAttachments_messageId_fkey` FOREIGN KEY (`messageId`) REFERENCES `messages`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Notification` ADD CONSTRAINT `Notification_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

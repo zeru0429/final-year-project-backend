@@ -93,6 +93,9 @@ const certificationController = {
       req.certificateId = +req.params.id;
       //check certificate exist 
       const certificate = await prisma.certifications.findFirst({
+         include: {
+            child: true,
+         },
          where:{
             id: +req.certificateId
          }
@@ -101,7 +104,13 @@ const certificationController = {
    },
    getAllCertificate: async (req: Request, res: Response,next : NextFunction) => {
       //check certificate exist 
-      const certificate = await prisma.certifications.findMany();
+      const certificate = await prisma.certifications.findMany({
+         skip: +req.query.skip!,
+         take: +req.query.take!,
+         include:{
+            child:true,
+         }
+      });
       return res.status(200).json(certificate);
    },
    getCertificateByHs: async (req: Request, res: Response,next : NextFunction) => {
@@ -117,6 +126,9 @@ const certificationController = {
       }
       // get all certificates in that hs
       const certificates = await prisma.certifications.findMany({
+         include:{
+            child:true,
+         },
          where:{
             healthStationId: +req.hsId
          }
@@ -130,13 +142,17 @@ const certificationController = {
       const child = await prisma.childrens.findFirst({
          where: {
             id: +req.childId
-         }
+         },
       });
       if(!child){
          return next(new UnprocessableEntity('This child not found',404,ErrorCode.CHILD_NOT_FOUND,null));
       }
       // get all certificates in that child
       const certificates = await prisma.certifications.findFirst({
+         include:{
+            child: true,
+
+         },
          where:{
             childId: +req.childId
          }
@@ -156,6 +172,10 @@ const certificationController = {
       }
       // get all certificates in that mother
       const certificates = await prisma.certifications.findMany({
+         include:{
+            child: true,
+
+         },
          where:{
            child:{
             motherId: +req.mId

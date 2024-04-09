@@ -45,7 +45,7 @@ const messageController = {
               id: +req.chatId
           },
           data: {
-              lastMessage: {
+              messages: {
                   connect: {
                       id: newMessage.id
                   }

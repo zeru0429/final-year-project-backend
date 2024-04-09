@@ -23,6 +23,20 @@ const chatController = {
    },
    getAllMyChat: async (req:Request, res:Response, next:NextFunction) => {
       const chat = await prisma.chats.findMany({
+         include:{
+            lastMessage:{
+               include:{
+                  sender: true,
+                  attachments: true
+               }
+            },
+            participants:{
+               include:{
+                   profile: true,
+                   _count:true
+               }
+            }
+         },
          where:{
             participants:{
                some:{

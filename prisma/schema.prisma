@@ -93,6 +93,7 @@ model HealthStations {
   kebele String
   houseNumber String
   createdAt DateTime @default(now())
+  imageUrl  String
   // Ref
   info HealthStationInfos[]
   users Users[]
@@ -346,22 +347,40 @@ model Appointments {
     @@map("appointments")
 }
 
-
 // Define model for chat
 model Chats {
   id Int @id @default(autoincrement())
   name String
   isGroupChat Boolean
-  lastMessage Messages[]
+  lastMessageI Int 
   createdAt DateTime @default(now())
   // Reference to admin
   adminId Int?
   admin Users? @relation("AdminOfChats", fields: [adminId], references: [id], onDelete: Cascade) 
   // Define participants as a many-to-many relation with Users
   participants Users[] @relation("ParticipantInChats")
+  messages Messages[]
   
   @@map("chats")
 }
+
+// Define model for messages
+model Messages {
+  id Int @id @default(autoincrement())
+  senderId Int
+  content String
+  sentTime DateTime
+  chatId Int
+  seen Boolean @default(false)
+  // Reference to sender user
+  sender Users @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  // Reference to chat
+  chat Chats @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  // Define attachments as an array of MessageAttachments
+  attachments MessageAttachment[]
+  @@map("messages")
+}
+
 
 // Define model for message attachments
 model MessageAttachment {
@@ -373,26 +392,14 @@ model MessageAttachment {
   @@map("messageAttachments")
 }
 
-// Define model for messages
-model Messages {
-  id Int @id @default(autoincrement())
-  senderId Int
-  content String
-  sentTime DateTime
-  chatId Int
-  // Reference to sender user
-  sender Users @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  // Reference to chat
-  chat Chats  @relation(fields: [chatId], references: [id], onDelete: Cascade)
-  // Define attachments as an array of MessageAttachments
-  attachments MessageAttachment[]
-  @@map("messages")
-}
+
 
 model Notification {
   id Int @id @default(autoincrement())
   userId Int
   message String
+  createdAt DateTime @default(now())
+  seen Boolean @default(false)
   user Users @relation(fields: [userId],references: [id],onDelete: Cascade)
 }
 
@@ -400,5 +407,7 @@ model Report {
   id Int @id @default(autoincrement())
   userId Int
   message String
+  seen Boolean @default(false)
+  createdAt DateTime @default(now())
   user Users @relation(fields: [userId],references: [id],onDelete: Cascade)
 }

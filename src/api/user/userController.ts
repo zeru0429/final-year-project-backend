@@ -142,7 +142,7 @@ const usersController ={
             notification: true,
             participantInChats: {
                include: {
-                  lastMessage: true,
+                  messages: true,
                   admin: true,
                   participants: {
                      include:{

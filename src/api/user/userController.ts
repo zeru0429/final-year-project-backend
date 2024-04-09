@@ -102,6 +102,7 @@ const usersController ={
    //login user
    loginUser: async (req: Request, res: Response, next: NextFunction) => {
       userSchema.login.parse(req.body);
+      console.log(req.body);
       const user = await prisma.users.findFirst({ where: { email: req.body.email } });
       if (!user) {
          return next(new UnprocessableEntity("No account found with this email", 403, ErrorCode.USER_NOT_FOUND, null));

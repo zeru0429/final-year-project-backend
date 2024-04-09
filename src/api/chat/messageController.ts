@@ -3,6 +3,7 @@ import { ErrorCode } from "../../exceptions/root.js";
 import { UnprocessableEntity } from "../../exceptions/validation.js";
 import { prisma } from "../../config/prisma.js";
 import { ChatEventEnum, emitSocketEvent } from "../../socket/index.js";
+import { BASE_URL } from "../../config/secrets.js";
 
 
 const messageController = {
@@ -26,30 +27,47 @@ const messageController = {
       if (!chat) {
           return next(new UnprocessableEntity('No chat found with this id', 404, ErrorCode.CHAT_NOT_FOUND, null));
       }
+  
       // Prepare attachments
-      const messageFiles = req.files?.attachments?.map((attachment: any) => ({ url: attachment.url }));
-      
+      const messageFiles = req.files?.attachments?.map((attachment: any) => ({ url: attachment.filename }));
+      let newMessage:any ;
+      if(content !==null && content !== undefined){
+       newMessage = await prisma.messages.create({
+            data: {
+                chatId: +req.chatId,
+                senderId: req.user!.id,
+                sentTime: new Date(),
+                content: content
+            }
+        });
+      }
+        else{
+            const url = `${BASE_URL}images/${messageFiles[0].url}`
+            console.log(url);
+            newMessage = await prisma.messages.create({
+                data: {
+                    chatId: +req.chatId,
+                    senderId: req.user!.id,
+                    sentTime: new Date(),
+                    content: 'attachments',
+                    attachments: {
+                        create: {
+                            url: url
+                        }
+                    }
+                }
+            });
+        }
       // Create a new message instance with appropriate metadata
-      const newMessage = await prisma.messages.create({
-          data: {
-              chatId: +req.chatId,
-              senderId: req.user!.id,
-              sentTime: new Date(),
-              content: content
-          }
-      });
-    //   console.log(newMessage);
+     
+      console.log(newMessage);
       // Update the chat's last message
       await prisma.chats.update({
           where: {
               id: +req.chatId
           },
           data: {
-              messages: {
-                  connect: {
-                      id: newMessage.id
-                  }
-              }
+              lastMessageI: newMessage.id              
           }
       });
 

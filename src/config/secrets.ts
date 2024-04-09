@@ -17,3 +17,4 @@ export const VONAGE_API= process.env.VONAGE_API
 export const VONAGE_APISECRAT= process.env.VONAGE_APISECRAT
 export const UNCG_API= process.env.UNCG_API
 export const SIKAR_API = process.env.SIKAR_API
+export const BASE_URL = process.env.BASE_URL

@@ -23,7 +23,7 @@ CREATE TABLE `adminProfiles` (
     `firstName` VARCHAR(191) NOT NULL,
     `middleName` VARCHAR(191) NOT NULL,
     `lastName` VARCHAR(191) NOT NULL,
-    `imageUrl` TEXT NULL,
+    `imageUrl` VARCHAR(191) NULL,
 
     UNIQUE INDEX `adminProfiles_adminId_key`(`adminId`),
     PRIMARY KEY (`id`)
@@ -41,7 +41,7 @@ CREATE TABLE `healthStations` (
     `kebele` VARCHAR(191) NOT NULL,
     `houseNumber` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `imageUrl` TEXT NOT NULL,
+    `imageUrl` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `healthStations_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -51,10 +51,10 @@ CREATE TABLE `healthStations` (
 CREATE TABLE `healthStationInfos` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `healthStationId` INTEGER NOT NULL,
-    `serviceAm` TEXT NOT NULL,
-    `serviceOr` TEXT NOT NULL,
-    `descriptionAm` TEXT NOT NULL,
-    `descriptionOr`TEXT NOT NULL,
+    `serviceAm` VARCHAR(191) NOT NULL,
+    `serviceOr` VARCHAR(191) NOT NULL,
+    `descriptionAm` VARCHAR(191) NOT NULL,
+    `descriptionOr` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
@@ -64,7 +64,7 @@ CREATE TABLE `healthStationInfos` (
 CREATE TABLE `healthstationsImage` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `healthStationInfoId` INTEGER NOT NULL,
-    `imageUrl` TEXT NOT NULL,
+    `imageUrl` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -75,8 +75,8 @@ CREATE TABLE `news` (
     `writerId` INTEGER NULL,
     `titleAm` VARCHAR(191) NOT NULL,
     `titleOr` VARCHAR(191) NOT NULL,
-    `descriptionAm` TEXT NOT NULL,
-    `descriptionOr`TEXT NOT NULL,
+    `descriptionAm` VARCHAR(191) NOT NULL,
+    `descriptionOr` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
@@ -86,7 +86,7 @@ CREATE TABLE `news` (
 CREATE TABLE `NewsImage` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `newsId` INTEGER NOT NULL,
-    `imageUrl` TEXT NOT NULL,
+    `imageUrl` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -99,7 +99,7 @@ CREATE TABLE `vaccines` (
     `category` VARCHAR(191) NOT NULL,
     `dose` INTEGER NOT NULL,
     `duration` INTEGER NOT NULL,
-    `description` TEXT NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
     `ageRange` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -133,7 +133,7 @@ CREATE TABLE `userProfiles` (
     `middleName` VARCHAR(191) NOT NULL,
     `lastName` VARCHAR(191) NOT NULL,
     `sex` ENUM('MALE', 'FEMALE') NOT NULL,
-    `imageUrl` TEXT NULL,
+    `imageUrl` VARCHAR(191) NULL,
 
     UNIQUE INDEX `userProfiles_userId_key`(`userId`),
     PRIMARY KEY (`id`)
@@ -229,7 +229,7 @@ CREATE TABLE `appointments` (
     `vaccineId` INTEGER NULL,
     `createdDateTime` DATETIME(3) NOT NULL,
     `appointmentDate` DATETIME(3) NOT NULL,
-    `description` TEXT NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

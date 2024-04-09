@@ -32,8 +32,18 @@ const chatController = {
             },
             messages:{
                include:{
+                  _count: true,
                   attachments: true,
-                  sender: true,
+                  sender: {
+                     include:{
+                        profile: true,
+                     }
+                  },
+               }
+            },
+            admin:{
+               include:{
+                  profile: true
                }
             }
          },
@@ -45,9 +55,7 @@ const chatController = {
             }
          }
       });
-
       res.status(200).json(chat);
-      
    },
    //group chat
    createAGroupChat: async (req:Request, res:Response, next:NextFunction) => {

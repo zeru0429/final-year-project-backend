@@ -4,6 +4,7 @@ import errorHandler from "../../config/errorHandler.js";
 import { adminAuth, isAdmin, isSuperAdmin, userAuth } from "../../middlewares/auth.js";
 import vaccineController from "./vaccineController.js";
 import childVaccineRouter from "./childVaccine/childVaccineRoute.js";
+import motherVaccineRouter from "./motherVaccine/motherVaccineRoute.js";
 
 const vaccineRouter:Router = Router();
 
@@ -14,6 +15,7 @@ vaccineRouter.get('/',[adminAuth,isAdmin], errorHandler(vaccineController.getAll
 vaccineRouter.get('/:id',[adminAuth,isAdmin], errorHandler(vaccineController.getSingle));
 
 vaccineRouter.use('/child',childVaccineRouter);
+vaccineRouter.use('mother',motherVaccineRouter)
 
 
 

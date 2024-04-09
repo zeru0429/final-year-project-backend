@@ -12,6 +12,6 @@ motherVaccineRouter.delete('/:id',[adminAuth,isAdmin], errorHandler(vaccinateMot
 
 motherVaccineRouter.get('/',[adminAuth,isAdmin], errorHandler(vaccinateMotherController.getAll));
 motherVaccineRouter.get('/:id',[adminAuth,isAdmin], errorHandler(vaccinateMotherController.getAllBymotherVaccineId));
-motherVaccineRouter.get('/chid/:id',[adminAuth,isAdmin], errorHandler(vaccinateMotherController.getAllByMotherId));
+motherVaccineRouter.get('/mother/:id',[adminAuth,isAdmin], errorHandler(vaccinateMotherController.getAllByMotherId));
 
 export default motherVaccineRouter;

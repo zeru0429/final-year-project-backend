@@ -352,7 +352,7 @@ model Chats {
   id Int @id @default(autoincrement())
   name String
   isGroupChat Boolean
-  lastMessageI Int 
+  lastMessageI Int  @default(0)
   createdAt DateTime @default(now())
   // Reference to admin
   adminId Int?

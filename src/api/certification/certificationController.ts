@@ -3,9 +3,12 @@ import certificationSchema from "./certificationSchema.js";
 import { prisma } from "../../config/prisma.js";
 import { ErrorCode } from "../../exceptions/root.js";
 import { UnprocessableEntity } from "../../exceptions/validation.js";
+import { BASE_URL } from "../../config/secrets.js";
 
 const certificationController = {
    generateCertificate: async (req: Request, res: Response,next : NextFunction) => {
+      console.log(req.body);
+      console.log(req.files);
       certificationSchema.register.parse(req.body);
       //check if child exist
       const child = await prisma.childrens.findFirst({
@@ -28,6 +31,14 @@ const certificationController = {
       if(certificate){
          return next(new UnprocessableEntity('This child have certificate befor',404,ErrorCode.CHILD_HAVE_CERTIFICATE_BEFORE,null));
       }
+      // Check if content or attachments are provided
+      if ((!req.files?.attachments || req.files.attachments.length === 0)) {
+         return next(new UnprocessableEntity('Content or attachments are required', 422, ErrorCode.CONTENT_AND_ATTACHMENTS_REQUIRED, null));
+     } 
+      //prepare file 
+      const messageFiles = req.files?.attachments?.map((attachment: any) => ({ url: attachment.filename }));
+      const url = `${BASE_URL}images/${messageFiles[0].url}`
+
       //create a new certificate
       const newCertificate = await prisma.certifications.create({
          data: {
@@ -36,7 +47,7 @@ const certificationController = {
             childId: +req.body.childId,
             healthStationId: +req.body.healthStationId,
             registerdBy: req.user!.id,
-            fileUrl: req.body.fileUrl,
+            fileUrl: url,
          }
       });
       return res.status(200).json(newCertificate);

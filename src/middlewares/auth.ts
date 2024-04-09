@@ -34,6 +34,7 @@ const adminAuth:any = async (req:Request,res:Response,next:NextFunction)=>{
 
 }
 const userAuth: any = async (req: Request, res: Response, next: NextFunction) => {
+   console.log(req.body);
    const token = req.headers.authorization;
    if (!token) {
       return next(new UnprocessableEntity('Token not found', 404, ErrorCode.TOKEN_NOT_FOUND, null));

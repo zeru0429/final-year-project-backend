@@ -6,7 +6,7 @@ import { upload } from "../../config/multer.js";
 
 const certificationRouter:Router = Router();
 
-// certificationRouter.post('/',[userAuth],upload.fields([{ name: "attachment", maxCount: 5 }]), errorHandler(certificationController.generateCertificate));
+certificationRouter.post('/',[userAuth],upload.fields([{ name: "attachment", maxCount: 5 }]), errorHandler(certificationController.generateCertificate));
 certificationRouter.put('/:id',[userAuth], errorHandler(certificationController.updateCertificate));
 certificationRouter.delete('/:id',[userAuth], errorHandler(certificationController.deleteCertificate));
 

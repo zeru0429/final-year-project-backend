@@ -2,6 +2,7 @@ import multer from "multer";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    console.log(file);
     cb(null, "./public/images");
   },
   // Store file in a .png/.jpeg/.jpg format instead of binary

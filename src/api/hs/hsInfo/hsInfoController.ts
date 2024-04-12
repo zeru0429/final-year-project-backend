@@ -53,7 +53,14 @@ const hsInfoController = {
 
    },
    getAll: async (req:Request,res:Response,next:NextFunction)=>{
-   const hsInfo = await prisma.healthStationInfos.findMany();
+      const hsInfo = await prisma.healthStationInfos.findMany({
+         skip: +req.query.skip!,
+         take: +req.query.take!,
+         include:{
+            _count: true,
+            healthStation:true
+         }
+      });
    res.status(200).json(hsInfo);
    },
    getSingle: async (req:Request,res:Response,next:NextFunction)=>{
@@ -77,6 +84,7 @@ const hsInfoController = {
 
    },
    getAllDetaile: async (req:Request,res:Response,next:NextFunction)=>{
+      console.log("kkkkkkkkkkkkk")
       //get hs
       const hs = await prisma.healthStationInfos.findMany({
          include: {

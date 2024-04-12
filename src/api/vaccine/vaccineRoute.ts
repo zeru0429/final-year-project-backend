@@ -11,11 +11,11 @@ const vaccineRouter:Router = Router();
 vaccineRouter.post('/',[adminAuth,isAdmin], errorHandler(vaccineController.register));
 vaccineRouter.put('/:id',[adminAuth,isAdmin], errorHandler(vaccineController.update));
 vaccineRouter.delete('/:id',[adminAuth,isAdmin], errorHandler(vaccineController.delete));
-vaccineRouter.get('/',[adminAuth,isAdmin], errorHandler(vaccineController.getAll));
-vaccineRouter.get('/:id',[adminAuth,isAdmin], errorHandler(vaccineController.getSingle));
+vaccineRouter.get('/', errorHandler(vaccineController.getAll));
+vaccineRouter.get('/:id', errorHandler(vaccineController.getSingle));
 
 vaccineRouter.use('/child',childVaccineRouter);
-vaccineRouter.use('mother',motherVaccineRouter)
+vaccineRouter.use('/mother',motherVaccineRouter)
 
 
 

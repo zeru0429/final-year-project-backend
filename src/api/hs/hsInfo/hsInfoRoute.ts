@@ -10,10 +10,10 @@ healthStationInfoRouter.post('/',[userAuth], errorHandler(hsInfoController.regis
 healthStationInfoRouter.put('/:id',[userAuth], errorHandler(hsInfoController.update));
 healthStationInfoRouter.delete('/:id',[userAuth], errorHandler(hsInfoController.delete));
 
-healthStationInfoRouter.get('/all',[userAuth], errorHandler(hsInfoController.getAll));
+healthStationInfoRouter.get('/all', errorHandler(hsInfoController.getAll));
 healthStationInfoRouter.get('/:id', errorHandler(hsInfoController.getSingle));
 healthStationInfoRouter.get('/hs/:hsId', errorHandler(hsInfoController.getByHs));
-healthStationInfoRouter.get('/detail/', errorHandler(hsInfoController.getAllDetaile));
-healthStationInfoRouter.get('/detail/:hsId', errorHandler(hsInfoController.getSingleDetaile));
+healthStationInfoRouter.get('/detail/info', errorHandler(hsInfoController.getAllDetaile));
+healthStationInfoRouter.get('/detail/info/:hsId', errorHandler(hsInfoController.getSingleDetaile));
 
 export default healthStationInfoRouter;

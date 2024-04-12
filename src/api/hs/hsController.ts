@@ -1,3 +1,4 @@
+
 import { NextFunction, Request, Response } from "express";
 import hsSchema from "./hsSchema.js";
 import { prisma } from "../../config/prisma.js";
@@ -61,27 +62,23 @@ const hsController = {
 
    },
    getAll: async (req:Request,res:Response,next:NextFunction)=>{
+      console.log("kkkkkkkkkkkkkk");
       //get hs
-      const hs = await prisma.healthStations.findMany(
-         {
-            skip: +req.query.skip!,
-            take: +req.query.take!,
-            include:{
-               _count: true,
-               info: {
-                  include:{
-                     iamges: true,
-                     _count:true,
-                  }
-               },
+      const hs = await prisma.healthStations.findMany({
+         skip: +req.query.skip!,
+         take: +req.query.take!,
+         include:{
+            _count: true,
+         
+            childVaccine:{
+               include: {
 
-            },
-            
-            
+               }
+            }  
          }
-      );
-      res.status(200).json(hs);
-      
+      });
+    return  res.status(200).json(hs);
+ 
    },
    getSingle: async (req:Request,res:Response,next:NextFunction)=>{
       req.hsId=+req.params.id;

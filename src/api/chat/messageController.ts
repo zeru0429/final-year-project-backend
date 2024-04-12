@@ -4,10 +4,12 @@ import { UnprocessableEntity } from "../../exceptions/validation.js";
 import { prisma } from "../../config/prisma.js";
 import { ChatEventEnum, emitSocketEvent } from "../../socket/index.js";
 import { BASE_URL } from "../../config/secrets.js";
+import { url } from "inspector";
 
 
 const messageController = {
    sendMessage: async (req: Request, res:Response,next: NextFunction) => {
+    let dataUrl=null;
       req.chatId = +req.params.id;
       const { content } = req.body;
       // Check if content or attachments are provided
@@ -42,8 +44,10 @@ const messageController = {
         });
       }
         else{
+           
             const url = `${BASE_URL}images/${messageFiles[0].url}`
-            console.log(url);
+            dataUrl = url;
+            // console.log(url);
             newMessage = await prisma.messages.create({
                 data: {
                     chatId: +req.chatId,
@@ -60,7 +64,7 @@ const messageController = {
         }
       // Create a new message instance with appropriate metadata
      
-      console.log(newMessage);
+    //   console.log(newMessage);
       // Update the chat's last message
       await prisma.chats.update({
           where: {
@@ -87,7 +91,8 @@ const messageController = {
 
       return res.status(201).json({
           message: "Message saved successfully",
-          success: true
+          success: true,
+          url: dataUrl
       });
    },
 

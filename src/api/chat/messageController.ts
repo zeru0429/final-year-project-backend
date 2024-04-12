@@ -81,7 +81,6 @@ const messageController = {
             else{
                  // Emit the receive message event to the other participants with received message as the payload
                  console.log(
-                    req,
             participantObjectId.toString(),
             ChatEventEnum.MESSAGE_RECEIVED_EVENT,
             newMessage

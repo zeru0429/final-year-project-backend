@@ -44,7 +44,6 @@ const messageController = {
         });
       }
         else{
-           
             const url = `${BASE_URL}images/${messageFiles[0].url}`
             dataUrl = url;
             // console.log(url);
@@ -78,15 +77,23 @@ const messageController = {
       // Emit socket event about the new message created to the other participants
       chat.participants.forEach((participantObjectId: any) => {
           // Avoid emitting event to the user who is sending the message
-          if (participantObjectId.toString() === req.user?.id.toString()) return;
-
-          // Emit the receive message event to the other participants with received message as the payload
+          if (participantObjectId.toString() === req.user?.id.toString()){ return;}
+            else{
+                 // Emit the receive message event to the other participants with received message as the payload
+                 console.log(
+                    req,
+            participantObjectId.toString(),
+            ChatEventEnum.MESSAGE_RECEIVED_EVENT,
+            newMessage
+                 );
           emitSocketEvent(
-              req,
-              participantObjectId.toString(),
-              ChatEventEnum.MESSAGE_RECEIVED_EVENT,
-              newMessage
-          );
+            req,
+            participantObjectId.toString(),
+            ChatEventEnum.MESSAGE_RECEIVED_EVENT,
+            newMessage
+        );
+            }
+         
       });
 
       return res.status(201).json({

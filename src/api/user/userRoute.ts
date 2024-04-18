@@ -20,5 +20,8 @@ usersRouter.get('/me/myInfo',[userAuth], errorHandler(usersController.myInfo));
 usersRouter.use('/employee',employeeRouter)
 usersRouter.use('/mother',motherRouter)
 usersRouter.use('/login',errorHandler(usersController.loginUser))
+usersRouter.use('/forgetpassword',errorHandler(usersController.forgotPassword))
+usersRouter.use('/confirmotp',[userAuth],errorHandler(usersController.confirmOtp))
+usersRouter.use('/newpassword',[userAuth],errorHandler(usersController.newPassword))
 
 export default usersRouter;

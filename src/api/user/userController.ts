@@ -236,6 +236,7 @@ const usersController = {
     res.status(200).json(user);
   },
   forgotPassword: async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
     userSchema.forgetPassowd.parse(req.body);
     const user = await prisma.users.findFirstOrThrow({
       where: {
@@ -264,15 +265,15 @@ const usersController = {
     const token = jwt.sign(payload, SECRET!);
     //generate 6 didgit code
     const otp = generateOTP();
-    //store in to database
+    // // //store in to database
     const otpUser = await prisma.users.update({
       where: {
         id: user.id,
       },
       data: {
         otp: otp,
-        otpCreatedAt: Date.now().toString(),
-        otpExpiry: `${Date.now() + 60 * 60 * 24000}`,
+        // otpCreatedAt: Date.now(),
+        // otpExpiry: new Date(`${Date.now() + 60 * 60 * 24000}`),
       },
     });
     //send email
@@ -322,13 +323,13 @@ const usersController = {
         )
       );
     }
-    const otpExpiry = user.otpExpiry;
-    const expiryDate = new Date(otpExpiry!);
-    if (expiryDate < new Date()) {
-      return next(
-        new UnprocessableEntity("expired otp", 403, ErrorCode.EXPIRED_OTP, null)
-      );
-    }
+    // const otpExpiry = user.otpExpiry;
+    // const expiryDate = new Date(otpExpiry!);
+    // if (expiryDate < new Date()) {
+    //   return next(
+    //     new UnprocessableEntity("expired otp", 403, ErrorCode.EXPIRED_OTP, null)
+    //   );
+    // }
 
     // remove otp and set null
     const udpadteUser = await prisma.users.update({
@@ -366,6 +367,8 @@ const usersController = {
         )
       );
     }
+
+  
      // check if the otp is confirmed
      if( req.user!.otp =='00000' )     {
       new UnprocessableEntity(
@@ -373,19 +376,23 @@ const usersController = {
         403,
         ErrorCode.USER_NOT_FOUND,
         null
+
       );
      }
-     //know chenge password
+     req.body.password = bcrypt.hashSync(req.body.password, 10);
+  
+    //  know chenge password
      const updatedUser = await prisma.users.update({
       where: {
         id: req.user!.id,
       },
       data: {
-        password: bcrypt.hashSync(req.body.passwod,10),
+        password: req.body.passwod,
         otp: null
       }
      });
-     return res.status(200).json(updatedUser);
+ 
+   return res.status(200).json(updatedUser);
   },
 };
 

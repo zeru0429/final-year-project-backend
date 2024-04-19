@@ -2,10 +2,6 @@ node_modules
 # Keep environment variables out of version control
 .env
 dist
-<<<<<<< HEAD
 sample_react
 
-=======
-
-sample_react
->>>>>>> 6d7904ad720990a5cac2f6eb4fcb88b20e872f66
+specs

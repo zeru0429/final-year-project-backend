@@ -64,8 +64,17 @@ const userSchema ={
       email:z.string().email(),
       password:z.string()
       
-   })
+   }),
 
+   //forget password
+   forgetPassowd:  z.object({
+      email:z.string().email(),  
+   }),
+   //
+   newPassword:  z.object({
+      password:z.string().min(6),  
+      cpassword:z.string().min(6),  
+   }),
 }
 
 export default userSchema;

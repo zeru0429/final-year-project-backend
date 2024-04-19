@@ -15,7 +15,7 @@ export const io :Server = new Server(httpServer, {
    pingTimeout: 60000,
    cors:{
       credentials:true,
-      origin: CORS_ORIGIN,
+      origin: true
    }
 });
 app.set("io", io); 

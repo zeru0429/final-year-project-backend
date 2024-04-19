@@ -379,7 +379,7 @@ const usersController = {
 
       );
      }
-     req.body.password = bcrypt.hashSync(req.body.password, 10);
+     req.body.cpassword = bcrypt.hashSync(req.body.cpassword, 10);
   
     //  know chenge password
      const updatedUser = await prisma.users.update({
@@ -387,7 +387,7 @@ const usersController = {
         id: req.user!.id,
       },
       data: {
-        password: req.body.passwod,
+        password: req.body.cpasswod,
         otp: null
       }
      });

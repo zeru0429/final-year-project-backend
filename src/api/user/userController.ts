@@ -367,19 +367,21 @@ const usersController = {
         )
       );
     }
-
-  
+    console.log(req.user!.otp);
      // check if the otp is confirmed
      if( req.user!.otp =='00000' )     {
-      new UnprocessableEntity(
+      return next( new UnprocessableEntity(
         "the otp is not cofirmed yet",
         403,
         ErrorCode.USER_NOT_FOUND,
         null
 
-      );
+      ));
      }
+     // hash the password
+
      req.body.cpassword = bcrypt.hashSync(req.body.cpassword, 10);
+     console.log(req.body.cpasswod);
   
     //  know chenge password
      const updatedUser = await prisma.users.update({

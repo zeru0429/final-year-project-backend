@@ -12,5 +12,6 @@ motherRouter.delete('/:id',[userAuth,isReception], errorHandler(motherController
 motherRouter.get('/',[userAuth,isEmployee], errorHandler(motherController.getAll));
 motherRouter.get('/:id',[userAuth], errorHandler(motherController.getSingle));
 motherRouter.get('/hs/:id',[userAuth,isEmployee], errorHandler(motherController.getByHs));
+motherRouter.get('/hs/my',[userAuth,isEmployee], errorHandler(motherController.getByMyHs));
 
 export default motherRouter;

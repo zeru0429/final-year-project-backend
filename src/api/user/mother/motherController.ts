@@ -141,6 +141,31 @@ const motherController ={
       });
       res.status(200).json(allMothers);
    },
+   getByMyHs: async (req:Request,res:Response,next:NextFunction)=>{
+      req.hsId = +req.user!.healthStationId!;
+      const allMothers = await prisma.users.findMany({
+         orderBy: {
+            id: "desc"
+          },
+          skip: +req.query.skip!,
+          take: +req.query.take!,
+         where: {
+            AND: [{role: "MOTHER"}, {healthStationId: +req.hsId}]
+         },
+         include:{
+            _count: true,
+            profile: true,
+            appointment:true,
+            certifications:true,
+            child:true,
+            motherVaccine:true,
+            childVaccine:true,
+            healthStation:true,
+            
+         }
+      });
+      res.status(200).json(allMothers);
+   },
 }
 
 export default motherController;

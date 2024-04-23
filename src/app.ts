@@ -28,10 +28,7 @@ app.use(errorMiddleware);
 // global middlewares
 app.use(
    cors({
-     origin:
-       process.env.CORS_ORIGIN === "*"
-         ? "*" 
-         : process.env.CORS_ORIGIN?.split(","), 
+     origin:true, 
      credentials: true,
    })
  );

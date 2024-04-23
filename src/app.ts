@@ -110,7 +110,7 @@ io.on("connect", async (socket: Socket) => {
         }
       });
     } catch (error: any) {
-      console.log(error.message())
+      console.log(error.message)
       // Emit socket error event if any error occurs during connection
       socket.emit(ChatEventEnum.SOCKET_ERROR_EVENT, error?.message || "Something went wrong while connecting to the socket.");
     }

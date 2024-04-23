@@ -65,20 +65,23 @@ io.on("connect", async (socket: Socket) => {
    
       // Parse cookies from handshake headers
       let token = socket.handshake.headers.authorization;
-   
+      
       // If token still not found, throw error
       if (!token) {
         throw new UnprocessableEntity("Un-authorized handshake. Token is missing", 500, ErrorCode.TOKEN_NOT_FOUND, null);
       }   
  
       console.log("--++++++++++++++++++++++++------------  token is there  for socket ------++++++++++++------------")
+     console.log(token);
       // Verify and decode the token
       const decodedToken = jwt.verify(token, 'tsehaymemartiwedalech') as any; 
       const user = await prisma.users.findFirst({
         where:{
           id: +decodedToken.id
         }
-      })
+      });
+      console.log(decodedToken);
+
     
       // If user not found, throw error
       if (!user) {
@@ -107,7 +110,7 @@ io.on("connect", async (socket: Socket) => {
         }
       });
     } catch (error: any) {
-      console.log(error)
+      console.log(error.message())
       // Emit socket error event if any error occurs during connection
       socket.emit(ChatEventEnum.SOCKET_ERROR_EVENT, error?.message || "Something went wrong while connecting to the socket.");
     }

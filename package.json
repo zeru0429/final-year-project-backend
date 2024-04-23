@@ -7,8 +7,10 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/app.js",
+    "start2": "nodemon dist/app.js",
     "dev": "tsc -w & nodemon dist/app.js",
-    "test": "npm run build && npm run start"
+    "test": "npm run build && npm run start",
+    "test2": "npm run build && npm run start2"
   },
   "keywords": [],
   "author": "",

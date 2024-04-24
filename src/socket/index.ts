@@ -7,6 +7,15 @@ import { ErrorCode } from "../exceptions/root.js";
 import { DATABASE_URL, SECRET } from "../config/secrets.js";
 import { prisma } from "../config/prisma.js";
 
+export interface OnlineUser {
+  id: string;
+  socket: string;
+  // You can add more properties if needed
+}
+
+// Define a global array to store online users
+let onlineUsers: OnlineUser[] = [];
+
 // Enum for different chat events
 enum ChatEventEnum {
   CONNECTED_EVENT = "connected",
@@ -43,18 +52,24 @@ const mountParticipantStoppedTypingEvent = (socket: Socket) => {
   });
 };
 
-// Function to emit socket event
-const emitSocketEvent = (req:Request, roomId:String, event: ChatEventEnum, payload:any) => {
-  req.app.get("io").in(roomId).emit(event, payload);
+const emitSocketEvent = (req:Request, roomId:any ,event: ChatEventEnum, payload:any) => {
+    let id ='';
+    onlineUsers.map((e)=>{
+      if((e.id==roomId.id) &&  (req.user!.id != roomId.id)){
+      id = e.socket
+      }
+    });
+    // console.log(id);
+    io.to(id).emit(event, payload);
 };
 
 // Function to initialize Socket.IO
-const initializeSocketIO = (io: Server) => {
+const initializeSocketIO = (io: Server) => {  
   
 };
 
 
 
 // Export enum and functions for external use
-export { ChatEventEnum,initializeSocketIO, emitSocketEvent,mountJoinChatEvent,mountParticipantStoppedTypingEvent,mountParticipantTypingEvent, };
+export {onlineUsers, ChatEventEnum,initializeSocketIO, emitSocketEvent,mountJoinChatEvent,mountParticipantStoppedTypingEvent,mountParticipantTypingEvent, };
 

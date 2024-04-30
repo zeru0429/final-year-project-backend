@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
 import requestIp from "request-ip";
-import { CORS_ORIGIN, HOST, PORT, SECRET } from "./config/secrets.js";
+import { CORS_ORIGIN,HOST, PORT, SECRET } from "./config/secrets.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
@@ -93,7 +93,7 @@ io.on("connect", async (socket: Socket) => {
       "--++++++++++++++++++++++++------------  token is there  for socket ------++++++++++++------------"
     );
     // Verify and decode the token
-    const decodedToken = jwt.verify(token.toString(), "tsehaymemartiwedalech") as any;
+    const decodedToken = jwt.verify(token.toString(), SECRET!) as any;
     const user = await prisma.users.findFirst({
       where: {
         id: +decodedToken.id,

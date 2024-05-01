@@ -7,7 +7,6 @@ import { isManager, userAuth } from "../../middlewares/auth.js";
 
 
 const usersRouter:Router = Router();
-
 usersRouter.post('/',[userAuth], errorHandler(usersController.changePassword));
 usersRouter.put('/:id',[userAuth], errorHandler(usersController.updatedEmailAndPhone));
 usersRouter.delete('/:id',[userAuth], errorHandler(usersController.delete));

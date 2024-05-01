@@ -211,7 +211,12 @@ const usersController = {
           include:{
             child: {
               include:{
-                certificate: true,
+                certificate: {
+                  include:{
+                    healthStation:true,
+                    registrar: true,
+                  }
+                },
                 appointment: true,
                 _count:true,
                 

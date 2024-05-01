@@ -59,7 +59,7 @@ const emitSocketEvent = (req:Request, roomId:any ,event: ChatEventEnum, payload:
       id = e.socket
       }
     });
-    // console.log(id);
+    console.log(id);
     io.to(id).emit(event, payload);
 };
 

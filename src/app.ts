@@ -113,7 +113,7 @@ io.on("connect", async (socket: Socket) => {
 
     // Assign user object to socket
     socket.user = user;
-   
+   console.log(onlineUsers);
     // Join a room with user ID
     socket.join(user.id.toString());
     // Add user to the list of online users
@@ -131,6 +131,7 @@ io.on("connect", async (socket: Socket) => {
     // Emit connected event
     socket.emit(ChatEventEnum.CONNECTED_EVENT);
     console.log("User connected 🗼. userId: ", user.id.toString());
+    console.log(onlineUsers);
     // Mount common event handlers
     mountJoinChatEvent(socket);
     mountParticipantTypingEvent(socket);
@@ -139,6 +140,7 @@ io.on("connect", async (socket: Socket) => {
     // Handle disconnection event
     socket.on(ChatEventEnum.DISCONNECT_EVENT, () => {
       console.log("user has disconnected 🚫. userId: " + socket.user?.id);
+      console.log(onlineUsers);
       if (socket.user?.id) {
         socket.leave(socket.user.id.toString());
         // Remove user from the list of online users

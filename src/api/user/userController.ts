@@ -207,12 +207,24 @@ const usersController = {
       include: {
         _count: true,
         profile: true,
-        motherProfile: true,
+        motherProfile: {
+          include:{
+            child: {
+              include:{
+                certificate: true,
+                appointment: true,
+                _count:true,
+                
+              }
+            },
+            appointment: true,
+            
+          }
+        },
         proProfile: true,
         adminOfChats: true,
         appointment: true,
         certifications: true,
-        child: true,
         childVaccine: true,
         healthStation: true,
         motherVaccine: true,

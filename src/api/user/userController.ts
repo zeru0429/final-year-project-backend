@@ -210,9 +210,7 @@ const usersController = {
       
         motherProfile: {
           include:{
-
             vaccine:{
-
               include:{
                  vaccine:true,
                  registrar:{
@@ -221,7 +219,6 @@ const usersController = {
                        proProfile:true,
                     }
                  }
-
               }
            },
             child: {

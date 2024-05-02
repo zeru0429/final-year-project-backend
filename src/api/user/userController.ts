@@ -207,9 +207,12 @@ const usersController = {
       include: {
         _count: true,
         profile: true,
+      
         motherProfile: {
           include:{
+
             vaccine:{
+
               include:{
                  vaccine:true,
                  registrar:{
@@ -263,7 +266,19 @@ const usersController = {
                 
               }
             },
-            appointment: true,
+            appointment: {
+              include:{
+                child: true,
+                mother:true,
+                vaccine: true,
+                registrar:{
+                  include:{
+                    profile:true,
+                    proProfile:true
+                  },
+                }
+              }
+            },
             
           }
         },
@@ -274,7 +289,11 @@ const usersController = {
         childVaccine: true,
         healthStation: true,
         motherVaccine: true,
-        notification: true,
+        notification: {
+          include:{
+            user: true,
+          }
+        },
         participantInChats: {
           include: {
             messages: true,

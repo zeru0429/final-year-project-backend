@@ -106,6 +106,7 @@ const motherController ={
       const isDeleted = await prisma.users.delete({where: {
          id: +req.mId
       }});
+
       res.status(200).json({
          message: "sucessfully deleted",
          sucess: true
@@ -113,8 +114,26 @@ const motherController ={
 
    },
    getAll: async (req:Request,res:Response,next:NextFunction)=>{
+      console.log("alll mothers info")
       const allMothers = await prisma.users.findMany({
-         where: {role: "MOTHER"}
+         where: {role: "MOTHER"},
+         include:{
+            profile: true,
+            motherProfile:{
+               include:{
+                  vaccine:true,
+                  child:{
+                     include:{
+                        appointment:true,
+                        certificate: true,
+                        vaccine: true,
+                        _count:true,
+                     }
+                  }
+               }
+            }
+         }
+
       });
       res.status(200).json(allMothers);
    },

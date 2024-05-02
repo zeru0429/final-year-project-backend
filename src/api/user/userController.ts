@@ -209,15 +209,56 @@ const usersController = {
         profile: true,
         motherProfile: {
           include:{
+            vaccine:{
+              include:{
+                 vaccine:true,
+                 registrar:{
+                    include:{
+                       profile:true,
+                       proProfile:true,
+                    }
+                 }
+
+              }
+           },
             child: {
               include:{
+                vaccine:{
+                  include:{
+                     vaccine:true,
+                     registrar:{
+                        include:{
+                           profile:true,
+                           proProfile:true,
+                        }
+                     }
+
+                  }
+               },
                 certificate: {
                   include:{
                     healthStation:true,
                     registrar: true,
                   }
                 },
-                appointment: true,
+                registrar:{
+                  include:{
+                    profile:true,
+                    proProfile:true
+                  },
+                },
+                appointment: {
+                  include:{
+                    registrar:{
+                      include:{
+                        profile:true,
+                        proProfile:true,
+                        healthStation:true,
+                      
+                      }
+                    }
+                  }
+                },
                 _count:true,
                 
               }

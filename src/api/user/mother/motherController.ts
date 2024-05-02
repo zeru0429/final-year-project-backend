@@ -121,12 +121,34 @@ const motherController ={
             profile: true,
             motherProfile:{
                include:{
-                  vaccine:true,
+                  vaccine:{
+                     include:{
+                        vaccine:true,
+                        registrar:{
+                           include:{
+                              profile:true,
+                              proProfile:true,
+                           }
+                        }
+
+                     }
+                  },
                   child:{
                      include:{
                         appointment:true,
                         certificate: true,
-                        vaccine: true,
+                        vaccine:{
+                           include:{
+                              vaccine:true,
+                              registrar:{
+                                 include:{
+                                    profile:true,
+                                    proProfile:true,
+                                 }
+                              }
+      
+                           }
+                        },
                         _count:true,
                      }
                   }

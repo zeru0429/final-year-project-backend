@@ -180,5 +180,46 @@ const messageController = {
       data: messages,
     });
   },
+  updateMessage: async (req: Request, res: Response, next: NextFunction) =>{
+    const chatId = req.params.id;
+    const reciverId = req.user?.id;
+    console.log("----------------",chatId,reciverId);
+    const chat = await prisma.messages.findFirst({
+      where:{
+        id: +chatId,
+      }
+    });
+    if(!chatId){
+      return next(new UnprocessableEntity('No chat found with this id', 404, ErrorCode.CHAT_NOT_FOUND, null));
+    }
+    const messages = await prisma.messages.findMany({
+      where:{
+        chatId: +chatId,
+        seen: false
+      },
+
+    });
+    if(!messages || messages.length==0){
+      return next(new UnprocessableEntity('No un seen message   found with this id', 404, ErrorCode.MOTHER_NOT_FOUND, null));
+    }
+    // make all messages that are recived by user seen
+    const updatedMessages = await prisma.messages.updateMany({
+      where: {
+        chatId: +chatId,
+        senderId: {
+          not: reciverId,
+        }
+      },
+      data: {
+        seen: true
+      }
+    });
+    console.log(updatedMessages);
+ return res.status(200).json({
+      success: true,
+      message: "all messages are updated",
+      data: updatedMessages
+    });
+  }
 };
 export default messageController;

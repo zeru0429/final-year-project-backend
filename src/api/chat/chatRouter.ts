@@ -19,6 +19,7 @@ const chatRouter: Router = Router();
  // messages
  chatRouter.get('/message/:id',[userAuth] , errorHandler(messageController.getMessages));
  chatRouter.post('/message/send/:id', [userAuth],upload.fields([{ name: "attachments", maxCount: 5 }]),errorHandler(messageController.sendMessage));
+ chatRouter.put('/message/seen/:id', [userAuth],errorHandler(messageController.updateMessage));
 
 
 export default chatRouter;

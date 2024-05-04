@@ -84,9 +84,10 @@ const messageController = {
     }
     // Create a new message instance with appropriate metadata
 
-    //   console.log(newMessage);
+      console.log(newMessage);
     // Update the chat's last message
     await prisma.chats.update({
+      
       where: {
         id: +req.chatId,
       },

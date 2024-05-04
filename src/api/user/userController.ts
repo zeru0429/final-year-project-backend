@@ -280,7 +280,6 @@ const usersController = {
           }
         },
         proProfile: true,
-        adminOfChats: true,
         appointment: true,
         certifications: true,
         childVaccine: true,
@@ -291,21 +290,7 @@ const usersController = {
             user: true,
           }
         },
-        participantInChats: {
-          include: {
-            messages: true,
-            admin: true,
-            participants: {
-              include: {
-                profile: true,
-              },
-            },
-            _count: true,
-          },
         },
-        sentMessages: true,
-        report: true,
-      },
     });
     res.status(200).json(user);
   },

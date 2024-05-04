@@ -51,6 +51,7 @@ import {
 import { prisma } from "./config/prisma.js";
 
 app.use("/api", appRouter);
+
 //testing route
 app.get("/", async (req, res) => {
   res.send("app working");

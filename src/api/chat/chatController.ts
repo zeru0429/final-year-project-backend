@@ -37,6 +37,7 @@ const chatController = {
                   sender: {
                      include:{
                         profile: true,
+                        
                      }
                   },
                }

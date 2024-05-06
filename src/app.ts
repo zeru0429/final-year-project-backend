@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import bodyparser from "body-parser";
 import jwt from "jsonwebtoken";
 import requestIp from "request-ip";
 import { CORS_ORIGIN, HOST, PORT, SECRET } from "./config/secrets.js";
@@ -36,6 +37,7 @@ app.set("io", io);
 
 // Middlewares
 app.use(express.json());
+app.use(bodyparser());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorMiddleware);
 

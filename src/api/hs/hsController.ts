@@ -10,6 +10,7 @@ const hsController = {
     hsSchema.register.parse(req.body);
     const { name, email, type, city, subcity, kebele, houseNumber, imageUrl } =
       req.body;
+    console.log(req.body);
     //check if the hs exist before
     const hs = await prisma.healthStations.findFirst({
       where: {
@@ -52,6 +53,7 @@ const hsController = {
     });
   },
   update: async (req: Request, res: Response, next: NextFunction) => {
+    console.log("update");
     req.hsId = +req.params.id;
     hsSchema.register.parse(req.body);
     //check if the hs exist before
@@ -106,16 +108,16 @@ const hsController = {
   getAll: async (req: Request, res: Response, next: NextFunction) => {
     //get hs
     const hs = await prisma.healthStations.findMany({
-      skip: +req.query.skip!,
-      take: +req.query.take!,
-      include: {
-        _count: true,
-
-        childVaccine: {
-          include: {},
-        },
-      },
+      // skip: +req.query.skip!,
+      // take: +req.query.take!,
+      // include: {
+      //   _count: true,
+      //   childVaccine: {
+      //     include: {},
+      //   },
+      // },
     });
+    console.log(hs);
     return res.status(200).json(hs);
   },
   getSingle: async (req: Request, res: Response, next: NextFunction) => {

@@ -199,6 +199,15 @@ const usersController = {
     return res.status(200).json({
       token,
       message: "Login successfully",
+      data: {
+        firstName: userProfile?.firstName,
+        lastName: userProfile?.lastName,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        imageUrl: userProfile?.imageUrl,
+        healthStationId: user.healthStationId,
+      },
     });
   },
   myInfo: async (req: Request, res: Response, next: NextFunction) => {
@@ -292,7 +301,7 @@ const usersController = {
     res.status(200).json({
       success: true,
       message: emailDelivered.message,
-      token
+      token,
     });
   },
   confirmOtp: async (req: Request, res: Response, next: NextFunction) => {
@@ -368,33 +377,34 @@ const usersController = {
       );
     }
     console.log(req.user!.otp);
-     // check if the otp is confirmed
-     if( req.user!.otp =='00000' )     {
-      return next( new UnprocessableEntity(
-        "the otp is not cofirmed yet",
-        403,
-        ErrorCode.USER_NOT_FOUND,
-        null
+    // check if the otp is confirmed
+    if (req.user!.otp == "00000") {
+      return next(
+        new UnprocessableEntity(
+          "the otp is not cofirmed yet",
+          403,
+          ErrorCode.USER_NOT_FOUND,
+          null
+        )
+      );
+    }
+    // hash the password
 
-      ));
-     }
-     // hash the password
+    req.body.cpassword = bcrypt.hashSync(req.body.cpassword, 10);
+    console.log(req.body.cpasswod);
 
-     req.body.cpassword = bcrypt.hashSync(req.body.cpassword, 10);
-     console.log(req.body.cpasswod);
-  
     //  know chenge password
-     const updatedUser = await prisma.users.update({
+    const updatedUser = await prisma.users.update({
       where: {
         id: req.user!.id,
       },
       data: {
         password: req.body.cpasswod,
-        otp: null
-      }
-     });
- 
-   return res.status(200).json(updatedUser);
+        otp: null,
+      },
+    });
+
+    return res.status(200).json(updatedUser);
   },
 };
 

@@ -108,6 +108,14 @@ const authController = {
       status: "success",
       message: "Login successfully",
       token,
+      data: {
+        firstName: adminProfiles?.firstName,
+        lastName: adminProfiles?.lastName,
+        email: admin.email,
+        phone: admin.phone,
+        role: admin.role,
+        imageUrl: adminProfiles?.imageUrl,
+      },
     });
   },
   myInfo: async (req: Request, res: Response, next: NextFunction) => {

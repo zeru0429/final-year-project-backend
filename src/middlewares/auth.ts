@@ -85,7 +85,7 @@ const userAuth: any = async (
         new NotFound("User not found", 404, ErrorCode.USER_NOT_FOUND, null)
       );
     }
-    req.body.user = user;
+    req.user = user;
     // console.log(req.user);
     next();
   } catch (error) {

@@ -46,6 +46,7 @@ export enum ErrorCode {
   MOTHER_NOT_FOUND = 1018,
   APPOINTMENT_NOT_FOUND = 1019,
   CHILD_NOT_VACCINE_COMPLETED = 1020,
+  NO_FIELDS_CHANGED = 1024,
 
   // Newly added error codes
   RE_MISSED = 1021,

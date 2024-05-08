@@ -75,6 +75,18 @@ const userSchema ={
       password:z.string().min(6),  
       cpassword:z.string().min(6),  
    }),
+   
+   signUpSchema:  z.object({
+      email: z.string().email().min(1).max(255),
+      phone: z.string().min(1).max(20),
+      firstName: z.string().min(1).max(255),
+      middleName: z.string().min(1).max(255),
+      lastName: z.string().min(1).max(255),
+      password: z.string().min(6),
+      cpassword: z.string().min(6),
+      gender: z.string().min(1).max(10),
+   
+    }),
 }
 
 export default userSchema;

@@ -18,6 +18,15 @@ const notificationController ={
       res.status(200).json(updatedNotification);
 
    },
+   seenupdate: async (req:Request,res:Response,next:NextFunction) =>{ 
+      notificationSchema.update.parse(req.body);
+      req.notificationId = +req.params.id;
+      const updatedNotification = await prisma.notification.update({where: {id: +req.notificationId}, data:{
+         seen: true,
+      }});
+      res.status(200).json(updatedNotification);
+
+   },
    getSingle: async (req:Request,res:Response,next:NextFunction) =>{
       req.notificationId = +req.params.id;
       const isNotification = await prisma.notification.findFirst({where: {id: +req.notificationId}});

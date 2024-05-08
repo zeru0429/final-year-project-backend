@@ -5,7 +5,7 @@ import { UnprocessableEntity } from "../../exceptions/validation.js";
 import { ErrorCode } from "../../exceptions/root.js";
 import userSchema from "./userSchema.js";
 import bcrypt from "bcrypt";
-import { SECRET } from "../../config/secrets.js";
+import { BASE_URL, SECRET } from "../../config/secrets.js";
 import { generateOTP } from "../../util/generateor.js";
 import { sendEmail } from "../../util/emailSender.js";
 const usersController = {
@@ -454,6 +454,81 @@ const usersController = {
      });
  
    return res.status(200).json(updatedUser);
+  },
+  signup: async (req: Request, res: Response, next: NextFunction) => {
+    userSchema.signUpSchema.parse(req.body);
+    let dataUrl = null;
+    console.log(req.body);
+    if (req.body.passwod != req.body.cpasswod) {
+      return next(
+        new UnprocessableEntity(
+          "password and confirm password does not mutch ",
+          403,
+          ErrorCode.USER_NOT_FOUND,
+          null
+        )
+      );
+    }
+        // Check if content or attachments are provided
+        if (!req.files?.attachments || req.files.attachments.length === 0)
+        {
+          return next(
+            new UnprocessableEntity(
+              "Content or attachments are required",
+              422,
+              ErrorCode.CONTENT_AND_ATTACHMENTS_REQUIRED,
+              null
+            )
+          );
+        }
+    // Prepare attachments
+     const messageFiles = req.files?.attachments?.map((attachment: any) => ({
+      url: attachment.filename,
+    }));
+    const url = `${BASE_URL}images/${messageFiles[0].url}`;
+    dataUrl = url;
+      //check if the employye exist before
+      const isMotherExist = await prisma.users.findFirst({where:{
+         OR:[
+            {email: req.body.email},
+            {phone: req.body.phone}
+         ]
+      }});
+      console.log(isMotherExist);
+      if(isMotherExist){
+         return next(new UnprocessableEntity('Email or Phone has been registered before',403,ErrorCode.USER_ALREADY_EXIST,null));
+      }
+      req.body.password = bcrypt.hashSync(req.body.password, 10);
+       //generate 6 didgit code
+    const otp = generateOTP();
+      //create the employee
+      const newMother=await prisma.users.create({
+         data:{
+            email: req.body.email,
+            password: req.body.password,
+            phone: req.body.phone,
+            role: "MOTHER",
+            otp: otp,
+            activeStatus: false,
+            healthStationId: 1,
+            
+            profile:{
+               create:{              
+                  firstName: req.body.firstName,
+                  middleName: req.body.middleName,
+                  lastName: req.body.lastName,
+                  imageUrl: url,
+                  sex:req.body.gender,                
+               }
+            },
+            
+      },
+      include:{
+         profile: true,
+      }
+   
+   });
+   res.status(201).json({success: true,message: "signup sucessfully",newMother});
   },
 };
 

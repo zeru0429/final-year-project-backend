@@ -8,6 +8,7 @@ const notificationRouter:Router = Router();
 
 notificationRouter.post('/',[userAuth], errorHandler(notificationController.register));
 notificationRouter.put('/:id',[userAuth], errorHandler(notificationController.update));
+notificationRouter.put('/seen/:id',[userAuth], errorHandler(notificationController.seenupdate));
 notificationRouter.delete('/:id',[userAuth], errorHandler(notificationController.delete));
 
 // Get all children of a specific parent or

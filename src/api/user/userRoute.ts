@@ -4,6 +4,7 @@ import usersController from "./userController.js";
 import employeeRouter from "./employee/employeeRoute.js";
 import motherRouter from "./mother/motherRoute.js";
 import { isManager, userAuth } from "../../middlewares/auth.js";
+import { upload } from "../../config/multer.js";
 
 
 const usersRouter:Router = Router();
@@ -20,6 +21,7 @@ usersRouter.use('/employee',employeeRouter)
 usersRouter.use('/mother',motherRouter)
 usersRouter.use('/login',errorHandler(usersController.loginUser))
 usersRouter.post('/forget/password',errorHandler(usersController.forgotPassword))
+usersRouter.post('/signup/mother',upload.fields([{ name: "attachments", maxCount: 5 }]),errorHandler(usersController.signup))
 usersRouter.post('/confirm/otp',[userAuth],errorHandler(usersController.confirmOtp))
 usersRouter.post('/new/password',[userAuth],errorHandler(usersController.newPassword))
 

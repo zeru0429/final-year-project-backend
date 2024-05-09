@@ -389,6 +389,7 @@ const usersController = {
         otp: "000000",
         otpCreatedAt: null,
         otpExpiry: null,
+        activeStatus: true,
       },
     });
     // Create token

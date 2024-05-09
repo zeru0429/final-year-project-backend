@@ -52,14 +52,15 @@ const mountParticipantStoppedTypingEvent = (socket: Socket) => {
   });
 };
 
-const emitSocketEvent = (req:Request, roomId:any ,event: ChatEventEnum, payload:any) => {
+const emitSocketEvent = (req:Request, participantId:any ,event: ChatEventEnum, payload:any) => {
     let id ='';
     onlineUsers.map((e)=>{
-      if((e.id==roomId.id) &&  (req.user!.id != roomId.id)){
+      if((e.id==participantId) &&  (req.user!.id != participantId)){
       id = e.socket
+      console.log(id);
       }
     });
-    console.log(id);
+    console.log(payload);
     io.to(id).emit(event, payload);
 };
 

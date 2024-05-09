@@ -77,14 +77,14 @@ const userSchema ={
    }),
    
    signUpSchema:  z.object({
-      email: z.string().email().min(1).max(255),
-      phone: z.string().min(1).max(20),
-      firstName: z.string().min(1).max(255),
-      middleName: z.string().min(1).max(255),
-      lastName: z.string().min(1).max(255),
+      email: z.string().email(),
+      phone: z.string().max(15),
+      firstName: z.string(),
+      middleName: z.string(),
+      lastName: z.string(),
       password: z.string().min(6),
-      cpassword: z.string().min(6),
-      gender: z.string().min(1).max(10),
+      // cpassword: z.string().min(6),
+      gender: z.string().max(10),
    
     }),
 }

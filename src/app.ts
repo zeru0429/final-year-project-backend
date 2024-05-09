@@ -64,7 +64,6 @@ const startServer = () => {
 };
 
 startServer();
-
 // --------------------- Socket io --------------------//
 io.on("connect", async (socket: Socket) => {
   try {

@@ -8,6 +8,7 @@ import bcrypt from "bcrypt";
 import { BASE_URL, SECRET } from "../../config/secrets.js";
 import { generateOTP } from "../../util/generateor.js";
 import { sendEmail } from "../../util/emailSender.js";
+import { sendSMS } from "../../util/localSmsGateway.js";
 const usersController = {
   updatedEmailAndPhone: async (
     req: Request,
@@ -207,77 +208,73 @@ const usersController = {
       include: {
         _count: true,
         profile: true,
-      
-        motherProfile: {
-          include:{
-            vaccine:{
-              include:{
-                 vaccine:true,
-                 registrar:{
-                    include:{
-                       profile:true,
-                       proProfile:true,
-                    }
-                 }
-              }
-           },
-            child: {
-              include:{
-                vaccine:{
-                  include:{
-                     vaccine:true,
-                     registrar:{
-                        include:{
-                           profile:true,
-                           proProfile:true,
-                        }
-                     }
 
-                  }
-               },
-                certificate: {
-                  include:{
-                    healthStation:true,
-                    registrar: true,
-                  }
+        motherProfile: {
+          include: {
+            vaccine: {
+              include: {
+                vaccine: true,
+                registrar: {
+                  include: {
+                    profile: true,
+                    proProfile: true,
+                  },
                 },
-                registrar:{
-                  include:{
-                    profile:true,
-                    proProfile:true
+              },
+            },
+            child: {
+              include: {
+                vaccine: {
+                  include: {
+                    vaccine: true,
+                    registrar: {
+                      include: {
+                        profile: true,
+                        proProfile: true,
+                      },
+                    },
+                  },
+                },
+                certificate: {
+                  include: {
+                    healthStation: true,
+                    registrar: true,
+                  },
+                },
+                registrar: {
+                  include: {
+                    profile: true,
+                    proProfile: true,
                   },
                 },
                 appointment: {
-                  include:{
-                    registrar:{
-                      include:{
-                        profile:true,
-                        proProfile:true,
-                        healthStation:true,
-                      
-                      }
-                    }
-                  }
+                  include: {
+                    registrar: {
+                      include: {
+                        profile: true,
+                        proProfile: true,
+                        healthStation: true,
+                      },
+                    },
+                  },
                 },
-                _count:true,
-                
-              }
+                _count: true,
+              },
             },
             appointment: {
-              include:{
+              include: {
                 child: true,
-                mother:true,
+                mother: true,
                 vaccine: true,
-                registrar:{
-                  include:{
-                    profile:true,
-                    proProfile:true
+                registrar: {
+                  include: {
+                    profile: true,
+                    proProfile: true,
                   },
-                }
-              }
+                },
+              },
             },
-            
-          }
+          },
         },
         proProfile: true,
         appointment: true,
@@ -286,11 +283,11 @@ const usersController = {
         healthStation: true,
         motherVaccine: true,
         notification: {
-          include:{
+          include: {
             user: true,
-          }
+          },
         },
-        },
+      },
     });
     res.status(200).json(user);
   },
@@ -347,11 +344,12 @@ const usersController = {
         )
       );
     }
+    sendSMS(user.phone,`your otp is ${otp}`);
     //send response
     res.status(200).json({
       success: true,
       message: emailDelivered.message,
-      token
+      token,
     });
   },
   confirmOtp: async (req: Request, res: Response, next: NextFunction) => {
@@ -382,14 +380,6 @@ const usersController = {
         )
       );
     }
-    // const otpExpiry = user.otpExpiry;
-    // const expiryDate = new Date(otpExpiry!);
-    // if (expiryDate < new Date()) {
-    //   return next(
-    //     new UnprocessableEntity("expired otp", 403, ErrorCode.EXPIRED_OTP, null)
-    //   );
-    // }
-
     // remove otp and set null
     const udpadteUser = await prisma.users.update({
       where: {
@@ -406,6 +396,7 @@ const usersController = {
       id: user.id,
       role: user.role,
       firstName: user.profile?.firstName,
+      isConfirm: true,
     };
     const token = jwt.sign(payload, SECRET!);
     return res.status(200).json({
@@ -416,7 +407,8 @@ const usersController = {
   },
   newPassword: async (req: Request, res: Response, next: NextFunction) => {
     userSchema.newPassword.parse(req.body);
-    if (req.body.passwod != req.body.cpasswod) {
+    let {password,cpassword} = req.body;
+    if (password != cpassword) {
       return next(
         new UnprocessableEntity(
           "password and confirm password does not mutch ",
@@ -426,109 +418,133 @@ const usersController = {
         )
       );
     }
-    console.log(req.user!.otp);
-     // check if the otp is confirmed
-     if( req.user!.otp =='00000' )     {
-      return next( new UnprocessableEntity(
-        "the otp is not cofirmed yet",
-        403,
-        ErrorCode.USER_NOT_FOUND,
-        null
-
-      ));
-     }
-     // hash the password
-
-     req.body.cpassword = bcrypt.hashSync(req.body.cpassword, 10);
-     console.log(req.body.cpasswod);
-  
+   
+    // check if the otp is confirmed
+    if (req.user!.otp == "00000") {
+      return next(
+        new UnprocessableEntity(
+          "the otp is not cofirmed yet",
+          403,
+          ErrorCode.USER_NOT_FOUND,
+          null
+        )
+      );
+    }
+    //check if the user exist
+    const isUser = await prisma.users.findFirst({
+      where: { id: req.user!.id },
+    });
+    if (!isUser) {
+      return next(
+        new UnprocessableEntity(
+          "user not found",
+          404,
+          ErrorCode.USER_NOT_FOUND,
+          null
+        )
+      );
+    }
+    password = bcrypt.hashSync(cpassword,10);
     //  know chenge password
-     const updatedUser = await prisma.users.update({
+    const updatedUser = await prisma.users.update({
       where: {
         id: req.user!.id,
       },
       data: {
-        password: req.body.cpasswod,
-        otp: null
-      }
-     });
- 
-   return res.status(200).json(updatedUser);
+        password: password,
+        otp: null,
+      },
+    });
+    console.log(updatedUser);
+        // console.log(isUser);
+    // console.log(req.user!.otp);
+    // console.log({password,cpassword})
+    return res.status(200).json(updatedUser);
   },
   signup: async (req: Request, res: Response, next: NextFunction) => {
-    userSchema.signUpSchema.parse(req.body);
-    let dataUrl = null;
-    console.log(req.body);
-    if (req.body.passwod != req.body.cpasswod) {
-      return next(
-        new UnprocessableEntity(
-          "password and confirm password does not mutch ",
-          403,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
-    }
-        // Check if content or attachments are provided
-        if (!req.files?.attachments || req.files.attachments.length === 0)
-        {
-          return next(
-            new UnprocessableEntity(
-              "Content or attachments are required",
-              422,
-              ErrorCode.CONTENT_AND_ATTACHMENTS_REQUIRED,
-              null
-            )
-          );
+    // console.log(req.body);
+    let { email, phone, firstName, middleName, lastName, password, cpassword, gender } = JSON.parse(req.body.data);
+    console.log({ email, phone, firstName, middleName, lastName, password, cpassword, gender });
+    if(!email || ! firstName|| !middleName|| !lastName|| !password|| !cpassword ||!gender ){
+      return res.status(403).json({
+        success: false,
+        message: "all fields are required",
+          }); 
         }
+    
+    userSchema.signUpSchema.parse(JSON.parse(req.body.data));
+    let dataUrl = null;
+    // console.log(req.body);
+
+    // Check if content or attachments are provided
+    if (!req.files?.attachments || req.files.attachments.length === 0) {
+      return res.status(403).json({
+        success: false,
+        message: "Content or attachments are required",
+      });
+    }
+    // console.log(req.body);
     // Prepare attachments
-     const messageFiles = req.files?.attachments?.map((attachment: any) => ({
+    const messageFiles = req.files?.attachments?.map((attachment: any) => ({
       url: attachment.filename,
     }));
     const url = `${BASE_URL}images/${messageFiles[0].url}`;
     dataUrl = url;
-      //check if the employye exist before
-      const isMotherExist = await prisma.users.findFirst({where:{
-         OR:[
-            {email: req.body.email},
-            {phone: req.body.phone}
-         ]
-      }});
-      console.log(isMotherExist);
-      if(isMotherExist){
-         return next(new UnprocessableEntity('Email or Phone has been registered before',403,ErrorCode.USER_ALREADY_EXIST,null));
-      }
-      req.body.password = bcrypt.hashSync(req.body.password, 10);
-       //generate 6 didgit code
-    const otp = generateOTP();
-      //create the employee
-      const newMother=await prisma.users.create({
-         data:{
-            email: req.body.email,
-            password: req.body.password,
-            phone: req.body.phone,
-            role: "MOTHER",
-            otp: otp,
-            activeStatus: false,
-            healthStationId: 1,
-            
-            profile:{
-               create:{              
-                  firstName: req.body.firstName,
-                  middleName: req.body.middleName,
-                  lastName: req.body.lastName,
-                  imageUrl: url,
-                  sex:req.body.gender,                
-               }
-            },
-            
+    //check if the employye exist before
+    // console.log(req.body);
+    const isMotherExist = await prisma.users.findFirst({
+      where: {
+        OR: [{ email: email }, { phone: phone }],
       },
-      include:{
-         profile: true,
-      }
-   
-   });
-   res.status(201).json({success: true,message: "signup sucessfully",newMother});
+    });
+
+    if (isMotherExist) {
+      return res.status(403)
+        .json({ success: false, message: "Email or phone already exist" }); 
+    
+    }
+    console.log(isMotherExist);
+    console.log(url);
+
+    password = bcrypt.hashSync(password, 10);
+    //generate 6 didgit code
+    const otp = generateOTP();
+    //create the employee
+    const newMother = await prisma.users.create({
+      data: {
+        email: email,
+        password: password,
+        phone: phone,
+        role: "MOTHER",
+        otp: otp,
+        activeStatus: false,
+        healthStationId: 1,
+
+        profile: {
+          create: {
+            firstName: firstName,
+            middleName: middleName,
+            lastName: lastName,
+            imageUrl: url,
+            sex: gender,
+          },
+        },
+      },
+      include: {
+        profile: true,
+      },
+    });
+     // prepare token
+     const payload = {
+      id: newMother.id,
+      role: newMother.role,
+      firstName: newMother.profile?.firstName,
+    };
+    const token = jwt.sign(payload, SECRET!);
+    sendSMS(phone,`you otp is ${otp}`);
+    return res
+      .status(200)
+      .json({ success: true, message: "signup sucessfully", newMother,token });
   },
 };
 

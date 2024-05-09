@@ -19,5 +19,7 @@ export const UNCG_API= process.env.UNCG_API
 export const SIKAR_API = process.env.SIKAR_API
 export const BASE_URL = process.env.BASE_URL
 
+export const SMS_TOKEN = process.env.SMS_TOKEN
+export const SMS_ENDPOINT = process.env.SMS_ENDPOINT
 export const EMAIL = process.env.EMAIL
 export const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD

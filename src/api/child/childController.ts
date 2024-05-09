@@ -92,8 +92,29 @@ const childController = {
   },
   getAll: async (req: Request, res: Response, next: NextFunction) => {
     const children = await prisma.childrens.findMany({
-      include: {
-        mother: true,
+      select: {
+        id: true,
+        firstName: true,
+        middleName: true,
+        lastName: true,
+
+        isVaccineCompleted: true,
+        mother: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                profile: {
+                  select: {
+                    firstName: true,
+                    middleName: true,
+                    lastName: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
     if (!children)

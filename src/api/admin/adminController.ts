@@ -148,6 +148,40 @@ const authController = {
       admin: admin,
     });
   },
-};
+  getAdmins: async (req: Request, res: Response, next: NextFunction) => {
+    const admins = await prisma.admins.findMany({
+      select: {
+        id: true,
+        email: true,
+        phone: true,
+        role: true,
+        activeStatus: true,
+        profile: {
+          select: {
+            firstName: true,
+            lastName: true,
+            imageUrl: true,
+          },
+        },
+      },
+      where: {
+        role: {
+          not: "SUPER",
+        },
+      },
+    });
+    if (!admins) {
+      return next(
+        new UnprocessableEntity(
+          "No Admins found",
+          404,
+          ErrorCode.ADMIN_NOT_FOUND,
+          null
+        )
+      );
+    }
 
+    return res.status(200).json(admins);
+  },
+};
 export default authController;

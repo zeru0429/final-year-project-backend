@@ -107,6 +107,7 @@ const newsController = {
       take: take ? +req.query.take! : undefined,
       include: {
         images: true,
+        writer: true,
       },
     });
 

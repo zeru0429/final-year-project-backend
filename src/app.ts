@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request } from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
 import requestIp from "request-ip";
@@ -43,18 +43,41 @@ import { ErrorCode } from "./exceptions/root.js";
 import {
   ChatEventEnum,
   OnlineUser,
+  emitSingleSocketEvent,
+  emitSocketEvent,
   mountJoinChatEvent,
   mountParticipantStoppedTypingEvent,
   mountParticipantTypingEvent,
   onlineUsers,
 } from "./socket/index.js";
 import { prisma } from "./config/prisma.js";
+import { userAuth } from "./middlewares/auth.js";
 
 app.use("/api", appRouter);
 
 //testing route
-app.get("/", async (req, res) => {
-  res.send("app working");
+app.get("/", [userAuth],async (req : Request, res: Response,next: NextFunction) => {
+ 
+  const payload = {
+    "id": 1,
+    "userId": 10,
+    "message": "This is a sample message.",
+    "createdAt": "2022-05-10T10:30:00Z",
+    "seen": false
+  }
+
+  // req.user!.id = 10;
+
+  // return  res.send("app working");
+  emitSingleSocketEvent(
+    req,
+    10,
+    ChatEventEnum.NOTIFICATION,
+    payload
+  );
+  return res.send("woring");
+  
+ 
 });
 
 const startServer = () => {

@@ -28,6 +28,7 @@ enum ChatEventEnum {
   SOCKET_ERROR_EVENT = "socketError",
   STOP_TYPING_EVENT = "stopTyping",
   TYPING_EVENT = "typing",
+  NOTIFICATION = "notification",
 }
 
 // Function to handle joining a chat
@@ -63,6 +64,18 @@ const emitSocketEvent = (req:Request, participantId:any ,event: ChatEventEnum, p
     console.log(payload);
     io.to(id).emit(event, payload);
 };
+const emitSingleSocketEvent = (req:Request, reciverIdd:any ,event: ChatEventEnum, payload:any) => {
+  let id ='';
+  onlineUsers.map((e)=>{
+    if((e.id==reciverIdd)){
+    id = e.socket
+    console.log(id);
+    }
+  });
+  // console.log(payload);
+  io.to(id).emit(event, payload);
+};
+
 
 // Function to initialize Socket.IO
 const initializeSocketIO = (io: Server) => {  
@@ -72,5 +85,5 @@ const initializeSocketIO = (io: Server) => {
 
 
 // Export enum and functions for external use
-export {onlineUsers, ChatEventEnum,initializeSocketIO, emitSocketEvent,mountJoinChatEvent,mountParticipantStoppedTypingEvent,mountParticipantTypingEvent, };
+export {onlineUsers, ChatEventEnum,emitSingleSocketEvent,initializeSocketIO, emitSocketEvent,mountJoinChatEvent,mountParticipantStoppedTypingEvent,mountParticipantTypingEvent, };
 

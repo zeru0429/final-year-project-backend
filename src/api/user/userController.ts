@@ -187,6 +187,13 @@ const usersController = {
         )
       );
     }
+    if(!user.activeStatus){
+      return res.status(403).json({
+        success: false,
+        message: "the account is inactive",
+        
+      })
+    }
     const userProfile = await prisma.userProfiles.findFirst({
       where: { userId: user.id },
     });

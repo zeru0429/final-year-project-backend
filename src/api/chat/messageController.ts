@@ -66,7 +66,7 @@ const messageController = {
       });
     } else {
       const url = `${BASE_URL}images/${messageFiles[0].url}`;
-      console.log(url);
+      // console.log(url);
       dataUrl = url;
       // console.log(url);
       newMessage = await prisma.messages.create({

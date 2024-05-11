@@ -57,7 +57,7 @@ app.use("/api", appRouter);
 
 //testing route
 app.get("/", [userAuth],async (req : Request, res: Response,next: NextFunction) => {
- 
+   return res.send("woring");
   const payload = {
     "id": 1,
     "userId": 10,
@@ -75,7 +75,7 @@ app.get("/", [userAuth],async (req : Request, res: Response,next: NextFunction) 
     ChatEventEnum.NOTIFICATION,
     payload
   );
-  return res.send("woring");
+
   
  
 });

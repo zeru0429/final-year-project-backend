@@ -12,14 +12,20 @@ const vaccinateMotherController = {
          id: +req.body!.vaccineId
       }});
       if(!isVaccineExist){
-         return next(new UnprocessableEntity('no vaccine found in this id',404,ErrorCode.VACCINE_NOT_FOUND,null));
-      }
+         return res.status(403).json({
+            success: false,
+            message: "no vaccine found in this id",
+          });
+        }
       //check if child exist 
       const isMotherExist = await prisma.mothersProfile.findFirst({where: {
          id: +req.body!.motherId
       }});
       if(!isMotherExist){
-        return next(new UnprocessableEntity('no mother found in this id',404,ErrorCode.CHILD_NOT_FOUND,null));
+         return res.status(403).json({
+            success: false,
+            message: "no mother found in this id",
+          });
       }
       
      const motherVaccine = await prisma.motherVaccines.create({data:{
@@ -30,7 +36,7 @@ const vaccinateMotherController = {
       healthStationId: +req.body.healthStationId,
      }});
    
-     res.status(200).json(motherVaccine);
+    return res.status(200).json(motherVaccine);
    },
    update: async (req:Request,res:Response,next:NextFunction)=>{
       req.mvId = +req.params.id;
@@ -40,22 +46,31 @@ const vaccinateMotherController = {
          id: +req.mvId
       }});
       if(!isMotherVaccineExist){
-         return next(new UnprocessableEntity('no mother vaccine found in this id',404,ErrorCode.CHILD_VACCINE_NOT_FOUND,null));
-      }
+         return res.status(403).json({
+            success: false,
+            message: 'no mother vaccine found in this id',
+          });
+               }
 
       const isVaccineExist = await prisma.vaccines.findFirst({where: {
          id: +req.body!.vaccineId
       }});
       if(!isVaccineExist){
-         return next(new UnprocessableEntity('no vaccine found in this id',404,ErrorCode.VACCINE_NOT_FOUND,null));
-      }
+         return res.status(403).json({
+            success: false,
+            message: "no vaccine found in this id",
+          });
+             }
       //check if child exist 
       const isMotherExist = await prisma.childrens.findFirst({where: {
          id: +req.body!.childId
       }});
       if(!isMotherExist){
-        return next(new UnprocessableEntity('no mother  found in this id',404,ErrorCode.CHILD_NOT_FOUND,null));
-      }
+         return res.status(403).json({
+            success: false,
+            message: "no mother  found in this id",
+          });
+          }
       
      const motherVaccine = await prisma.motherVaccines.update({data:{
       motherId: +req.body!.motherId,
@@ -68,7 +83,7 @@ const vaccinateMotherController = {
    }
 });
    
-     res.status(200).json(motherVaccine);
+    return res.status(200).json(motherVaccine);
       
    
    },
@@ -79,13 +94,16 @@ const vaccinateMotherController = {
          id: +req.mvId
       }});
       if(!isMotherVaccineExist){
-         return next(new UnprocessableEntity('no child  vaccine found in this id',404,ErrorCode.CHILD_VACCINE_NOT_FOUND,null));
-      }
+         return res.status(403).json({
+            success: false,
+            message: 'no child  vaccine found in this id',
+          });
+            }
 
       const motherVaccine = await prisma.motherVaccines.delete({where:{
          id: +req.mvId
       }});
-      res.status(200).json({
+     return res.status(200).json({
          message: "sucessfully deleted",
          sucess: true
       });
@@ -97,18 +115,18 @@ const vaccinateMotherController = {
       const motherVaccine = await prisma.motherVaccines.findMany({where:{
          motherId: +req.mId
       }});
-      res.status(200).json(motherVaccine);
+     return res.status(200).json(motherVaccine);
    },
    getAll: async (req: Request, res: Response, next: NextFunction) => {
         const motherVaccine = await prisma.motherVaccines.findMany();
-        res.status(200).json(motherVaccine);
+       return res.status(200).json(motherVaccine);
     },
    getAllBymotherVaccineId: async (req:Request,res:Response,next:NextFunction)=>{
       req.cvId = +req.params.id;
       const motherVaccine = await prisma.motherVaccines.findMany({where:{
          id: +req.cvId
       }});
-      res.status(200).json(motherVaccine);
+     return res.status(200).json(motherVaccine);
    },
 
 }

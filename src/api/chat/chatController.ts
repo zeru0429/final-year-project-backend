@@ -63,6 +63,10 @@ const chatController = {
       const { name, participants } = req.body;
       // Check if user is not sending himself as a participant. This will be done manually
       if (participants.includes(req.user?.id.toString())) {
+         return res.status(403).json({
+            success: false,
+            message:  "you can not add yourself to participants",
+          });
          return next(new UnprocessableEntity('you can not add yourself to participants', 404, ErrorCode.USER_NOT_FOUND, null));
       }
       const members = [...new Set([...participants, req.user?.id.toString()])]; // check for duplicates

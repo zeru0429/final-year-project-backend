@@ -19,14 +19,11 @@ const motherController = {
       },
     });
     if (isMotherExist) {
-      return next(
-        new UnprocessableEntity(
-          "Email or Phone has been registered before",
-          403,
-          ErrorCode.USER_ALREADY_EXIST,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "Email or Phone has been registered before",
+      });
+     
     }
     req.body.password = bcrypt.hashSync(req.body.password, 10);
 
@@ -71,14 +68,10 @@ const motherController = {
       },
     });
     if (!isMother) {
-      return next(
-        new UnprocessableEntity(
-          "no mother found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "no mother found in this id",
+      });
     }
     //update the user info
     const updatedMother = await prisma.users.update({
@@ -103,7 +96,7 @@ const motherController = {
         },
       },
     });
-    res.status(200).json(updatedMother);
+   return res.status(200).json(updatedMother);
   },
   delete: async (req: Request, res: Response, next: NextFunction) => {
     req.mId = +req.params.id;
@@ -114,14 +107,10 @@ const motherController = {
       },
     });
     if (!isMother) {
-      return next(
-        new UnprocessableEntity(
-          "no mother found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "no mother found in this id",
+      });
     }
     //start deleting
     const isDeleted = await prisma.users.delete({
@@ -129,7 +118,7 @@ const motherController = {
         id: +req.mId,
       },
     });
-    res.status(200).json({
+   return res.status(200).json({
       message: "sucessfully deleted",
       sucess: true,
     });
@@ -140,14 +129,11 @@ const motherController = {
       where: { role: "MOTHER" },
     });
     if (!mothers) {
-      return next(
-        new UnprocessableEntity(
-          "no mother found",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "no mother found",
+      });
+      
     }
     return res.status(200).json(mothers);
   },
@@ -159,16 +145,13 @@ const motherController = {
       },
     });
     if (!isMother) {
-      return next(
-        new UnprocessableEntity(
-          "no mother found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "no mother found in this id",
+      });
+      
     }
-    res.status(200).json(isMother);
+   return res.status(200).json(isMother);
   },
   getByHs: async (req: Request, res: Response, next: NextFunction) => {
     req.hsId = +req.params.id;
@@ -177,7 +160,7 @@ const motherController = {
         AND: [{ role: "MOTHER" }, { healthStationId: +req.hsId }],
       },
     });
-    res.status(200).json(allMothers);
+   return res.status(200).json(allMothers);
   },
   getByMyHs: async (req: Request, res: Response, next: NextFunction) => {
     console.log("hello");
@@ -205,7 +188,7 @@ const motherController = {
         //   healthStation: true,
       },
     });
-    res.status(200).json(allMothers);
+   return res.status(200).json(allMothers);
   },
 };
 

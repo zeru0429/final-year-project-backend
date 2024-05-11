@@ -22,14 +22,10 @@ const hsInfoController = {
       },
     });
     if (!isHsInfoExist) {
-      return next(
-        new UnprocessableEntity(
-          "This health station information does not exist",
-          403,
-          ErrorCode.VACCINE_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "This health station information does not exist",
+      });
     }
     // update the hsInfo
     const updatedHsInfo = await prisma.healthStationInfos.update({
@@ -49,14 +45,11 @@ const hsInfoController = {
       },
     });
     if (!isHsInfoExist) {
-      return next(
-        new UnprocessableEntity(
-          "This health station information does not exist",
-          403,
-          ErrorCode.VACCINE_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"This health station information does not exist", 
+      });
+    
     }
     //delete the hsInfo
     const deleteHsInfo = await prisma.healthStationInfos.delete({

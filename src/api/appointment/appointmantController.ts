@@ -36,14 +36,10 @@ const appointmantController = {
       },
     });
     if (!appointment) {
-      return next(
-        new UnprocessableEntity(
-          "This appointment not found",
-          404,
-          ErrorCode.APPOINTMENT_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+      success: false,
+      message: "This appointment not found",
+    });
     }
     //start update
     const updateAppointments = await prisma.appointments.update({
@@ -74,14 +70,11 @@ const appointmantController = {
       },
     });
     if (!appointment) {
-      return next(
-        new UnprocessableEntity(
-          "This appointment not found",
-          404,
-          ErrorCode.APPOINTMENT_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "This appointment not found",
+      });
+     
     }
     //start deleting
     const deleteAppointments = await prisma.appointments.delete({
@@ -107,14 +100,11 @@ const appointmantController = {
       },
     });
     if (!appointment) {
-      return next(
-        new UnprocessableEntity(
-          "This appointment not found",
-          404,
-          ErrorCode.APPOINTMENT_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "This appointment not found",
+      });
+     
     }
     return res.status(200).json(appointment);
   },
@@ -126,14 +116,11 @@ const appointmantController = {
     //check if the appointment exist
     const appointment = await prisma.appointments.findMany();
     if (!appointment) {
-      return next(
-        new UnprocessableEntity(
-          "This appointment not found",
-          404,
-          ErrorCode.APPOINTMENT_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "This appointment not found",
+      });
+     
     }
     return res.status(200).json(appointment);
   },
@@ -150,14 +137,11 @@ const appointmantController = {
       },
     });
     if (!hs) {
-      return next(
-        new UnprocessableEntity(
-          "This health station not found",
-          404,
-          ErrorCode.HS_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "This appointment not found",
+      });
+      
     }
     // get all Appointmentss in that hs
     const Appointmentss = await prisma.appointments.findMany({
@@ -180,14 +164,11 @@ const appointmantController = {
       },
     });
     if (!child) {
-      return next(
-        new UnprocessableEntity(
-          "This child not found",
-          404,
-          ErrorCode.CHILD_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "This child not found",
+      });
+     
     }
     // get all Appointmentss in that child
     const Appointmentss = await prisma.appointments.findFirst({
@@ -210,14 +191,11 @@ const appointmantController = {
       },
     });
     if (!mother) {
-      return next(
-        new UnprocessableEntity(
-          "This mother not found",
-          404,
-          ErrorCode.MOTHER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "This mother not found",
+      });
+     
     }
     // get all Appointmentss in that mother
     const Appointmentss = await prisma.appointments.findMany({

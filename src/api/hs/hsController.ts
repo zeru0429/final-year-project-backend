@@ -20,14 +20,11 @@ const hsController = {
     console.log(hs);
 
     if (hs) {
-      return next(
-        new UnprocessableEntity(
-          "health station is already registered",
-          403,
-          ErrorCode.USER_ALREADY_EXIST,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "health station is already registered",
+      });
+      
     }
 
     // create  a new health station
@@ -54,8 +51,8 @@ const hsController = {
   },
   update: async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
-    console.log(id);
-    console.log("update");
+    // console.log(id);
+    // console.log("update");
     // req.hsId = +req.params.id;
     hsSchema.register.parse(req.body);
     //check if the hs exist before
@@ -64,17 +61,12 @@ const hsController = {
         id: Number(id),
       },
     });
-    console.log(hs);
-
+    // console.log(hs);
     if (!hs) {
-      return next(
-        new UnprocessableEntity(
-          "health station is is not found",
-          403,
-          ErrorCode.HS_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"health station is is not found",
+      });
     }
 
     const updatedHs = await prisma.healthStations.update({
@@ -94,14 +86,11 @@ const hsController = {
     });
 
     if (!updatedHs) {
-      return next(
-        new UnprocessableEntity(
-          "No fields were changed",
-          400,
-          ErrorCode.NO_FIELDS_CHANGED,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "No fields were changed",
+      });
+     
     }
 
     return res.status(201).json(updatedHs);
@@ -116,14 +105,11 @@ const hsController = {
       },
     });
     if (!hs) {
-      return next(
-        new UnprocessableEntity(
-          "health station is is not found",
-          403,
-          ErrorCode.HS_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "health station is is not found",
+      });
+
     }
 
     //delete the hsInfo

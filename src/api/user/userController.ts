@@ -28,14 +28,11 @@ const usersController = {
       },
     });
     if (!isUserExist) {
-      return next(
-        new UnprocessableEntity(
-          "no user found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"no user found in this id",
+      });
+  
     }
     //check if the email and phone used befor
     const isEmailAndPhoneUsed = await prisma.users.findFirst({
@@ -44,14 +41,10 @@ const usersController = {
       },
     });
     if (isEmailAndPhoneUsed) {
-      return next(
-        new UnprocessableEntity(
-          "Email or Phone has been registered before",
-          403,
-          ErrorCode.USER_ALREADY_EXIST,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "Email or Phone has been registered before",
+      });
     }
     //start updateing
     const updatedUser = await prisma.users.update({
@@ -66,14 +59,10 @@ const usersController = {
       where: { id: req.user!.id },
     });
     if (!isUser) {
-      return next(
-        new UnprocessableEntity(
-          "user not found",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"no user found in this id",
+      });
     }
     //check if the old passwod is correct
     const isMatch = await bcrypt.compareSync(
@@ -81,14 +70,11 @@ const usersController = {
       isUser!.password
     );
     if (!isMatch) {
-      return next(
-        new UnprocessableEntity(
-          "incorrect old passwod",
-          403,
-          ErrorCode.INCORRECT_OLD_PASSWORD,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "incorrect old passwod",
+      });
+    
     }
     req.body.newPasswod = bcrypt.hashSync(req.body.newPasswod, 10);
     //update password
@@ -108,14 +94,11 @@ const usersController = {
       },
     });
     if (!isUserExist) {
-      return next(
-        new UnprocessableEntity(
-          "no user found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"no user found in this id",
+      });
+     
     }
     //start deleting
     const isUserDeleted = await prisma.users.delete({
@@ -144,14 +127,10 @@ const usersController = {
       where: { id: +req.hsId },
     });
     if (!isHsExist) {
-      return next(
-        new UnprocessableEntity(
-          "no health Station found found in this id",
-          404,
-          ErrorCode.HS_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"no health Station found found in this id",
+      });
     }
     // get all users in that hs
     const allUsersInHs = await prisma.users.findMany({
@@ -167,25 +146,18 @@ const usersController = {
       where: { email: req.body.email },
     });
     if (!user) {
-      return next(
-        new UnprocessableEntity(
-          "No account found with this email",
-          403,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"No account found with this email",
+      });
     }
     const isMatch = bcrypt.compareSync(req.body.password, user.password);
     if (!isMatch) {
-      return next(
-        new UnprocessableEntity(
-          "Incorrect password",
-          403,
-          ErrorCode.INCORRECT_PASSWORD,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "Incorrect password",
+      });
+      
     }
     if(!user.activeStatus){
       return res.status(403).json({
@@ -319,14 +291,11 @@ const usersController = {
       },
     });
     if (!user) {
-      return next(
-        new UnprocessableEntity(
-          "No account found with this email",
-          403,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "No account found with this email",
+      });
+
     }
     // prepare token
     const payload = {
@@ -351,14 +320,10 @@ const usersController = {
     //send email
     const emailDelivered = await sendEmail(otpUser.email, `${otp}`);
     if (emailDelivered.success == false) {
-      return next(
-        new UnprocessableEntity(
-          `unable to send email ${emailDelivered.message}`,
-          403,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: `unable to send email ${emailDelivered.message}`,
+      });
     }
     sendSMS(user.phone,`your otp is ${otp}`);
     //send response
@@ -376,25 +341,19 @@ const usersController = {
       },
     });
     if (!user) {
-      return next(
-        new UnprocessableEntity(
-          "No account found with this email",
-          403,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "No account found with this email",
+      });
+      
     }
     const { otp } = req.body;
     if (otp != user.otp) {
-      return next(
-        new UnprocessableEntity(
-          "Incorrect otp",
-          403,
-          ErrorCode.INCORRECT_OTP,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"Incorrect otp",
+      });
+      
     }
     // remove otp and set null
     const udpadteUser = await prisma.users.update({
@@ -426,40 +385,31 @@ const usersController = {
     userSchema.newPassword.parse(req.body);
     let {password,cpassword} = req.body;
     if (password != cpassword) {
-      return next(
-        new UnprocessableEntity(
-          "password and confirm password does not mutch ",
-          403,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "password and confirm password does not mutch ",
+      });
+     
     }
    
     // check if the otp is confirmed
     if (req.user!.otp == "00000") {
-      return next(
-        new UnprocessableEntity(
-          "the otp is not cofirmed yet",
-          403,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"the otp is not cofirmed yet",
+      });
+      
     }
     //check if the user exist
     const isUser = await prisma.users.findFirst({
       where: { id: req.user!.id },
     });
     if (!isUser) {
-      return next(
-        new UnprocessableEntity(
-          "user not found",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"user not found",
+      });
+     
     }
     password = bcrypt.hashSync(cpassword,10);
     //  know chenge password

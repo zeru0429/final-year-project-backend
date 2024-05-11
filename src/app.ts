@@ -131,6 +131,7 @@ io.on("connect", async (socket: Socket) => {
 
     // If user not found, throw error
     if (!user) {
+      
       return new UnprocessableEntity(
         "Un-authorized handshake.",
         500,

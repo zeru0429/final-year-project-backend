@@ -57,25 +57,26 @@ const hsController = {
     console.log(id);
     console.log("update");
     // req.hsId = +req.params.id;
-    hsSchema.register.parse(req.body);
+    // hsSchema.register.parse(req.body);
     //check if the hs exist before
-    const hs = await prisma.healthStations.findUnique({
-      where: {
-        id: Number(id),
-      },
-    });
-    console.log(hs);
+    // const hs = await prisma.healthStations.findUnique({
+    //   where: {
+    //     id: Number(id),
+    //   },
+    // });
+    // console.log(hs);
 
-    if (!hs) {
-      return next(
-        new UnprocessableEntity(
-          "health station is is not found",
-          403,
-          ErrorCode.HS_NOT_FOUND,
-          null
-        )
-      );
-    }
+    // if (!hs) {
+    //   return next(
+    //     new UnprocessableEntity(
+    //       "health station is is not found",
+    //       403,
+    //       ErrorCode.HS_NOT_FOUND,
+    //       null
+    //     )
+    //   );
+    // }
+    console.log(req.body);
 
     const updatedHs = await prisma.healthStations.update({
       where: {
@@ -83,22 +84,21 @@ const hsController = {
       },
       data: {
         name: req.body.name,
-        email: req.body.email,
         type: req.body.type,
         city: req.body.city,
         subcity: req.body.subcity,
         kebele: req.body.kebele,
         houseNumber: req.body.houseNumber,
-        imageUrl: req.body.imageUrl,
+        // imageUrl: req.body.imageUrl,
       },
     });
 
     if (!updatedHs) {
       return next(
         new UnprocessableEntity(
-          "No fields were changed",
-          400,
-          ErrorCode.NO_FIELDS_CHANGED,
+          "health station is is not found",
+          403,
+          ErrorCode.HS_NOT_FOUND,
           null
         )
       );

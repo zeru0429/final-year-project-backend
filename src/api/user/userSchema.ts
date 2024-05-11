@@ -63,15 +63,27 @@ const userSchema = {
     password: z.string(),
   }),
 
-  //forget password
-  forgetPassowd: z.object({
-    email: z.string().email(),
-  }),
-  //
-  newPassword: z.object({
-    password: z.string().min(6),
-    cpassword: z.string().min(6),
-  }),
-};
+   //forget password
+   forgetPassowd:  z.object({
+      email:z.string().email(),  
+   }),
+   //
+   newPassword:  z.object({
+      password:z.string().min(6),  
+      cpassword:z.string().min(6),  
+   }),
+   
+   signUpSchema:  z.object({
+      email: z.string().email(),
+      phone: z.string().max(15),
+      firstName: z.string(),
+      middleName: z.string(),
+      lastName: z.string(),
+      password: z.string().min(6),
+      // cpassword: z.string().min(6),
+      gender: z.string().max(10),
+   
+    }),
+}
 
 export default userSchema;

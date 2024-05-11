@@ -66,6 +66,7 @@ const messageController = {
       });
     } else {
       const url = `${BASE_URL}images/${messageFiles[0].url}`;
+      // console.log(url);
       dataUrl = url;
       // console.log(url);
       newMessage = await prisma.messages.create({
@@ -80,13 +81,15 @@ const messageController = {
             },
           },
         },
+        include:{
+          attachments: true
+        }
       });
     }
     // Create a new message instance with appropriate metadata
-
-    //   console.log(newMessage);
     // Update the chat's last message
     await prisma.chats.update({
+      
       where: {
         id: +req.chatId,
       },
@@ -95,16 +98,18 @@ const messageController = {
       },
     });
 
+
     // Emit socket event about the new message created to the other participants
     chat.participants.forEach((participantObjectId: any) => {
       // Avoid emitting event to the user who is sending the message
-      if (participantObjectId.toString() === req.user?.id.toString()) {
+      if (participantObjectId.id.toString() === req.user?.id.toString()) {
         return;
       } else {
         if (onlineUsers.some(participant => participant.id === participantObjectId.id.toString())) {
+         
           emitSocketEvent(
             req,
-            participantObjectId,
+            participantObjectId.id,
             ChatEventEnum.MESSAGE_RECEIVED_EVENT,
             newMessage
           );
@@ -112,8 +117,12 @@ const messageController = {
         
       }
     });
-
-    return res.status(201).json({
+    console.log({
+      message: "Message saved successfully",
+      success: true,
+      url: dataUrl,
+    });
+    return res.status(200).json({
       message: "Message saved successfully",
       success: true,
       url: dataUrl,
@@ -179,5 +188,49 @@ const messageController = {
       data: messages,
     });
   },
+  updateMessage: async (req: Request, res: Response, next: NextFunction) =>{
+    const chatId = req.params.id;
+    const reciverId = req.user?.id;
+    console.log("----------------",chatId,reciverId);
+    const chat = await prisma.messages.findFirst({
+      where:{
+        id: +chatId,
+      }
+    });
+    if(!chatId){
+      return next(new UnprocessableEntity('No chat found with this id', 404, ErrorCode.CHAT_NOT_FOUND, null));
+    }
+    const messages = await prisma.messages.findMany({
+      where:{
+        chatId: +chatId,
+        seen: false
+      },
+
+    });
+    if(!messages || messages.length==0){
+      return res.status(200).json({
+        success: true,
+        message: "all messages are updated",
+      });
+    }
+    // make all messages that are recived by user seen
+    const updatedMessages = await prisma.messages.updateMany({
+      where: {
+        chatId: +chatId,
+        senderId: {
+          not: +reciverId!,
+        }
+      },
+      data: {
+        seen: true
+      }
+    });
+    // console.log(updatedMessages);
+      return res.status(200).json({
+      success: true,
+      message: "all messages are updated",
+      data: updatedMessages
+    });
+  }
 };
 export default messageController;

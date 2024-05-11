@@ -18,9 +18,10 @@ const storage = multer.diskStorage({
       .split(" ")
       .join("-")
       ?.split(".")[0];
+    
     cb(
       null,
-      filenameWithoutExtension +
+      filenameWithoutExtension.substring(1) +
         Date.now() +
         Math.ceil(Math.random() * 1e5) + // avoid rare name conflict
         fileExtension

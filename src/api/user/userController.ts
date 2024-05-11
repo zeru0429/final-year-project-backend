@@ -5,9 +5,10 @@ import { UnprocessableEntity } from "../../exceptions/validation.js";
 import { ErrorCode } from "../../exceptions/root.js";
 import userSchema from "./userSchema.js";
 import bcrypt from "bcrypt";
-import { SECRET } from "../../config/secrets.js";
+import { BASE_URL, SECRET } from "../../config/secrets.js";
 import { generateOTP } from "../../util/generateor.js";
 import { sendEmail } from "../../util/emailSender.js";
+import { sendSMS } from "../../util/localSmsGateway.js";
 const usersController = {
   updatedEmailAndPhone: async (
     req: Request,
@@ -186,6 +187,13 @@ const usersController = {
         )
       );
     }
+    if(!user.activeStatus){
+      return res.status(403).json({
+        success: false,
+        message: "the account is inactive",
+        
+      })
+    }
     const userProfile = await prisma.userProfiles.findFirst({
       where: { userId: user.id },
     });
@@ -216,30 +224,85 @@ const usersController = {
       include: {
         _count: true,
         profile: true,
-        motherProfile: true,
+
+        motherProfile: {
+          include: {
+            vaccine: {
+              include: {
+                vaccine: true,
+                registrar: {
+                  include: {
+                    profile: true,
+                    proProfile: true,
+                  },
+                },
+              },
+            },
+            child: {
+              include: {
+                vaccine: {
+                  include: {
+                    vaccine: true,
+                    registrar: {
+                      include: {
+                        profile: true,
+                        proProfile: true,
+                      },
+                    },
+                  },
+                },
+                certificate: {
+                  include: {
+                    healthStation: true,
+                    registrar: true,
+                  },
+                },
+                registrar: {
+                  include: {
+                    profile: true,
+                    proProfile: true,
+                  },
+                },
+                appointment: {
+                  include: {
+                    registrar: {
+                      include: {
+                        profile: true,
+                        proProfile: true,
+                        healthStation: true,
+                      },
+                    },
+                  },
+                },
+                _count: true,
+              },
+            },
+            appointment: {
+              include: {
+                child: true,
+                mother: true,
+                vaccine: true,
+                registrar: {
+                  include: {
+                    profile: true,
+                    proProfile: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         proProfile: true,
-        adminOfChats: true,
         appointment: true,
         certifications: true,
-        child: true,
         childVaccine: true,
         healthStation: true,
         motherVaccine: true,
-        notification: true,
-        participantInChats: {
+        notification: {
           include: {
-            messages: true,
-            admin: true,
-            participants: {
-              include: {
-                profile: true,
-              },
-            },
-            _count: true,
+            user: true,
           },
         },
-        sentMessages: true,
-        report: true,
       },
     });
     res.status(200).json(user);
@@ -297,10 +360,12 @@ const usersController = {
         )
       );
     }
+    sendSMS(user.phone,`your otp is ${otp}`);
     //send response
     res.status(200).json({
       success: true,
       message: emailDelivered.message,
+      token,
       token,
     });
   },
@@ -332,14 +397,6 @@ const usersController = {
         )
       );
     }
-    // const otpExpiry = user.otpExpiry;
-    // const expiryDate = new Date(otpExpiry!);
-    // if (expiryDate < new Date()) {
-    //   return next(
-    //     new UnprocessableEntity("expired otp", 403, ErrorCode.EXPIRED_OTP, null)
-    //   );
-    // }
-
     // remove otp and set null
     const udpadteUser = await prisma.users.update({
       where: {
@@ -349,6 +406,7 @@ const usersController = {
         otp: "000000",
         otpCreatedAt: null,
         otpExpiry: null,
+        activeStatus: true,
       },
     });
     // Create token
@@ -356,6 +414,7 @@ const usersController = {
       id: user.id,
       role: user.role,
       firstName: user.profile?.firstName,
+      isConfirm: true,
     };
     const token = jwt.sign(payload, SECRET!);
     return res.status(200).json({
@@ -366,7 +425,8 @@ const usersController = {
   },
   newPassword: async (req: Request, res: Response, next: NextFunction) => {
     userSchema.newPassword.parse(req.body);
-    if (req.body.passwod != req.body.cpasswod) {
+    let {password,cpassword} = req.body;
+    if (password != cpassword) {
       return next(
         new UnprocessableEntity(
           "password and confirm password does not mutch ",
@@ -376,7 +436,7 @@ const usersController = {
         )
       );
     }
-    console.log(req.user!.otp);
+   
     // check if the otp is confirmed
     if (req.user!.otp == "00000") {
       return next(
@@ -388,23 +448,121 @@ const usersController = {
         )
       );
     }
-    // hash the password
-
-    req.body.cpassword = bcrypt.hashSync(req.body.cpassword, 10);
-    console.log(req.body.cpasswod);
-
+    //check if the user exist
+    const isUser = await prisma.users.findFirst({
+      where: { id: req.user!.id },
+    });
+    if (!isUser) {
+      return next(
+        new UnprocessableEntity(
+          "user not found",
+          404,
+          ErrorCode.USER_NOT_FOUND,
+          null
+        )
+      );
+    }
+    password = bcrypt.hashSync(cpassword,10);
     //  know chenge password
     const updatedUser = await prisma.users.update({
       where: {
         id: req.user!.id,
       },
       data: {
-        password: req.body.cpasswod,
+        password: password,
         otp: null,
       },
     });
-
+    console.log(updatedUser);
+        // console.log(isUser);
+    // console.log(req.user!.otp);
+    // console.log({password,cpassword})
     return res.status(200).json(updatedUser);
+  },
+  signup: async (req: Request, res: Response, next: NextFunction) => {
+    // console.log(req.body);
+    let { email, phone, firstName, middleName, lastName, password, cpassword, gender } = JSON.parse(req.body.data);
+    console.log({ email, phone, firstName, middleName, lastName, password, cpassword, gender });
+    if(!email || ! firstName|| !middleName|| !lastName|| !password|| !cpassword ||!gender ){
+      return res.status(403).json({
+        success: false,
+        message: "all fields are required",
+          }); 
+        }
+    
+    userSchema.signUpSchema.parse(JSON.parse(req.body.data));
+    let dataUrl = null;
+    // console.log(req.body);
+
+    // Check if content or attachments are provided
+    if (!req.files?.attachments || req.files.attachments.length === 0) {
+      return res.status(403).json({
+        success: false,
+        message: "Content or attachments are required",
+      });
+    }
+    // console.log(req.body);
+    // Prepare attachments
+    const messageFiles = req.files?.attachments?.map((attachment: any) => ({
+      url: attachment.filename,
+    }));
+    const url = `${BASE_URL}images/${messageFiles[0].url}`;
+    dataUrl = url;
+    //check if the employye exist before
+    // console.log(req.body);
+    const isMotherExist = await prisma.users.findFirst({
+      where: {
+        OR: [{ email: email }, { phone: phone }],
+      },
+    });
+
+    if (isMotherExist) {
+      return res.status(403)
+        .json({ success: false, message: "Email or phone already exist" }); 
+    
+    }
+    console.log(isMotherExist);
+    console.log(url);
+
+    password = bcrypt.hashSync(password, 10);
+    //generate 6 didgit code
+    const otp = generateOTP();
+    //create the employee
+    const newMother = await prisma.users.create({
+      data: {
+        email: email,
+        password: password,
+        phone: phone,
+        role: "MOTHER",
+        otp: otp,
+        activeStatus: false,
+        healthStationId: 1,
+
+        profile: {
+          create: {
+            firstName: firstName,
+            middleName: middleName,
+            lastName: lastName,
+            imageUrl: url,
+            sex: gender,
+          },
+        },
+      },
+      include: {
+        profile: true,
+      },
+    });
+     // prepare token
+     const payload = {
+      id: newMother.id,
+      role: newMother.role,
+      firstName: newMother.profile?.firstName,
+    };
+    const token = jwt.sign(payload, SECRET!);
+    sendSMS(phone,`you otp is ${otp}`);
+    return res
+      .status(200)
+      .json({ success: true, message: "signup sucessfully", newMother,token });
   },
 };
 

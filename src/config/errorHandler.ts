@@ -7,7 +7,7 @@ const errorHandler:any =(method:Function)=> {
       try {
         await method(req,res,next);
       } catch (error:any) {
-         //   console.log(error.message);
+           console.log(error.message);
          let exception:HttpExecption;
          if(error instanceof HttpExecption){
             exception = error;

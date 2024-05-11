@@ -1,9 +1,9 @@
-import express from "express";
+import express, { NextFunction, Request } from "express";
 import cors from "cors";
 import bodyparser from "body-parser";
 import jwt from "jsonwebtoken";
 import requestIp from "request-ip";
-import { CORS_ORIGIN, HOST, PORT, SECRET } from "./config/secrets.js";
+import { CORS_ORIGIN,HOST, PORT, SECRET } from "./config/secrets.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
@@ -52,10 +52,48 @@ app.use(
 app.use(requestIp.mw());
 app.use(express.static("public"));
 
+// Routes
+import appRouter from "./routes/index.js";
+import { UnprocessableEntity } from "./exceptions/validation.js";
+import { ErrorCode } from "./exceptions/root.js";
+import {
+  ChatEventEnum,
+  OnlineUser,
+  emitSingleSocketEvent,
+  emitSocketEvent,
+  mountJoinChatEvent,
+  mountParticipantStoppedTypingEvent,
+  mountParticipantTypingEvent,
+  onlineUsers,
+} from "./socket/index.js";
+import { prisma } from "./config/prisma.js";
+import { userAuth } from "./middlewares/auth.js";
+
 app.use("/api", appRouter);
+
 //testing route
-app.get("/", async (req, res) => {
-  res.send("app working");
+app.get("/", [userAuth],async (req : Request, res: Response,next: NextFunction) => {
+   return res.send("woring");
+  const payload = {
+    "id": 1,
+    "userId": 10,
+    "message": "This is a sample message.",
+    "createdAt": "2022-05-10T10:30:00Z",
+    "seen": false
+  }
+
+  // req.user!.id = 10;
+
+  // return  res.send("app working");
+  emitSingleSocketEvent(
+    req,
+    10,
+    ChatEventEnum.NOTIFICATION,
+    payload
+  );
+
+  
+ 
 });
 
 const startServer = () => {
@@ -65,7 +103,6 @@ const startServer = () => {
 };
 
 startServer();
-
 // --------------------- Socket io --------------------//
 io.on("connect", async (socket: Socket) => {
   try {
@@ -96,7 +133,7 @@ io.on("connect", async (socket: Socket) => {
     // Verify and decode the token
     const decodedToken = jwt.verify(
       token.toString(),
-      "tsehaymemartiwedalech"
+      SECRET!
     ) as any;
     const user = await prisma.users.findFirst({
       where: {
@@ -140,6 +177,7 @@ io.on("connect", async (socket: Socket) => {
     // Emit connected event
     socket.emit(ChatEventEnum.CONNECTED_EVENT);
     console.log("User connected 🗼. userId: ", user.id.toString());
+    console.log(onlineUsers);
     // Mount common event handlers
     mountJoinChatEvent(socket);
     mountParticipantTypingEvent(socket);
@@ -148,6 +186,7 @@ io.on("connect", async (socket: Socket) => {
     // Handle disconnection event
     socket.on(ChatEventEnum.DISCONNECT_EVENT, () => {
       console.log("user has disconnected 🚫. userId: " + socket.user?.id);
+      console.log(onlineUsers);
       if (socket.user?.id) {
         socket.leave(socket.user.id.toString());
         // Remove user from the list of online users

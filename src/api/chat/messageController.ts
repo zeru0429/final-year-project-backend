@@ -117,8 +117,12 @@ const messageController = {
         
       }
     });
-    console.log(dataUrl);
-    return res.status(201).json({
+    console.log({
+      message: "Message saved successfully",
+      success: true,
+      url: dataUrl,
+    });
+    return res.status(200).json({
       message: "Message saved successfully",
       success: true,
       url: dataUrl,

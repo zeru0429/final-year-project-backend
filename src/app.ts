@@ -52,45 +52,32 @@ app.use(
 app.use(requestIp.mw());
 app.use(express.static("public"));
 
-// Routes
-import appRouter from "./routes/index.js";
-import { UnprocessableEntity } from "./exceptions/validation.js";
-import { ErrorCode } from "./exceptions/root.js";
-import {
-  ChatEventEnum,
-  OnlineUser,
-  emitSingleSocketEvent,
-  emitSocketEvent,
-  mountJoinChatEvent,
-  mountParticipantStoppedTypingEvent,
-  mountParticipantTypingEvent,
-  onlineUsers,
-} from "./socket/index.js";
-import { prisma } from "./config/prisma.js";
-import { userAuth } from "./middlewares/auth.js";
+
+// import { prisma } from "./config/prisma.js";
+// import { userAuth } from "./middlewares/auth.js";
 
 app.use("/api", appRouter);
 
 //testing route
-app.get("/", [userAuth],async (req : Request, res: Response,next: NextFunction) => {
+app.get("/", (req , res,next) => {
    return res.send("woring");
-  const payload = {
-    "id": 1,
-    "userId": 10,
-    "message": "This is a sample message.",
-    "createdAt": "2022-05-10T10:30:00Z",
-    "seen": false
-  }
+  // const payload = {
+  //   "id": 1,
+  //   "userId": 10,
+  //   "message": "This is a sample message.",
+  //   "createdAt": "2022-05-10T10:30:00Z",
+  //   "seen": false
+  // }
 
-  // req.user!.id = 10;
+  // // req.user!.id = 10;
 
-  // return  res.send("app working");
-  emitSingleSocketEvent(
-    req,
-    10,
-    ChatEventEnum.NOTIFICATION,
-    payload
-  );
+  // // return  res.send("app working");
+  // emitSingleSocketEvent(
+  //   req,
+  //   10,
+  //   ChatEventEnum.NOTIFICATION,
+  //   payload
+  // );
 
   
  

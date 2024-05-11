@@ -362,11 +362,10 @@ const usersController = {
     }
     sendSMS(user.phone,`your otp is ${otp}`);
     //send response
-    res.status(200).json({
+   return res.status(200).json({
       success: true,
       message: emailDelivered.message,
-      token,
-      token,
+      token
     });
   },
   confirmOtp: async (req: Request, res: Response, next: NextFunction) => {

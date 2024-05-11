@@ -35,14 +35,11 @@ const newsController = {
       },
     });
     if (!foundNews) {
-      return nex(
-        new UnprocessableEntity(
-          "This News Doesn't Exist",
-          404,
-          ErrorCode.NEWS_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "This News Doesn't Exist",
+      });
+     
     }
     const updatedNews = await prisma.news.update({
       data: {
@@ -66,14 +63,10 @@ const newsController = {
       },
     });
     if (!foundNews) {
-      return nex(
-        new UnprocessableEntity(
-          "This News Doesn't Exist",
-          404,
-          ErrorCode.NEWS_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "This News Doesn't Exist",
+      });
     }
     const deletedNews = await prisma.news.delete({
       where: { id: foundNews.id },
@@ -125,17 +118,14 @@ const newsController = {
       },
     });
     if (!foundNews) {
-      return nex(
-        new UnprocessableEntity(
-          "This News Doesn't Exist",
-          404,
-          ErrorCode.NEWS_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "This News Doesn't Exist",
+      });
+      
     }
 
-    res.status(200).json(foundNews);
+   return res.status(200).json(foundNews);
   },
   getSingleNewsDetail: async (
     req: Request,
@@ -154,17 +144,13 @@ const newsController = {
       },
     });
     if (!foundNews) {
-      return nex(
-        new UnprocessableEntity(
-          "This News Doesn't Exist",
-          404,
-          ErrorCode.NEWS_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "This News Doesn't Exist",
+      });
     }
 
-    res.status(200).json(foundNews);
+    return res.status(200).json(foundNews);
   },
 };
 

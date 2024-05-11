@@ -17,14 +17,11 @@ const vaccineController = {
       });
       console.log(vaccine);
       if (vaccine) {
-        return next(
-          new UnprocessableEntity(
-            "the vaccine is already registerd",
-            403,
-            ErrorCode.VACCINE_ALREADY_EXIST,
-            null
-          )
-        );
+        return res.status(403).json({
+          success: false,
+          message: "the vaccine is already registerd",
+        });
+     
       }
 
       req.body.registeredBy = req.body?.admin?.id;
@@ -54,20 +51,17 @@ const vaccineController = {
       },
     });
     if (!isVaccineExist) {
-      return next(
-        new UnprocessableEntity(
-          "This Vaccine does not exist",
-          403,
-          ErrorCode.VACCINE_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "This Vaccine does not exist",
+      });
+      
     }
     const updatedVaccine = await prisma.vaccines.update({
       where: { id: +req.vaccineId },
       data: req.body,
     });
-    res.status(200).json(updatedVaccine);
+   return res.status(200).json(updatedVaccine);
   },
   delete: async (req: Request, res: Response, next: NextFunction) => {
     req.vaccineId = +req.params.id;
@@ -78,24 +72,21 @@ const vaccineController = {
       },
     });
     if (!isVaccineExist) {
-      return next(
-        new UnprocessableEntity(
-          "This Vaccine does not exist",
-          403,
-          ErrorCode.VACCINE_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "This Vaccine does not exist",
+      });
+      
     }
     //start delating
     const delatedVaccine = await prisma.vaccines.delete({
       where: { id: +req.vaccineId },
     });
-    res.status(200).json({ message: "delated sucessfully", success: true });
+   return res.status(200).json({ message: "delated sucessfully", success: true });
   },
   getAll: async (req: Request, res: Response, next: NextFunction) => {
     const vaccines = await prisma.vaccines.findMany();
-    res.status(200).json(vaccines);
+   return res.status(200).json(vaccines);
   },
   getSingle: async (req: Request, res: Response, next: NextFunction) => {
     req.vaccineId = +req.params.id;
@@ -104,7 +95,7 @@ const vaccineController = {
         id: +req.vaccineId,
       },
     });
-    res.status(200).json(singleVaccine);
+   return res.status(200).json(singleVaccine);
   },
 };
 

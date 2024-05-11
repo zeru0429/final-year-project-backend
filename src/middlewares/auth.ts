@@ -16,14 +16,11 @@ const adminAuth: any = async (
 ) => {
   const token = req.headers.authorization;
   if (!token) {
-    return next(
-      new UnprocessableEntity(
-        "Token not found",
-        404,
-        ErrorCode.TOKEN_NOT_FOUND,
-        null
-      )
-    );
+    return res.status(404).json({
+      success: false,
+      message: "Token not found",
+    });
+    
   }
   try {
     const payload = (await jwt.verify(token, SECRET!)) as any;
@@ -46,14 +43,11 @@ const adminAuth: any = async (
 
     next();
   } catch (error) {
-    return next(
-      new UnprocessableEntity(
-        "invalide token",
-        404,
-        ErrorCode.TOKEN_NOT_FOUND,
-        null
-      )
-    );
+    return res.status(403).json({
+      success: false,
+      message: "invalide token",
+    });
+    
   }
 };
 const userAuth: any = async (
@@ -64,14 +58,11 @@ const userAuth: any = async (
   // console.log(req.body);
   const token = req.headers.authorization;
   if (!token) {
-    return next(
-      new UnprocessableEntity(
-        "Token not found",
-        404,
-        ErrorCode.TOKEN_NOT_FOUND,
-        null
-      )
-    );
+    return res.status(404).json({
+      success: false,
+      message: "Token not found",
+    });
+    
   }
   try {
     const payload = (await jwt.verify(token, SECRET!)) as any;
@@ -89,14 +80,10 @@ const userAuth: any = async (
     // console.log(req.user);
     next();
   } catch (error) {
-    return next(
-      new UnprocessableEntity(
-        "Invalid token",
-        404,
-        ErrorCode.TOKEN_NOT_FOUND,
-        null
-      )
-    );
+    return res.status(403).json({
+      success: false,
+      message: "invalide token",
+    });
   }
 };
 

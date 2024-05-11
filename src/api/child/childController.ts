@@ -12,14 +12,10 @@ const childController = {
       where: { id: req.body.motherId },
     });
     if (!isMotherExist) {
-      return next(
-        new UnprocessableEntity(
-          "no mother found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "no mother found in this id",
+      });
     }
     // start rgistering
     const newchild = await prisma.childrens.create({
@@ -44,14 +40,11 @@ const childController = {
       where: { id: +req.childId },
     });
     if (!isChildExist) {
-      return next(
-        new UnprocessableEntity(
-          "Child not found",
-          404,
-          ErrorCode.CHILD_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "Child not found",
+      });
+     
     }
     const updatedChild = await prisma.childrens.update({
       where: {
@@ -73,19 +66,16 @@ const childController = {
       where: { id: +req.childId },
     });
     if (!isChildExist) {
-      return next(
-        new UnprocessableEntity(
-          "Child not found",
-          404,
-          ErrorCode.CHILD_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "Child not found",
+      });
+      
     }
     const deletedChild = await prisma.childrens.delete({
       where: { id: +req.childId },
     });
-    res.status(200).json({
+   return  res.status(200).json({
       message: "sucessfully deleted",
       sucess: true,
     });
@@ -117,15 +107,13 @@ const childController = {
         },
       },
     });
-    if (!children)
-      return next(
-        new UnprocessableEntity(
-          "no children found",
-          404,
-          ErrorCode.CHILD_NOT_FOUND,
-          null
-        )
-      );
+    if (!children){
+         return res.status(403).json({
+        success: false,
+        message: "no children found",
+      });
+    }
+
     return res.status(200).json(children);
   },
   getAllByMother: async (req: Request, res: Response, next: NextFunction) => {
@@ -137,14 +125,10 @@ const childController = {
       },
     });
     if (!isMotherExist) {
-      return next(
-        new UnprocessableEntity(
-          "no mother found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "no mother found in this id",
+      });
     }
     const isChildExist = await prisma.childrens.findMany({
       where: {
@@ -159,16 +143,12 @@ const childController = {
       where: { id: +req.childId },
     });
     if (!isChildExist) {
-      return next(
-        new UnprocessableEntity(
-          "Child not found",
-          404,
-          ErrorCode.CHILD_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "Child not found",
+      });
     }
-    res.status(200).json(isChildExist);
+    return res.status(200).json(isChildExist);
   },
   getByHs: async (req: Request, res: Response, next: NextFunction) => {
     req.hsId = +req.params.id;
@@ -178,14 +158,10 @@ const childController = {
       },
     });
     if (!isHsExist) {
-      return next(
-        new UnprocessableEntity(
-          "health station is is not found",
-          403,
-          ErrorCode.HS_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:"health station is is not found",
+      });
     }
     const isChildExist = await prisma.childrens.findMany({
       where: {

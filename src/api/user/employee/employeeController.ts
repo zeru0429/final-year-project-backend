@@ -18,14 +18,11 @@ const employeeController = {
     console.log(isEmployeeExist);
 
     if (isEmployeeExist) {
-      return next(
-        new UnprocessableEntity(
-          "Email or Phone has been registered before",
-          403,
-          ErrorCode.USER_ALREADY_EXIST,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "Email or Phone has been registered before",
+      });
+      
     }
 
     req.body.password = bcrypt.hashSync(req.body.password, 10);
@@ -66,14 +63,10 @@ const employeeController = {
     req.userId = +req.params.id;
     const user = await prisma.users.findFirst({ where: { id: +req.userId } });
     if (!user) {
-      return next(
-        new UnprocessableEntity(
-          "no user found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "no user found in this id",
+      });
     }
     const updatedUser = await prisma.users.update({
       where: { id: +req.userId },
@@ -101,14 +94,10 @@ const employeeController = {
     req.userId = +req.params.id;
     const user = await prisma.users.findFirst({ where: { id: +req.userId } });
     if (!user) {
-      return next(
-        new UnprocessableEntity(
-          "no user found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "no user found in this id",
+      });
     }
     const updatedUser = await prisma.users.update({
       where: { id: +req.userId },
@@ -122,14 +111,11 @@ const employeeController = {
     req.userId = +req.params.id;
     const user = await prisma.users.findFirst({ where: { id: +req.userId } });
     if (!user) {
-      return next(
-        new UnprocessableEntity(
-          "no user found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "no user found in this id",
+      });
+      
     }
     const updatedUser = await prisma.users.update({
       where: { id: +req.userId },
@@ -144,14 +130,11 @@ const employeeController = {
     req.userId = +req.params.id;
     const user = await prisma.users.findFirst({ where: { id: +req.userId } });
     if (!user) {
-      return next(
-        new UnprocessableEntity(
-          "no user found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "no user found in this id",
+      });
+     
     }
     const deletedUser = await prisma.users.delete({
       where: { id: +req.userId },
@@ -181,14 +164,10 @@ const employeeController = {
         },
       });
       if (!employee) {
-        return next(
-          new UnprocessableEntity(
-            "no employee found in this id",
-            404,
-            ErrorCode.USER_NOT_FOUND,
-            null
-          )
-        );
+        return res.status(403).json({
+          success: false,
+          message:   "no employee found in this id",
+        });
       }
       return res.status(200).json(employee);
     } else {
@@ -203,14 +182,10 @@ const employeeController = {
         },
       });
       if (!employee) {
-        return next(
-          new UnprocessableEntity(
-            "no employee found in this id",
-            404,
-            ErrorCode.USER_NOT_FOUND,
-            null
-          )
-        );
+        return res.status(403).json({
+          success: false,
+          message:  "no employee found in this id",
+        });
       }
       return res.status(200).json(employee);
     }
@@ -226,14 +201,11 @@ const employeeController = {
       },
     });
     if (!user) {
-      return next(
-        new UnprocessableEntity(
-          "no user found in this id",
-          404,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "no user found in this id",
+      });
+      
     }
     return res.status(200).json(user);
   },

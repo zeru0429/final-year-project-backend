@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, response } from "express";
 import { prisma } from "../../config/prisma.js";
 import { JWT_EXPIRESIN, SECRET } from "../../config/secrets.js";
 import { BadRequest } from "../../exceptions/badRequest.js";
@@ -21,14 +21,11 @@ const authController = {
       },
     });
     if (isAdminExist) {
-      return next(
-        new UnprocessableEntity(
-          "Email or Phone has been registered before",
-          403,
-          ErrorCode.USER_ALREADY_EXIST,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "Email or Phone has been registered before",
+      });
+      
     }
     // create the admin
     const otp = generateOTP();
@@ -70,25 +67,19 @@ const authController = {
 
     console.log(admin);
     if (!admin) {
-      return next(
-        new UnprocessableEntity(
-          "No account found with this email",
-          403,
-          ErrorCode.USER_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "No account found with this email",
+      });
+      
     }
     const isMatch = bcrypt.compareSync(req.body.password, admin.password);
     if (!isMatch) {
-      return next(
-        new UnprocessableEntity(
-          "Incorrect password",
-          403,
-          ErrorCode.INCORRECT_PASSWORD,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "Incorrect password",
+      });
+     
     }
     const adminProfiles = await prisma.adminProfiles.findFirst({
       where: { adminId: admin.id },
@@ -132,14 +123,11 @@ const authController = {
     });
 
     if (!admin) {
-      return next(
-        new UnprocessableEntity(
-          "Admin not found",
-          404,
-          ErrorCode.ADMIN_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message: "Admin not found",
+      });
+     
     }
 
     return res.status(200).json({
@@ -171,14 +159,11 @@ const authController = {
       },
     });
     if (!admins) {
-      return next(
-        new UnprocessableEntity(
-          "No Admins found",
-          404,
-          ErrorCode.ADMIN_NOT_FOUND,
-          null
-        )
-      );
+      return res.status(403).json({
+        success: false,
+        message:  "No Admins found",
+      });
+      
     }
 
     return res.status(200).json(admins);

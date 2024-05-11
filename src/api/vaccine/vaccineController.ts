@@ -6,67 +6,106 @@ import { ErrorCode } from "../../exceptions/root.js";
 import vaccineSchema from "./vaccineSchema.js";
 
 const vaccineController = {
-   register: async (req:Request,res:Response,next:NextFunction)=>{
+  register: async (req: Request, res: Response, next: NextFunction) => {
+    try {
       vaccineSchema.register.parse(req.body);
       //check if the vaccine exist before
       const vaccine = await prisma.vaccines.findFirst({
-         where:{
-            OR:[
-               {name: req.body.name},
-               {category: req.body.name}
-            ]
-         }
-      }) ;
-      if(vaccine){
-         return next(new UnprocessableEntity('the vaccine is already registerd',403,ErrorCode.VACCINE_ALREADY_EXIST,null));
-      }
-      req.body.registeredBy= req.admin?.id;
-      const newVaccine = await prisma.vaccines.create({data: req.body});
-      res.status(200).json(newVaccine);
-
-
-   },
-   update: async (req:Request,res:Response,next:NextFunction)=>{
-      req.vaccineId=+req.params.id;
-      //check if the vaccine exist with this id
-      const  isVaccineExist = await  prisma.vaccines.findFirst({where:{
-         id: +req.vaccineId
-      }});
-      if(!isVaccineExist) {
-         return next(new UnprocessableEntity("This Vaccine does not exist",403,ErrorCode.VACCINE_NOT_FOUND,null));
-      }
-      const updatedVaccine = await prisma.vaccines.update({
-         where:{id:+ req.vaccineId},
-         data:req.body
+        where: {
+          OR: [{ name: req.body.name }, { category: req.body.name }],
+        },
       });
-      res.status(200).json(updatedVaccine);
-   },
-   delete: async (req:Request,res:Response,next:NextFunction)=>{
-      req.vaccineId=+req.params.id;
-      //check if the vaccine exist with this id
-      const  isVaccineExist = await  prisma.vaccines.findFirst({where:{
-         id: +req.vaccineId
-      }});
-      if(!isVaccineExist) {
-         return next(new UnprocessableEntity("This Vaccine does not exist",403,ErrorCode.VACCINE_NOT_FOUND,null));
+      console.log(vaccine);
+      if (vaccine) {
+        return next(
+          new UnprocessableEntity(
+            "the vaccine is already registerd",
+            403,
+            ErrorCode.VACCINE_ALREADY_EXIST,
+            null
+          )
+        );
       }
-      //start delating
-      const delatedVaccine = await prisma.vaccines.delete({where:{id : +req.vaccineId}});
-      res.status(200).json({ message:  "delated sucessfully",success: true});
-   },
-   getAll: async (req:Request,res:Response,next:NextFunction)=>{
-      const  vaccines =await prisma.vaccines.findMany();
-      res.status(200).json(vaccines);
-   },
-   getSingle: async (req:Request,res:Response,next:NextFunction)=>{
-      req.vaccineId=+req.params.id;
-      const singleVaccine =await prisma.vaccines.findFirstOrThrow({
-         where:{
-            id: +req.vaccineId
-         }
+
+      req.body.registeredBy = req.body?.admin?.id;
+      console.log(req.body.registeredBy);
+      const newVaccine = await prisma.vaccines.create({
+        data: {
+          name: req.body.name,
+          category: req.body.category,
+          dose: req.body.dose,
+          duration: req.body.duration,
+          description: req.body.description,
+          ageRange: req.body.ageRange,
+          registeredBy: req.body.registeredBy,
+        },
       });
-      res.status(200).json(singleVaccine);
-   },
-}
+      return res.status(200).json(newVaccine);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  update: async (req: Request, res: Response, next: NextFunction) => {
+    req.vaccineId = +req.params.id;
+    //check if the vaccine exist with this id
+    const isVaccineExist = await prisma.vaccines.findFirst({
+      where: {
+        id: +req.vaccineId,
+      },
+    });
+    if (!isVaccineExist) {
+      return next(
+        new UnprocessableEntity(
+          "This Vaccine does not exist",
+          403,
+          ErrorCode.VACCINE_NOT_FOUND,
+          null
+        )
+      );
+    }
+    const updatedVaccine = await prisma.vaccines.update({
+      where: { id: +req.vaccineId },
+      data: req.body,
+    });
+    res.status(200).json(updatedVaccine);
+  },
+  delete: async (req: Request, res: Response, next: NextFunction) => {
+    req.vaccineId = +req.params.id;
+    //check if the vaccine exist with this id
+    const isVaccineExist = await prisma.vaccines.findFirst({
+      where: {
+        id: +req.vaccineId,
+      },
+    });
+    if (!isVaccineExist) {
+      return next(
+        new UnprocessableEntity(
+          "This Vaccine does not exist",
+          403,
+          ErrorCode.VACCINE_NOT_FOUND,
+          null
+        )
+      );
+    }
+    //start delating
+    const delatedVaccine = await prisma.vaccines.delete({
+      where: { id: +req.vaccineId },
+    });
+    res.status(200).json({ message: "delated sucessfully", success: true });
+  },
+  getAll: async (req: Request, res: Response, next: NextFunction) => {
+    const vaccines = await prisma.vaccines.findMany();
+    res.status(200).json(vaccines);
+  },
+  getSingle: async (req: Request, res: Response, next: NextFunction) => {
+    req.vaccineId = +req.params.id;
+    const singleVaccine = await prisma.vaccines.findFirstOrThrow({
+      where: {
+        id: +req.vaccineId,
+      },
+    });
+    res.status(200).json(singleVaccine);
+  },
+};
 
 export default vaccineController;

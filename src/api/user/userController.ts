@@ -207,6 +207,15 @@ const usersController = {
     return res.status(200).json({
       token,
       message: "Login successfully",
+      data: {
+        firstName: userProfile?.firstName,
+        lastName: userProfile?.lastName,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        imageUrl: userProfile?.imageUrl,
+        healthStationId: user.healthStationId,
+      },
     });
   },
   myInfo: async (req: Request, res: Response, next: NextFunction) => {
@@ -356,6 +365,7 @@ const usersController = {
     res.status(200).json({
       success: true,
       message: emailDelivered.message,
+      token,
       token,
     });
   },

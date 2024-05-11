@@ -1,11 +1,26 @@
 import express, { NextFunction, Request } from "express";
 import cors from "cors";
+import bodyparser from "body-parser";
 import jwt from "jsonwebtoken";
 import requestIp from "request-ip";
 import { CORS_ORIGIN,HOST, PORT, SECRET } from "./config/secrets.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
+
+// Routes
+import appRouter from "./routes/index.js";
+import { UnprocessableEntity } from "./exceptions/validation.js";
+import { ErrorCode } from "./exceptions/root.js";
+import {
+  ChatEventEnum,
+  OnlineUser,
+  mountJoinChatEvent,
+  mountParticipantStoppedTypingEvent,
+  mountParticipantTypingEvent,
+  onlineUsers,
+} from "./socket/index.js";
+import { prisma } from "./config/prisma.js";
 
 const app = express() as express.Application;
 const httpServer = createServer(app);
@@ -22,6 +37,7 @@ app.set("io", io);
 
 // Middlewares
 app.use(express.json());
+app.use(bodyparser());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorMiddleware);
 
@@ -82,7 +98,7 @@ app.get("/", [userAuth],async (req : Request, res: Response,next: NextFunction) 
 
 const startServer = () => {
   httpServer.listen(PORT || 8080, () => {
-    console.log(`⚙️ Server is running http://${HOST}:${PORT}`);
+    console.log(`⚙️ Server is running at http://${HOST}:${PORT}`);
   });
 };
 
@@ -95,11 +111,10 @@ io.on("connect", async (socket: Socket) => {
     // Parse cookies from handshake headers
     let token1 = socket.handshake.query.token;
     let token2 = socket.handshake.headers.authorization;
-    let token =null;
-    if(token1==null){
+    let token = null;
+    if (token1 == null) {
       token = token2;
-    }
-    else{
+    } else {
       token = token1;
     }
     // If token still not found, throw error
@@ -116,7 +131,10 @@ io.on("connect", async (socket: Socket) => {
       "--++++++++++++++++++++++++------------  token is there  for socket ------++++++++++++------------"
     );
     // Verify and decode the token
-    const decodedToken = jwt.verify(token.toString(), SECRET!) as any;
+    const decodedToken = jwt.verify(
+      token.toString(),
+      SECRET!
+    ) as any;
     const user = await prisma.users.findFirst({
       where: {
         id: +decodedToken.id,
@@ -136,18 +154,23 @@ io.on("connect", async (socket: Socket) => {
 
     // Assign user object to socket
     socket.user = user;
-   console.log(onlineUsers);
+
     // Join a room with user ID
     socket.join(user.id.toString());
     // Add user to the list of online users
-  // Add user to the list of online users
-     // Check if the user is already online
-     const isUserOnline = onlineUsers.some(onlineUser => onlineUser.id === user.id.toString());
-     if (!isUserOnline) {
-       // Add user to the list of online users
-       const onlineUser: OnlineUser = { id: user.id.toString(), socket: socket.id };
-       onlineUsers.push(onlineUser);
-     }
+    // Add user to the list of online users
+    // Check if the user is already online
+    const isUserOnline = onlineUsers.some(
+      (onlineUser) => onlineUser.id === user.id.toString()
+    );
+    if (!isUserOnline) {
+      // Add user to the list of online users
+      const onlineUser: OnlineUser = {
+        id: user.id.toString(),
+        socket: socket.id,
+      };
+      onlineUsers.push(onlineUser);
+    }
     console.log(onlineUsers);
     // Broadcast updated list of online users to all connected clients
     io.emit("onlineUsers", onlineUsers);
@@ -167,11 +190,13 @@ io.on("connect", async (socket: Socket) => {
       if (socket.user?.id) {
         socket.leave(socket.user.id.toString());
         // Remove user from the list of online users
-       // Remove user from the list of online users
-       const index = onlineUsers.findIndex(user => user.id === socket.user?.id?.toString());
-       if (index !== -1) {
-         onlineUsers.splice(index, 1);
-       }
+        // Remove user from the list of online users
+        const index = onlineUsers.findIndex(
+          (user) => user.id === socket.user?.id?.toString()
+        );
+        if (index !== -1) {
+          onlineUsers.splice(index, 1);
+        }
 
         // Broadcast updated list of online users to all connected clients
         io.emit("onlineUsers", onlineUsers);
@@ -186,4 +211,3 @@ io.on("connect", async (socket: Socket) => {
     );
   }
 });
-

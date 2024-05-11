@@ -1,7 +1,7 @@
 // Define generator and datasource
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["clientExtensions"]
+  // previewFeatures = ["clientExtensions"]
 }
 
 datasource db {

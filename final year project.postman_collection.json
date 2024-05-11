@@ -1,0 +1,1462 @@
+{
+	"info": {
+		"_postman_id": "a8a325e3-e622-406b-a1d1-bcc26f9410b5",
+		"name": "final year project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30658211"
+	},
+	"item": [
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"email\": \"super2@gmail.com\",\r\n   \"phone\": \"+251950257510\",\r\n   \"password\": \"OpenAi@2023\",\r\n   \"firstName\": \"Super\",\r\n   \"middleName\": \"Two\",\r\n   \"lastName\": \"user\",\r\n   \"imageUrl\": \"https://media.istockphoto.com/id/637901916/photo/woman-smiling-in-office-meeting.jpg?s=1024x1024&w=is&k=20&c=6RR3J-gleDJ_eICqBgaKQeN1LU85bTmu2TOnV9sFRnc=\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/admin/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"admin",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register normal",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"email\": \"admin@gmail.com\",\r\n   \"phone\": \"+251911223344\",\r\n   \"password\": \"OpenAi@2023\",\r\n   \"firstName\": \"Super\",\r\n   \"middleName\": \"mohamed\",\r\n   \"lastName\": \"Ali\",\r\n   \"imageUrl\": \"https://media.istockphoto.com/id/637901916/photo/woman-smiling-in-office-meeting.jpg?s=1024x1024&w=is&k=20&c=6RR3J-gleDJ_eICqBgaKQeN1LU85bTmu2TOnV9sFRnc=\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/admin/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"admin",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //   \"email\": \"admin@gmail.com\",\r\n    \"email\": \"super@gmail.com\",\r\n       \"password\": \"OpenAi@2023\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/admin/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlNVUEVSIiwiZmlyc3ROYW1lIjoiU3VwZXIiLCJpYXQiOjE3MTE5Mzk5NzV9.E3BRLnPlTpDrFD2F5wHLUkASSFwyVVLC154KbL7zmb8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //   \"email\": \"admin@gmail.com\",\r\n    \"email\": \"super@gmail.com\",\r\n       \"password\": \"OpenAi@2023\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/admin/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"admin",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vaccine",
+			"item": [
+				{
+					"name": "motherVaccine",
+					"item": []
+				},
+				{
+					"name": "childVaccine",
+					"item": [
+						{
+							"name": "register",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6IkFETUlOIiwiZmlyc3ROYW1lIjoiU3VwZXIiLCJpYXQiOjE3MTE1Mzk1MzF9.6WwVcW_UfOwCpvT5x-ZE8-NaG83F_ORZJA8GXpOW8lU",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"childId\": 2,\r\n  \"vaccineId\": 5,\r\n  \"healthStationId\": 3,\r\n  \"isGiven\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:7777/api/vaccine/child",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "7777",
+									"path": [
+										"api",
+										"vaccine",
+										"child"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6IkFETUlOIiwiZmlyc3ROYW1lIjoiU3VwZXIiLCJpYXQiOjE3MTE1Mzk1MzF9.6WwVcW_UfOwCpvT5x-ZE8-NaG83F_ORZJA8GXpOW8lU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"name\": \"TT5\",\r\n    \"category\": \"Rotavirus\",\r\n    \"dose\": 1,\r\n    \"duration\": 1,\r\n    \"description\": \"Tetanus toxoid is a vaccine used to vaccinate women of childbearing age to prevent tetanus for themselves and their infants and unborn babies. Tetanus is a dangerous infection caused by a bacteria found in the soil, dirt and rusted metals\",\r\n    \"ageRange\": \"At least one year after TT4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/vaccine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"vaccine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get vaccine",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7777/api/vaccine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"vaccine"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HS",
+			"item": [
+				{
+					"name": "hsInfo",
+					"item": [
+						{
+							"name": "register",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Ik1BTkFHRVIiLCJmaXJzdE5hbWUiOiJBbWFudWVsIiwiaWF0IjoxNzExNzIyOTYzfQ.rSoP-LxXcl9EmbrO6F3YAMySocUkJNRsnRIFX1LoP5c",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"healthStationId\": 5,\r\n    \"serviceAm\": \"ሥርዓት 2666\",\r\n    \"serviceOr\": \"Seeraa 266\",\r\n    \"descriptionAm\": \"መስርዓት 266 መጠቀም\",\r\n    \"descriptionOr\": \"Seeraa 266 jechootaa\"\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:7777/api/hs/info",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "7777",
+									"path": [
+										"api",
+										"hs",
+										"info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk0MTMzNH0.MVyWnpDY7zTat4qwcCXyk4vNiZDQN6hFUdsyZyyAI8Y",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"healthStationId\": 5,\r\n    \"serviceAm\": \"ሥርዓት 2666\",\r\n    \"serviceOr\": \"Seeraa 266\",\r\n    \"descriptionAm\": \"መስርዓት 266 መጠቀም\",\r\n    \"descriptionOr\": \"Seeraa 266 jechootaa\"\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:7777/api/hs/info/all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "7777",
+									"path": [
+										"api",
+										"hs",
+										"info",
+										"all"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlNVUEVSIiwiZmlyc3ROYW1lIjoiU3VwZXIiLCJpYXQiOjE3MTE5Nzc1MDZ9.5wNvOnVMWr0lutIQjtsjChaH-IqHmcmthe7t3w1aIWE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"froomsis hospital\",\r\n    \"email\": \"froomsis@gmail.com\",\r\n    \"type\": \"SPECIALTY_HOSPITAL\",\r\n    \"city\": \"Jimma\",\r\n    \"subcity\": \"mehal\",\r\n    \"kebele\": \"Ginjo gudru\",\r\n    \"houseNumber\": \"15\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/hs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"hs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6IkFETUlOIiwiZmlyc3ROYW1lIjoiU3VwZXIiLCJpYXQiOjE3MTE2NDU4MjN9.iGtMirOpWw0D-ntOBBY2qrKwjRXnyysCTi2V1Z0XlVU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Yanet hospital\",\r\n    \"email\": \"yanet@gmail.com\",\r\n    \"type\": \"SPECIALTY_HOSPITAL\",\r\n    \"city\": \"sodo\",\r\n    \"subcity\": \"mehal\",\r\n    \"kebele\": \"andinet\",\r\n    \"houseNumber\": \"005\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/hs/info/detail/info/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"hs",
+								"info",
+								"detail",
+								"info",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "employee",
+					"item": [
+						{
+							"name": "register manager",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6IkFETUlOIiwiZmlyc3ROYW1lIjoiU3VwZXIiLCJpYXQiOjE3MTE3MzYyNDZ9.ZnDPaEr2UVj4Pss6WC48NOxJaLbSKzG_eOhNhqEfEKY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"hasen@gmail.com\",\r\n  \"password\": \"OpenAi@2023\",\r\n  \"phone\": \"+251933000111\",\r\n  \"firstName\": \"Hasen\",\r\n  \"middleName\": \"Abdirkadir\",\r\n  \"lastName\": \"Husen\",\r\n  \"role\": \"MANAGER\",\r\n  \"imageUrl\": \"https://images.unsplash.com/photo-1542458580-9d880e2a6bdd?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\r\n  \"sex\": \"MALE\",\r\n  \"healthStationId\": 3,\r\n  \"position\": \"manager offile\",\r\n  \"title\": \"Miss.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:7777/api/user/employee",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "7777",
+									"path": [
+										"api",
+										"user",
+										"employee"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "register HP",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6IkFETUlOIiwiZmlyc3ROYW1lIjoiU3VwZXIiLCJpYXQiOjE3MTE3MzYyNDZ9.ZnDPaEr2UVj4Pss6WC48NOxJaLbSKzG_eOhNhqEfEKY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"kebebush@gmail.com\",\r\n  \"password\": \"OpenAi@2023\",\r\n  \"phone\": \"+251982102151\",\r\n  \"firstName\": \"kebebush\",\r\n  \"middleName\": \"Abebe\",\r\n  \"lastName\": \"Mokonin\",\r\n  \"role\": \"HEALTH_PROFETIONAL\",\r\n  \"imageUrl\": \"https://images.unsplash.com/photo-1542458580-9d880e2a6bdd?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\r\n  \"sex\": \"FEMALE\",\r\n  \"healthStationId\": 3,\r\n  \"position\": \"emergency offile\",\r\n  \"title\": \"Miss.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:7777/api/user/employee",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "7777",
+									"path": [
+										"api",
+										"user",
+										"employee"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "register reception",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6IkFETUlOIiwiZmlyc3ROYW1lIjoiU3VwZXIiLCJpYXQiOjE3MTE3MzYyNDZ9.ZnDPaEr2UVj4Pss6WC48NOxJaLbSKzG_eOhNhqEfEKY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"taye@gmail.com\",\r\n  \"password\": \"OpenAi@2023\",\r\n  \"phone\": \"+251923020444\",\r\n  \"firstName\": \"Taye\",\r\n  \"middleName\": \"Markos\",\r\n  \"lastName\": \"Alemu\",\r\n  \"role\": \"RECEPTION\",\r\n  \"imageUrl\": \"https://images.unsplash.com/photo-1542458580-9d880e2a6bdd?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\r\n  \"sex\": \"MALE\",\r\n  \"healthStationId\": 3,\r\n  \"position\": \"card room\",\r\n  \"title\": \"Mr.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:7777/api/user/employee",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "7777",
+									"path": [
+										"api",
+										"user",
+										"employee"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk0MTMzNH0.MVyWnpDY7zTat4qwcCXyk4vNiZDQN6hFUdsyZyyAI8Y",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"sibat@gmail.com\",\r\n  \"password\": \"OpenAi@2023\",\r\n  \"phone\": \"+251999992233\",\r\n  \"firstName\": \"Sibhat\",\r\n  \"middleName\": \"Alemu\",\r\n  \"lastName\": \"Shure\",\r\n  \"role\": \"RECEPTION\",\r\n  \"imageUrl\": \"https://images.unsplash.com/photo-1542458580-9d880e2a6bdd?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\r\n  \"sex\": \"MALE\",\r\n  \"healthStationId\": 3,\r\n  \"position\": \"card room\",\r\n  \"title\": \"Mr.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:7777/api/hs/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "7777",
+									"path": [
+										"api",
+										"hs",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "mother",
+					"item": [
+						{
+							"name": "register",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicm9sZSI6IlJFQ0VQVElPTiIsImZpcnN0TmFtZSI6IkFzdGVyIiwiaWF0IjoxNzExOTgwODE2fQ.tk4nYsXjL7aO9TgpNOnmt7l6k0r89MCSGStuUWf50UY",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"merry@gmail.com\",\r\n  \"password\": \"OpenAi@2023\",\r\n  \"phone\": \"+251922508899\",\r\n  \"firstName\": \"Meron\",\r\n  \"middleName\": \"Mesfin\",\r\n  \"lastName\": \"Ysimashewa\",\r\n  \"role\": \"MOTHER\",\r\n  \"imageUrl\": \"https://media.istockphoto.com/id/1317804578/photo/one-businesswoman-headshot-smiling-at-the-camera.jpg?s=2048x2048&w=is&k=20&c=zeshqUp2X2mSAlURtrcyI-FZumcAiv-1corvRhT-qFo=\",\r\n  \"sex\": \"FEMALE\",\r\n  \"healthStationId\": 3,\r\n  \"bloodType\": \"O+\",\r\n  \"RH\": \"positive\",\r\n  \"birthdate\": \"2002-05-15T00:00:00Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:7777/api/user/mother",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "7777",
+									"path": [
+										"api",
+										"user",
+										"mother"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Ik1BTkFHRVIiLCJmaXJzdE5hbWUiOiJBbWFudWVsIiwiaWF0IjoxNzExNzI3NzE3fQ.RNBwdx1QmLXmQZNadm0K7sgTzfmjpkrclbxWqR440cM",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"amrta@gmail.com\",\r\n  \"password\": \"OpenAi@2023\",\r\n  \"phone\": \"0901778899\",\r\n  \"firstName\": \"Markos\",\r\n  \"middleName\": \"Getu\",\r\n  \"lastName\": \"Chala\",\r\n  \"role\": \"MOTHER\",\r\n  \"imageUrl\": \"https://media.istockphoto.com/id/1317804578/photo/one-businesswoman-headshot-smiling-at-the-camera.jpg?s=2048x2048&w=is&k=20&c=zeshqUp2X2mSAlURtrcyI-FZumcAiv-1corvRhT-qFo=\",\r\n  \"sex\": \"FEMALE\",\r\n  \"healthStationId\": 1,\r\n  \"bloodType\": \"AB+\",\r\n  \"RH\": \"positive\",\r\n  \"birthdate\": \"1990-05-15T00:00:00Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:7777/api/user/mother/hs/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "7777",
+									"path": [
+										"api",
+										"user",
+										"mother",
+										"hs",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"sikar@gmail.com\",\r\n    \"password\": \"OpenAi@2023\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTkzOTU1M30.ktt-HDev8JvqiBm6DNvYPgA0MhCcTBcKi_wtZsciEJg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/user/me/myInfo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"user",
+								"me",
+								"myInfo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "news",
+			"item": [
+				{
+					"name": "post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlNVUEVSIiwiZmlyc3ROYW1lIjoiU3VwZXIiLCJpYXQiOjE3MTE5ODI2OTF9.bQMa8HZz4yzdqs6ZsN97Sr7rXW73kAYxw7LiMupH6wI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"titleAm\": \"3ኛው ሀገር አቀፍ የማህበራዊ እና የባህሪ ለውጥ ኮንፈረንስ ማህበራዊ የባህሪ ለውጥ ለዘላቂ ልማት በሚል መሪ ቃል በአዲስ አበባ እየተካሄደ ነው።\",\r\n   \"titleOr\": \"Yaa'iin Biyyoolessaa Jijjiirama Hawaasummaa fi Amala 3ffaa mata duree Jijjiirama Amala Hawaasummaa Misooma Itti Fufiinsa Qabu jedhuun Addis Ababaatti gaggeeffamaa jira\",\r\n   \"descriptionAm\": \"3ኛው ሀገር አቀፍ የማህበራዊ እና የባህሪ ለውጥ ኮንፈረንስ ማህበራዊ የባህሪ ለውጥ ለዘላቂ ልማት በሚል መሪ ቃል በአዲስ አበባ እየተካሄደ ነው። የጤና ጥበቃ ሚኒስቴር ከኢትዮጵያ ጤና ትምህርትና ፕሮሞሽን ባለሙያዎች ማህበር እና አጋር አካላት ጋር በመተባበር ማህበራዊና የባህሪ ለውጥ ተግባራት ለዘላቂ ጤና ልማት በሚል መሪ ቃል ሶስተኛውን ሀገር አቀፍ የማህበራዊና ባህሪ ለውጥ ኮንፈረንስ በአዲስ አበባ ከተማ እየተካሄደ ሲሆን ከዚ በላይ ከ13 አለም አቀፍ ሀገራት የተውጣጡ ባለሙያዎችን ጨምሮ 400 ተሳታፊዎች ተገኝተዋል። በዚህ ትልቅ አገራዊ ፋይዳ ያለው ስብሰባ ላይ ተገኝተው ንግግር ያደረጉት የጤና ጥበቃ ሚኒስትሩ ዶ/ር መቅደስ ዳባ እንዳሉት ኢትዮጵያ በምዕተ ዓመቱ የልማት ግቦች መሠረት በተለያዩ የጤና ዘርፎች ከፍተኛ መሻሻል አሳይታለች። እነዚህ ስኬቶች የተገኙት አንድ ነጠላ የማህበራዊ እና የባህሪ ለውጥ በመተግበር ነው። የማህበራዊ እና የባህርይ ለውጥ ፕሮግራም በሽታን ለመከላከል እና በአጠቃላይ ለጤና ስርዓቱ ውጤታማነት ቁልፍ መሳሪያ ነው. በተጨማሪም በሁሉም\",\r\n   \"descriptionOr\": \"Ministeerri Fayyaa Waldaa Ogeessota Barnootaa fi Guddina Fayyaa Itiyoophiyaa fi michoota isaa waliin ta'uun Mata duree Sochiilee Jijjiirama Hawaasummaa fi Amala Misooma Fayyaa Itti Fufiinsa Qabu jedhuun Yaa'ii Jijjiirama Hawaasummaa fi Amala Biyyaalessaa sadaffaan magaalaa Addis Abbaatti gaggeessaa jira, bakka... Ogeeyyii biyyoota addunyaa 13 dabalatee hirmaattonni 400 irratti hirmaataniiru. Akka Ministirri Ministeera Fayyaa Dooktar Makdes Daba walgahii barbaachisaa barbaachisummaa biyyaalessaa qabu kana irratti argamuun haasawa taasisaniin ibsanitti, Itiyoophiyaan akkaataa Galmoota Misooma Mileniyeemiitiin dameewwan fayyaa adda addaa irratti fooyya’iinsa guddaa taasifteetti. Bu’aawwan kunneenis jijjiirama hawaasummaa fi amala tokko hojiirra oolchuudhaan kan argamedha. Sagantaan jijjiirama hawaasummaa fi amala sirna fayyaa akka waliigalaatti ittisa dhukkubaa fi bu’a qabeessummaaf meeshaa ijoodha. Akkasumas Galmoota Misooma Itti Fufiinsa Qabu galmaan ga’uuf sagantaalee hunda keessatti tooftaa barbaachisaa dha. Ministeerri Fayyaa Sagantaa Jijjiirama Hawaasummaa hojiirra oolchuun damee fayyaa keessatti bu’aa galmeessisuuf kutannoo akka qabus ibsiteetti. Gama biraatiin, jijjiirama hawaasummaa fi amala akka biyyaatti damee fayyaatiin fiduuf jecha, Ministeerri Fayyaa karoora tarsiimoo waggaa shanii qopheessee, milkaa’ina jijjiirama amala hawaasummaa bara afaan adda addaa, waltajjiiwwan adda addaa, sarara bilbilaa, fi sagantaa raadiyoo fi televijiinii torban torbaniin qormaata jijjiirama amala hawaasa keenya keessatti mul’atu furuuf. Du'a Dr. Benjamin Lozare, sagantaalee idil-addunyaa Giddugala Komunikeeshinii Joon Hoopkiins keessatti gumaacha guddaa kan godhan ilaalchisee USAIDtti Hogganaan Jijjiirama Hawaasummaa fi Amala kan ta'an Doktar Gudaa Alemayheu, Nuti akkas ni amanna jedhan namoonni fayyaa qaban bu’a qabeessa;Yoo cimanii hojjetan guddina itti fufiinsa qabu biyyattiif gumaacha akka ta’an dubbataniiru. Pireezidaantiin Waldaa Ogeessota Barnootaa fi Guddina Fayyaa Itiyoophiyaa Dooktar Eshetuu Girmaa akka jedhanitti, kaayyoon konfiraansii kanaa inni guddaan wal irraa barachuu fi wal irraa barachuu akka ta’e ibsaniiru. Doktar Eshetuu itti dabaluudhaan walqunnamtiin jijjiirama hawaasummaa fi amala hawaasa waa’ee fayyaa gaafatuu fi beeku uumuu keessatti gahee olaanaa akka qabu ibsuun, biyyi keenya Itiyoophiyaan bu’aa jijjiirama hawaasummaa fi amala fayyadamuun weerara addunyaa kan COVID-19, HIV dabalatee. Hojii gaggeessaan Hariiroo Hawaasaa fi Kominikeeshinii Fayyaa Ministeera Fayyaa Dooktar Tegene Regaasaa ibsaniiru; konfiraansiin kun biyya keenyatti yeroo sadaffaaf, bara kana gaggeeffamaa jira. Konfiraansiin idil-addunyaa jalqabaa bara 2016 magaalaa Addis Ababaatti gaggeeffamuu isaa yaadachiisuun, dhimmoonni gurguddoon jijjiirama hawaasummaa fi amala konfiraansii irratti ka’uu isaaniis eeraniiru. Ministeerichi ittisa dhibee irratti xiyyeeffata; hawaasni fayyaa isaa akka eegu; fayyaa ofii akka oomishaniif yeroo yeroon hojii hubannoo uumuu bifa cimaa ta’een kennuun barbaachisaa ta’uu isaa; Kana keessatti hirmaannaan qooda fudhattootaa ga’ee guddaa akka taphatu Dr. Tegenee dubbataniiru. Konfiraansii kana irratti Itti Aantuun Daarektarri Ergamaa USAID Eleanor Tanpn Ko? Itti Aanaan Itti Gaafatamaa UNICEF/Itoophiyaa Mariikoo Kaagooshimaa haasaa kan taasisan yoo ta’u, dhaabbileen mootummaa, ogeeyyiin jijjiirama hawaasummaa fi amala, waldaaleen ogummaa, dhaabbileen michuu, dhaabbileen qorannoo, dameen fayyaa dhuunfaa fi qooda fudhattoonni biroo konfiraansii kanarratti hirmaachaa jiru. Konfiraansii kanaan namoota dhuunfaa fi dhaabbilee jijjiirama fayyaa, hawaasummaa fi amalaaf gumaacha guddaa taasisaniif beekamtiin kennameera.\",\r\n   \"images\": [\"https://www.moh.gov.et/sites/default/files/styles/large/public/2024-02/423312264_784791123683120_1361346987432252741_n.jpg?itok=iK6o1Z_y\",\"https://www.moh.gov.et/sites/default/files/inline-images/DR%20Mekdes%20Dabba%202.jpg\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/news",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7777/api/news/detail/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"news",
+								"detail",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "child",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Ik1BTkFHRVIiLCJmaXJzdE5hbWUiOiJBbWFudWVsIiwiaWF0IjoxNzExNzQxMjYwfQ.0GlbjQiJza4D0i9MH4iUA9woBlRe5Rtc3opIvc4QZxE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"healthStationId\": 1,\r\n  \"motherId\": 1,\r\n  \"firstName\": \"mamush\",\r\n  \"middleName\": \"Doe\",\r\n  \"lastName\": \"Smith\",\r\n  \"sex\": \"MALE\",\r\n  \"birthdate\": \"2005-01-01\",\r\n  \"bloodType\": \"O+\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/child",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"child"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Ik1BTkFHRVIiLCJmaXJzdE5hbWUiOiJBbWFudWVsIiwiaWF0IjoxNzExNzQxMjYwfQ.0GlbjQiJza4D0i9MH4iUA9woBlRe5Rtc3opIvc4QZxE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"healthStationId\": 1,\r\n  \"motherId\": 1,\r\n  \"firstName\": \"mamush\",\r\n  \"middleName\": \"Doe\",\r\n  \"lastName\": \"Smith\",\r\n  \"sex\": \"MALE\",\r\n  \"birthdate\": \"2005-01-01\",\r\n  \"bloodType\": \"O+\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/child/mother/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"child",
+								"mother",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "chat",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk0NzQ3MH0.tCw9UKTfNCDYcVcriX1w8Ui4nMRrzV5Pvugz0rFpNaM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:7777/api/chat/getmy",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"chat",
+								"getmy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get message",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk0NzQ3MH0.tCw9UKTfNCDYcVcriX1w8Ui4nMRrzV5Pvugz0rFpNaM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:7777/api/chat/message/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"chat",
+								"message",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMjkzMjMyOH0.NzaKKlBy6drVqAkx7gX_Uzqj4fU-yOQmvBoSis15Gc8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "attachments",
+									"type": "file",
+									"src": "/C:/Users/Mihiretu/Downloads/certificate (3).jpeg"
+								},
+								{
+									"key": "attachments",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "https://final-year-project-backend.onrender.com/api/chat/message/send/3",
+							"protocol": "https",
+							"host": [
+								"final-year-project-backend",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"chat",
+								"message",
+								"send",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rename",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk0NzQ3MH0.tCw9UKTfNCDYcVcriX1w8Ui4nMRrzV5Pvugz0rFpNaM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"cristiyan hospital\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/chat/rename/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"chat",
+								"rename",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add participant",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk0NzQ3MH0.tCw9UKTfNCDYcVcriX1w8Ui4nMRrzV5Pvugz0rFpNaM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"participantId\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/chat/addparticipant/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"chat",
+								"addparticipant",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove participant",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk0NzQ3MH0.tCw9UKTfNCDYcVcriX1w8Ui4nMRrzV5Pvugz0rFpNaM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"participantId\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/chat/removeparticipant/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"chat",
+								"removeparticipant",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete chat",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk0NzQ3MH0.tCw9UKTfNCDYcVcriX1w8Ui4nMRrzV5Pvugz0rFpNaM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"participantId\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/chat/delete/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"chat",
+								"delete",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create group",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk0MzYwMn0.eKUYLR-8BeodW4a0RG8tywgo7DVTfKdkdIsBBrskVow",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sample Group\",\r\n    \"participants\": [2, 4, 3]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/chat/create/group",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"chat",
+								"create",
+								"group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create one to one",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk0MzYwMn0.eKUYLR-8BeodW4a0RG8tywgo7DVTfKdkdIsBBrskVow",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sample Group\",\r\n    \"participants\": [2, 4, 3]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/chat/create/onetoone/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"chat",
+								"create",
+								"onetoone",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "appointment",
+			"item": [
+				{
+					"name": "new appointment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk2MDY2MX0.HJKKV4w2uupRAeYDaayKUCZquqDo0OVG258RTqvH3BI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"healthStationId\": 1,\r\n  \"childId\": 2,\r\n  \"motherId\": 1,\r\n  \"vaccineId\": 6,\r\n  \"name\": \"Vaccine Appointment\",\r\n  \"appointmentDate\": \"2024-04-15\",\r\n  \"description\": \"Description of the appointment\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/appintment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"appintment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk2MDY2MX0.HJKKV4w2uupRAeYDaayKUCZquqDo0OVG258RTqvH3BI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"healthStationId\": 1,\r\n  \"childId\": 2,\r\n  \"motherId\": 1,\r\n  \"vaccineId\": 6,\r\n  \"name\": \"update Vaccine Appointment\",\r\n  \"appointmentDate\": \"2024-04-15\",\r\n  \"description\": \"update Description of the appointment\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/appintment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"appintment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk2MDY2MX0.HJKKV4w2uupRAeYDaayKUCZquqDo0OVG258RTqvH3BI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"healthStationId\": 1,\r\n  \"childId\": 2,\r\n  \"motherId\": 1,\r\n  \"vaccineId\": 6,\r\n  \"name\": \"update Vaccine Appointment\",\r\n  \"appointmentDate\": \"2024-04-15\",\r\n  \"description\": \"update Description of the appointment\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/appintment/child/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"appintment",
+								"child",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "certification",
+			"item": [
+				{
+					"name": "generate",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk2MDY2MX0.HJKKV4w2uupRAeYDaayKUCZquqDo0OVG258RTqvH3BI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"healthStationId\": 3,\r\n  \"childId\": 2,\r\n  \"name\": \"completion certification\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/certification/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"certification",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk2MDY2MX0.HJKKV4w2uupRAeYDaayKUCZquqDo0OVG258RTqvH3BI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"healthStationId\": 3,\r\n  \"childId\": 2,\r\n  \"name\": \" certification\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/certification/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"certification",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMTk2MDY2MX0.HJKKV4w2uupRAeYDaayKUCZquqDo0OVG258RTqvH3BI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"healthStationId\": 3,\r\n  \"childId\": 2,\r\n  \"name\": \" certification\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7777/api/certification/mother/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"certification",
+								"mother",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "notification",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGUiOiJNT1RIRVIiLCJmaXJzdE5hbWUiOiJTaWthciIsImlhdCI6MTcxMjkzMjMyOH0.NzaKKlBy6drVqAkx7gX_Uzqj4fU-yOQmvBoSis15Gc8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:7777/api/notification/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"api",
+								"notification",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

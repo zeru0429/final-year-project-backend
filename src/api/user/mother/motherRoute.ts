@@ -45,5 +45,10 @@ motherRouter.get(
   [userAuth, isEmployee],
   errorHandler(motherController.getByHs)
 );
+motherRouter.get(
+  "/hs/my/data",
+  // [userAuth, isEmployee],
+  errorHandler(motherController.getByHsMy)
+);
 
 export default motherRouter;

@@ -27,12 +27,13 @@ const vaccinateMotherController = {
             message: "no mother found in this id",
           });
       }
+    
       
      const motherVaccine = await prisma.motherVaccines.create({data:{
       createdDateTime: new Date(),
       isGiven: true,
       vaccineId: +req.body!.vaccineId,
-      motherId: +req.body!.motherId,
+      motherId: +isMotherExist.userId,
       healthStationId: +req.body.healthStationId,
      }});
    

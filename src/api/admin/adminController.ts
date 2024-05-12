@@ -79,7 +79,7 @@ const authController = {
         success: false,
         message: "Incorrect password",
       });
-     
+
     }
     const adminProfiles = await prisma.adminProfiles.findFirst({
       where: { adminId: admin.id },
@@ -93,7 +93,7 @@ const authController = {
       firstName: adminProfiles?.firstName,
     };
     const token = await jwt.sign(payload, SECRET as string, {
-      expiresIn: JWT_EXPIRESIN,
+      // expiresIn: JWT_EXPIRESIN,
     });
     return res.status(200).json({
       status: "success",

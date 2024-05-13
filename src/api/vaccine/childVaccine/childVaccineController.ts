@@ -60,9 +60,9 @@ const vaccinateChildController = {
     });
     if (!isChildVaccineExist) {
       return res.status(403).json({
-         success: false,
-         message:   "no vaccine found in this id",
-       });
+        success: false,
+        message: "no vaccine found in this id",
+      });
     }
 
     const isVaccineExist = await prisma.vaccines.findFirst({
@@ -72,9 +72,9 @@ const vaccinateChildController = {
     });
     if (!isVaccineExist) {
       return res.status(403).json({
-         success: false,
-         message: "no vaccine found in this id", 
-       });
+        success: false,
+        message: "no vaccine found in this id",
+      });
     }
     //check if child exist
     const isChildExist = await prisma.childrens.findFirst({
@@ -84,10 +84,9 @@ const vaccinateChildController = {
     });
     if (!isChildExist) {
       return res.status(403).json({
-         success: false,
-         message: "no child found in this id",
-       });
-
+        success: false,
+        message: "no child found in this id",
+      });
     }
 
     const childVaccine = await prisma.childrenVaccines.update({
@@ -114,10 +113,9 @@ const vaccinateChildController = {
     });
     if (!isChildVaccineExist) {
       return res.status(403).json({
-         success: false,
-         message: "no child found in this id",
-       });
-     
+        success: false,
+        message: "no child found in this id",
+      });
     }
 
     const childVaccine = await prisma.childrenVaccines.delete({
@@ -131,10 +129,23 @@ const vaccinateChildController = {
     });
   },
   getAllByChildId: async (req: Request, res: Response, next: NextFunction) => {
-    req.childId = +req.params.id;
+    const id = Number(req.params.id);
+
     const childVaccine = await prisma.childrenVaccines.findMany({
       where: {
-        childId: +req.childId,
+        childId: id,
+      },
+      include: {
+        vaccine: {
+          select: {
+            name: true,
+          },
+        },
+        healthStation: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
     return res.status(200).json(childVaccine);
@@ -156,6 +167,41 @@ const vaccinateChildController = {
     const childVaccine = await prisma.childrenVaccines.findMany({
       where: {
         id: +req.cvId,
+      },
+    });
+    return res.status(200).json(childVaccine);
+  },
+
+  getChildrenVaccByMotherId: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const motherId = Number(req.params.id);
+
+    const childVaccine = await prisma.childrenVaccines.findMany({
+      where: {
+        child: {
+          motherId: motherId,
+        },
+      },
+      include: {
+        healthStation: {
+          select: {
+            name: true,
+          },
+        },
+        vaccine: {
+          select: {
+            name: true,
+          },
+        },
+        child: {
+          select: {
+            firstName: true,
+            middleName: true,
+          },
+        },
       },
     });
     return res.status(200).json(childVaccine);

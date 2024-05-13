@@ -16,19 +16,19 @@ employeeRouter.post(
   errorHandler(employeeController.register)
 );
 employeeRouter.put("/:id", [userAuth], errorHandler(employeeController.update));
-// employeeRouter.delete(
-//   "/:id",
-//   [userAuth],
-//   errorHandler(employeeController.delete)
-// );
+employeeRouter.delete(
+  "/:id",
+  [userAuth],
+  errorHandler(employeeController.delete)
+);
 employeeRouter.delete(
   "/:id",
   [adminAuth],
   errorHandler(employeeController.delete)
 );
 
-// employeeRouter.get("/", errorHandler(employeeController.getAll));
-// employeeRouter.get("/all", [userAuth], errorHandler(employeeController.getAll));
+employeeRouter.get("/", errorHandler(employeeController.getAll));
+employeeRouter.get("/all", [userAuth], errorHandler(employeeController.getAll));
 employeeRouter.get(
   "/all",
   [adminAuth],

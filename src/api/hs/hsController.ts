@@ -24,7 +24,6 @@ const hsController = {
         success: false,
         message: "health station is already registered",
       });
-      
     }
 
     // create  a new health station
@@ -54,7 +53,7 @@ const hsController = {
     // console.log(id);
     // console.log("update");
     // req.hsId = +req.params.id;
-    hsSchema.register.parse(req.body);
+    // hsSchema.register.parse(req.body);
     //check if the hs exist before
     const hs = await prisma.healthStations.findUnique({
       where: {
@@ -65,7 +64,7 @@ const hsController = {
     if (!hs) {
       return res.status(403).json({
         success: false,
-        message:"health station is is not found",
+        message: "health station is is not found",
       });
     }
 
@@ -75,13 +74,12 @@ const hsController = {
       },
       data: {
         name: req.body.name,
-        email: req.body.email,
         type: req.body.type,
         city: req.body.city,
         subcity: req.body.subcity,
         kebele: req.body.kebele,
         houseNumber: req.body.houseNumber,
-        imageUrl: req.body.imageUrl,
+        // imageUrl: req.body.imageUrl,
       },
     });
 
@@ -90,7 +88,6 @@ const hsController = {
         success: false,
         message: "No fields were changed",
       });
-     
     }
 
     return res.status(201).json(updatedHs);
@@ -107,9 +104,8 @@ const hsController = {
     if (!hs) {
       return res.status(403).json({
         success: false,
-        message:  "health station is is not found",
+        message: "health station is is not found",
       });
-
     }
 
     //delete the hsInfo

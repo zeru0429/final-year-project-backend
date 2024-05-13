@@ -3,7 +3,7 @@ import { string, z } from "zod";
 const hsSchema = {
   register: z.object({
     name: z.string(),
-    email: z.string().email(),
+    // email: z.string().email(),
     type: z.enum([
       "GENERAL_HOSPITAL",
       "CLINIC",
@@ -24,7 +24,7 @@ const hsSchema = {
     subcity: z.string(),
     kebele: z.string(),
     houseNumber: z.string(),
-    imageUrl: z.string(),
+    // imageUrl: z.string(),
   }),
 };
 

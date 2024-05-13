@@ -7,7 +7,6 @@ import motherVaccineSchema from "../childVaccine/childVaccineSchema.js";
 const vaccinateMotherController = {
   vaccinate: async (req: Request, res: Response, next: NextFunction) => {
     motherVaccineSchema.register.parse(req.body);
-
     const { vaccineId, motherId, healthStationId } = req.body;
     console.log(vaccineId, motherId, healthStationId);
     console.log(req.body);
@@ -183,6 +182,8 @@ const vaccinateMotherController = {
     });
     return res.status(200).json(motherVaccine);
   },
+  
+  
 };
 
 export default vaccinateMotherController;

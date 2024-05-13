@@ -114,9 +114,9 @@ io.on("connect", async (socket: Socket) => {
       );
     }
 
-    console.log(
-      "--++++++++++++++++++++++++------------  token is there  for socket ------++++++++++++------------"
-    );
+    // console.log(
+    //   "--++++++++++++++++++++++++------------  token is there  for socket ------++++++++++++------------"
+    // );
     // Verify and decode the token
     const decodedToken = jwt.verify(
       token.toString(),
@@ -159,7 +159,7 @@ io.on("connect", async (socket: Socket) => {
       };
       onlineUsers.push(onlineUser);
     }
-    console.log(onlineUsers);
+    // console.log(onlineUsers);
     // Broadcast updated list of online users to all connected clients
     io.emit("onlineUsers", onlineUsers);
     // Emit connected event

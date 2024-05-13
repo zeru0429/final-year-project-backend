@@ -94,7 +94,10 @@ model HealthStations {
   houseNumber String
   createdAt DateTime @default(now())
   imageUrl  String
-  // Ref
+  locationId Int @unique
+
+
+
   info HealthStationInfos[]
   users Users[]
   appointment  Appointments[]
@@ -103,8 +106,16 @@ model HealthStations {
   certification Certifications[]
   // Reference
   admin Admins? @relation(fields: [registeredBy], references:[id],onDelete: SetNull)
-
+  location Location? @relation(fields: [locationId], references:[id])
   @@map("healthStations")
+}
+model Location{
+  id Int @id @default(autoincrement())
+  latitude Decimal 
+  longitude Decimal
+  //
+  healthStations HealthStations[]
+
 }
 
 // Define model for health station information

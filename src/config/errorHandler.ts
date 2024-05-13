@@ -14,6 +14,11 @@ const errorHandler:any =(method:Function)=> {
          }else{
             exception = new InternalException('something is wrong',500,ErrorCode.INTERNAL_EXCEPTION,null);
          }
+         return res.status(500).json({
+            success: false,
+            message: `${"server error"}`,
+            error:  `${error.message}`,
+         });
          next(exception);
       }
    }

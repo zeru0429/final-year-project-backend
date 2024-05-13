@@ -32,6 +32,7 @@ childVaccineRouter.delete(
   errorHandler(ChildVaccineController.delete)
 );
 
+childVaccineRouter.get('/chid/:id',[userAuth], errorHandler(ChildVaccineController.getAllByChildId));
 childVaccineRouter.get("/all", errorHandler(ChildVaccineController.getAll));
 childVaccineRouter.get(
   "/:id",

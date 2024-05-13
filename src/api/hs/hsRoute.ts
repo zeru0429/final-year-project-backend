@@ -19,6 +19,7 @@ healthStationRouter.delete(
   errorHandler(hsController.delete)
 );
 healthStationRouter.get("/all", errorHandler(hsController.getAll));
+  healthStationRouter.get("/getMothers/:id", errorHandler(hsController.getMothers));
 healthStationRouter.get("/:id", errorHandler(hsController.getSingle));
 
 healthStationRouter.use("/info", healthStationInfoRouter);

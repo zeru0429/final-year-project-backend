@@ -6,6 +6,12 @@ import errorHandler from "../../config/errorHandler.js";
 
 const childRouter: Router = Router();
 
+childRouter.get(
+  "/mother/:id",
+  // [userAuth],
+  errorHandler(childController.getAllByMother)
+);
+
 childRouter.post("/", [userAuth], errorHandler(childController.register));
 childRouter.put("/:id", [userAuth], errorHandler(childController.update));
 childRouter.delete("/:id", [userAuth], errorHandler(childController.delete));
@@ -18,10 +24,5 @@ childRouter.get(
 );
 childRouter.get("/:id", [userAuth], errorHandler(childController.getSingle));
 childRouter.get("/hs/:id", [userAuth], errorHandler(childController.getByHs));
-childRouter.get(
-  "/mother/:id",
-  [userAuth],
-  errorHandler(childController.getAllByMother)
-);
 
 export default childRouter;

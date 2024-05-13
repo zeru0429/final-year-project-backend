@@ -8,6 +8,7 @@ import { inflateRaw } from "zlib";
 
 const motherController = {
   register: async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
     // attach the health station id to the request body
     req.body.healthStationId = req.user?.healthStationId;
 
@@ -23,7 +24,6 @@ const motherController = {
         success: false,
         message: "Email or Phone has been registered before",
       });
-     
     }
     req.body.password = bcrypt.hashSync(req.body.password, 10);
 
@@ -96,7 +96,7 @@ const motherController = {
         },
       },
     });
-   return res.status(200).json(updatedMother);
+    return res.status(200).json(updatedMother);
   },
   delete: async (req: Request, res: Response, next: NextFunction) => {
     req.mId = +req.params.id;
@@ -109,7 +109,7 @@ const motherController = {
     if (!isMother) {
       return res.status(403).json({
         success: false,
-        message:  "no mother found in this id",
+        message: "no mother found in this id",
       });
     }
     //start deleting
@@ -118,7 +118,7 @@ const motherController = {
         id: +req.mId,
       },
     });
-   return res.status(200).json({
+    return res.status(200).json({
       message: "sucessfully deleted",
       sucess: true,
     });
@@ -133,7 +133,6 @@ const motherController = {
         success: false,
         message: "no mother found",
       });
-      
     }
     return res.status(200).json(mothers);
   },
@@ -149,9 +148,8 @@ const motherController = {
         success: false,
         message: "no mother found in this id",
       });
-      
     }
-   return res.status(200).json(isMother);
+    return res.status(200).json(isMother);
   },
   getByHs: async (req: Request, res: Response, next: NextFunction) => {
     req.hsId = +req.params.id;
@@ -160,7 +158,7 @@ const motherController = {
         AND: [{ role: "MOTHER" }, { healthStationId: +req.hsId }],
       },
     });
-   return res.status(200).json(allMothers);
+    return res.status(200).json(allMothers);
   },
   getByMyHs: async (req: Request, res: Response, next: NextFunction) => {
     console.log("hello");
@@ -188,7 +186,7 @@ const motherController = {
         //   healthStation: true,
       },
     });
-   return res.status(200).json(allMothers);
+    return res.status(200).json(allMothers);
   },
 };
 

@@ -7,7 +7,7 @@ import appointmantSchema from "./appointmantSchema.js";
 
 const appointmantController = {
   newAppointments: async (req: Request, res: Response, next: NextFunction) => {
-    appointmantSchema.register.parse(req.body);
+    // appointmantSchema.register.parse(req.body);
 
     //start store
     try {
@@ -44,9 +44,9 @@ const appointmantController = {
     });
     if (!appointment) {
       return res.status(403).json({
-      success: false,
-      message: "This appointment not found",
-    });
+        success: false,
+        message: "This appointment not found",
+      });
     }
     //start update
     const updateAppointments = await prisma.appointments.update({
@@ -81,7 +81,6 @@ const appointmantController = {
         success: false,
         message: "This appointment not found",
       });
-     
     }
     //start deleting
     const deleteAppointments = await prisma.appointments.delete({
@@ -111,7 +110,6 @@ const appointmantController = {
         success: false,
         message: "This appointment not found",
       });
-     
     }
     return res.status(200).json(appointment);
   },
@@ -127,7 +125,6 @@ const appointmantController = {
         success: false,
         message: "This appointment not found",
       });
-     
     }
     return res.status(200).json(appointment);
   },
@@ -148,7 +145,6 @@ const appointmantController = {
         success: false,
         message: "This appointment not found",
       });
-      
     }
     // get all Appointmentss in that hs
     const Appointmentss = await prisma.appointments.findMany({
@@ -175,7 +171,6 @@ const appointmantController = {
         success: false,
         message: "This child not found",
       });
-     
     }
     // get all Appointmentss in that child
     const Appointmentss = await prisma.appointments.findFirst({
@@ -202,7 +197,6 @@ const appointmantController = {
         success: false,
         message: "This mother not found",
       });
-     
     }
     // get all Appointmentss in that mother
     const Appointmentss = await prisma.appointments.findMany({

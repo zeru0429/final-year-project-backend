@@ -287,7 +287,7 @@ model MotherVaccines {
   createdDateTime DateTime
   isGiven Boolean
   //reference
-   motherProfile MothersProfile @relation(fields: [motherId], references:[userId],onDelete: Cascade)
+   motherProfile MothersProfile @relation(fields: [motherId], references:[id],onDelete: Cascade)
   vaccine Vaccines? @relation(fields: [vaccineId], references:[id],onDelete: SetNull)
   healthStation HealthStations? @relation(fields: [healthStationId],references: [id],onDelete: SetNull)
   registrar Users? @relation(fields: [registerdBy], references:[id],onDelete: SetNull)

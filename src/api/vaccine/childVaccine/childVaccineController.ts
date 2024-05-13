@@ -54,9 +54,9 @@ const vaccinateChildController = {
     });
     if (!isChildVaccineExist) {
       return res.status(403).json({
-         success: false,
-         message:   "no vaccine found in this id",
-       });
+        success: false,
+        message: "no vaccine found in this id",
+      });
     }
 
     const isVaccineExist = await prisma.vaccines.findFirst({
@@ -66,9 +66,9 @@ const vaccinateChildController = {
     });
     if (!isVaccineExist) {
       return res.status(403).json({
-         success: false,
-         message: "no vaccine found in this id", 
-       });
+        success: false,
+        message: "no vaccine found in this id",
+      });
     }
     //check if child exist
     const isChildExist = await prisma.childrens.findFirst({
@@ -78,10 +78,9 @@ const vaccinateChildController = {
     });
     if (!isChildExist) {
       return res.status(403).json({
-         success: false,
-         message: "no child found in this id",
-       });
-
+        success: false,
+        message: "no child found in this id",
+      });
     }
 
     const childVaccine = await prisma.childrenVaccines.update({
@@ -108,10 +107,9 @@ const vaccinateChildController = {
     });
     if (!isChildVaccineExist) {
       return res.status(403).json({
-         success: false,
-         message: "no child found in this id",
-       });
-     
+        success: false,
+        message: "no child found in this id",
+      });
     }
 
     const childVaccine = await prisma.childrenVaccines.delete({

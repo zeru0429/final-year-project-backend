@@ -42,9 +42,8 @@ const childController = {
     if (!isChildExist) {
       return res.status(403).json({
         success: false,
-        message:  "Child not found",
+        message: "Child not found",
       });
-     
     }
     const updatedChild = await prisma.childrens.update({
       where: {
@@ -70,12 +69,11 @@ const childController = {
         success: false,
         message: "Child not found",
       });
-      
     }
     const deletedChild = await prisma.childrens.delete({
       where: { id: +req.childId },
     });
-   return  res.status(200).json({
+    return res.status(200).json({
       message: "sucessfully deleted",
       sucess: true,
     });
@@ -107,8 +105,8 @@ const childController = {
         },
       },
     });
-    if (!children){
-         return res.status(403).json({
+    if (!children) {
+      return res.status(403).json({
         success: false,
         message: "no children found",
       });
@@ -117,11 +115,13 @@ const childController = {
     return res.status(200).json(children);
   },
   getAllByMother: async (req: Request, res: Response, next: NextFunction) => {
-    req.mId = +req.params.id;
+    console.log("hello");
+    const id = Number(req.params.id);
+    // req.mId = +req.params.id;
     //check if mother exist
     const isMotherExist = await prisma.mothersProfile.findFirst({
       where: {
-        id: +req.mId,
+        id,
       },
     });
     if (!isMotherExist) {
@@ -132,20 +132,21 @@ const childController = {
     }
     const isChildExist = await prisma.childrens.findMany({
       where: {
-        motherId: +req.mId,
+        motherId: id,
       },
     });
-    res.status(200).json(isChildExist);
+    return res.status(200).json(isChildExist);
   },
   getSingle: async (req: Request, res: Response, next: NextFunction) => {
-    req.childId = +req.params.id;
+    const childId = Number(req.params.id);
+    // req.childId = +req.params.id;
     const isChildExist = await prisma.childrens.findFirst({
-      where: { id: +req.childId },
+      where: { id: childId },
     });
     if (!isChildExist) {
       return res.status(403).json({
         success: false,
-        message:  "Child not found",
+        message: "Child not found",
       });
     }
     return res.status(200).json(isChildExist);
@@ -160,7 +161,7 @@ const childController = {
     if (!isHsExist) {
       return res.status(403).json({
         success: false,
-        message:"health station is is not found",
+        message: "health station is is not found",
       });
     }
     const isChildExist = await prisma.childrens.findMany({

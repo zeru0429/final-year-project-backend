@@ -39,7 +39,6 @@ const newsController = {
         success: false,
         message: "This News Doesn't Exist",
       });
-     
     }
     const updatedNews = await prisma.news.update({
       data: {
@@ -56,22 +55,25 @@ const newsController = {
   },
   //delete news
   deleteNews: async (req: Request, res: Response, nex: NextFunction) => {
-    req.newsId = +req.params.id;
+    const id = req.params.id;
     const foundNews = await prisma.news.findFirstOrThrow({
       where: {
-        id: +req.newsId,
+        id: Number(id),
       },
     });
     if (!foundNews) {
       return res.status(403).json({
         success: false,
-        message:  "This News Doesn't Exist",
+        message: "This News Doesn't Exist",
       });
     }
     const deletedNews = await prisma.news.delete({
       where: { id: foundNews.id },
     });
-    res.status(200).json(deletedNews);
+    return res.status(200).json({
+      status: "success",
+      message: "News is deleted successfully",
+    });
   },
   //get public news
   getPublicNews: async (req: Request, res: Response, nex: NextFunction) => {
@@ -122,10 +124,9 @@ const newsController = {
         success: false,
         message: "This News Doesn't Exist",
       });
-      
     }
 
-   return res.status(200).json(foundNews);
+    return res.status(200).json(foundNews);
   },
   getSingleNewsDetail: async (
     req: Request,

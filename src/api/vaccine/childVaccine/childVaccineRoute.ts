@@ -10,9 +10,15 @@ import ChildVaccineController from "./childVaccineController.js";
 
 const childVaccineRouter: Router = Router();
 
+childVaccineRouter.get(
+  "/child/:id",
+  [userAuth],
+  errorHandler(ChildVaccineController.getAllByChildId)
+);
+
 childVaccineRouter.post(
   "/",
-  // [userAuth,isHealthProfetional],
+  [userAuth, isHealthProfetional],
   errorHandler(ChildVaccineController.vaccinate)
 );
 childVaccineRouter.put(
@@ -32,10 +38,11 @@ childVaccineRouter.get(
   [userAuth],
   errorHandler(ChildVaccineController.getAllByChildVaccineId)
 );
+
 childVaccineRouter.get(
-  "/chid/:id",
+  "/mother/:id",
   [userAuth],
-  errorHandler(ChildVaccineController.getAllByChildId)
+  errorHandler(ChildVaccineController.getChildrenVaccByMotherId)
 );
 
 export default childVaccineRouter;

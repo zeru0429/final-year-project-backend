@@ -14,6 +14,7 @@ import motherVaccineRouter from "./motherVaccine/motherVaccineRoute.js";
 const vaccineRouter: Router = Router();
 
 vaccineRouter.use("/mother", motherVaccineRouter);
+vaccineRouter.use("/child", childVaccineRouter);
 
 vaccineRouter.post(
   "/",
@@ -32,7 +33,5 @@ vaccineRouter.delete(
 );
 vaccineRouter.get("/", errorHandler(vaccineController.getAll));
 vaccineRouter.get("/:id", errorHandler(vaccineController.getSingle));
-
-vaccineRouter.use("/child", childVaccineRouter);
 
 export default vaccineRouter;

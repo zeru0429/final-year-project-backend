@@ -142,6 +142,39 @@ const childController = {
     // req.childId = +req.params.id;
     const isChildExist = await prisma.childrens.findFirst({
       where: { id: childId },
+      include: {
+        registrar: {
+          select: {
+            profile: {
+              select: {
+                firstName: true,
+                middleName: true,
+                lastName: true,
+              },
+            },
+          },
+        },
+        mother: {
+          select: {
+            user: {
+              select: {
+                profile: {
+                  select: {
+                    firstName: true,
+                    middleName: true,
+                    lastName: true,
+                  },
+                },
+                healthStation: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
     if (!isChildExist) {
       return res.status(403).json({

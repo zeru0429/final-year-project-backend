@@ -123,10 +123,23 @@ const vaccinateChildController = {
     });
   },
   getAllByChildId: async (req: Request, res: Response, next: NextFunction) => {
-    req.childId = +req.params.id;
+    const id = Number(req.params.id);
+
     const childVaccine = await prisma.childrenVaccines.findMany({
       where: {
-        childId: +req.childId,
+        childId: id,
+      },
+      include: {
+        vaccine: {
+          select: {
+            name: true,
+          },
+        },
+        healthStation: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
     return res.status(200).json(childVaccine);
@@ -148,6 +161,41 @@ const vaccinateChildController = {
     const childVaccine = await prisma.childrenVaccines.findMany({
       where: {
         id: +req.cvId,
+      },
+    });
+    return res.status(200).json(childVaccine);
+  },
+
+  getChildrenVaccByMotherId: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const motherId = Number(req.params.id);
+
+    const childVaccine = await prisma.childrenVaccines.findMany({
+      where: {
+        child: {
+          motherId: motherId,
+        },
+      },
+      include: {
+        healthStation: {
+          select: {
+            name: true,
+          },
+        },
+        vaccine: {
+          select: {
+            name: true,
+          },
+        },
+        child: {
+          select: {
+            firstName: true,
+            middleName: true,
+          },
+        },
       },
     });
     return res.status(200).json(childVaccine);

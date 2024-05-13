@@ -15,9 +15,17 @@ const motherRouter: Router = Router();
 
 motherRouter.get(
   "/hs/my",
-  //   [userAuth, isEmployee],
+  [userAuth, isEmployee],
   errorHandler(motherController.getByMyHs)
 );
+
+motherRouter.get(
+  "/all",
+  [userAuth, isEmployee],
+  errorHandler(motherController.getAll)
+);
+
+motherRouter.get("/:id", [userAuth], errorHandler(motherController.getSingle));
 
 motherRouter.post(
   "/",
@@ -33,17 +41,6 @@ motherRouter.delete(
   "/:id",
   [userAuth, isReception],
   errorHandler(motherController.delete)
-);
-motherRouter.get(
-  "/all",
-  [userAuth, isEmployee],
-  errorHandler(motherController.getAll)
-);
-motherRouter.get("/:id", [userAuth], errorHandler(motherController.getSingle));
-motherRouter.get(
-  "/hs/:id",
-  [userAuth, isEmployee],
-  errorHandler(motherController.getByHs)
 );
 
 export default motherRouter;

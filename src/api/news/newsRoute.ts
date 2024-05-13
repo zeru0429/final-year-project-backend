@@ -2,6 +2,7 @@ import { Router } from "express";
 import newsController from "./newsController.js";
 import { adminAuth, isAdmin, isSuperAdmin } from "../../middlewares/auth.js";
 import errorHandler from "../../config/errorHandler.js";
+import { upload } from "../../config/multer.js";
 
 const newsRouter = Router();
 newsRouter.get("/detail/:id", errorHandler(newsController.getSingleNewsDetail));

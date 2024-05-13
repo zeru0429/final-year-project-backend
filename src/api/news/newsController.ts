@@ -7,7 +7,14 @@ import { ErrorCode } from "../../exceptions/root.js";
 const newsController = {
   //create news
   createNews: async (req: Request, res: Response, nex: NextFunction) => {
-    newsSchema.createNews.parse(req.body);
+    // newsSchema.createNews.parse(req.body);
+    console.log(req.body);
+    console.log(req.files);
+    console.log(req.file);
+    return;
+    const messageFiles = req.files?.attachments?.map((attachment: any) => ({
+      url: attachment.filename,
+    }));
     const theNewNews = await prisma.news.create({
       data: {
         titleAm: req.body.titleAm,

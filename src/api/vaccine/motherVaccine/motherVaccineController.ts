@@ -11,6 +11,7 @@ const vaccinateMotherController = {
       const isVaccineExist = await prisma.vaccines.findFirst({where: {
          id: +req.body!.vaccineId
       }});
+      console.log(req.body);
       if(!isVaccineExist){
          return res.status(403).json({
             success: false,
@@ -28,16 +29,22 @@ const vaccinateMotherController = {
           });
       }
     
-      
+      console.log("////////////////////");
+      console.log(req.body);
      const motherVaccine = await prisma.motherVaccines.create({data:{
       createdDateTime: new Date(),
       isGiven: true,
       vaccineId: +req.body!.vaccineId,
       motherId: +isMotherExist.userId,
       healthStationId: +req.body.healthStationId,
+      registerdBy: +req.user!.id
      }});
    
-    return res.status(200).json(motherVaccine);
+    return res.status(200).json({
+      success: true,
+      message: "vaccineation successfully",
+     data: motherVaccine
+    });
    },
    update: async (req:Request,res:Response,next:NextFunction)=>{
       req.mvId = +req.params.id;

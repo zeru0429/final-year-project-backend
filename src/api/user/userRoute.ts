@@ -17,7 +17,6 @@ usersRouter.get('/:id',[userAuth], errorHandler(usersController.getSingle));
 usersRouter.get('/:hsId',[userAuth], errorHandler(usersController.getByHs));
 usersRouter.get('/me/myInfo',[userAuth], errorHandler(usersController.myInfo));
 
-
 usersRouter.use('/employee',employeeRouter)
 usersRouter.use('/mother',motherRouter)
 usersRouter.use('/login',errorHandler(usersController.loginUser))

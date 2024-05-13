@@ -229,10 +229,20 @@ const motherController = {
         profile: true,
         motherProfile:{
           include: {
-            vaccine: true,
-            child: {
+            vaccine: {
               include: {
                 vaccine: true,
+                registrar: true
+              }
+            },
+            child: {
+              include: {
+                vaccine: {
+                  include:{
+                    vaccine: true,
+                    registrar: true
+                  }
+                },
                 certificate: true,
               }
             }

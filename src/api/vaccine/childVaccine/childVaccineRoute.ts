@@ -10,7 +10,7 @@ childVaccineRouter.put('/:id',[userAuth,isHealthProfetional], errorHandler(Child
 childVaccineRouter.delete('/:id',[userAuth,isHealthProfetional], errorHandler(ChildVaccineController.delete));
 
 childVaccineRouter.get('/all', errorHandler(ChildVaccineController.getAll));
-childVaccineRouter.get('/:id',[userAuth], errorHandler(ChildVaccineController.getAllByChildVaccineId));
+childVaccineRouter.get('/:id', errorHandler(ChildVaccineController.getAllByChildVaccineId));
 childVaccineRouter.get('/chid/:id',[userAuth], errorHandler(ChildVaccineController.getAllByChildId));
 
 export default childVaccineRouter;

@@ -126,7 +126,6 @@ const hsController = {
   getAll: async (req: Request, res: Response, next: NextFunction) => {
     //get hs
     const hs = await prisma.healthStations.findMany({
-
       // skip: +req.query.skip!,
       // take: +req.query.take!,
       // include: {

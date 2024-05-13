@@ -6,7 +6,9 @@ import { ErrorCode } from "../../exceptions/root.js";
 
 const childController = {
   register: async (req: Request, res: Response, next: NextFunction) => {
-    //  childSchema.registerChild.parse(req.body);
+  
+     childSchema.registerChild.parse(req.body);
+   
     //check if mother exist
     const isMotherExist = await prisma.mothersProfile.findFirst({
       where: { id: req.body.motherId },
@@ -31,7 +33,12 @@ const childController = {
         registeredBy: req?.user?.id,
       },
     });
-    return res.status(200).json(newchild);
+    console.log(newchild);
+    return res.status(200).json({
+      success: true,
+      message: "child successfully added",
+      data: newchild,
+    });
   },
   update: async (req: Request, res: Response, next: NextFunction) => {
     req.childId = +req.params.id;

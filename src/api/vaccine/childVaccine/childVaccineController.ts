@@ -7,6 +7,7 @@ import { ErrorCode } from "../../../exceptions/root.js";
 const vaccinateChildController = {
   vaccinate: async (req: Request, res: Response, next: NextFunction) => {
     childVaccineSchema.register.parse(req.body);
+    console.log(req.body);
     //check if the vaccine exist with this id
     const isVaccineExist = await prisma.vaccines.findFirst({
       where: {
@@ -38,10 +39,15 @@ const vaccinateChildController = {
         isGiven: true,
         childId: +req.body!.childId,
         vaccineId: +req.body!.vaccineId,
+        // registerdBy: +req.user!.id
       },
     });
 
-    return res.status(200).json(childVaccine);
+    return res.status(200).json({
+      success: true,
+      message: "child sucessfully vaccinated",
+      data:childVaccine
+    });
   },
   update: async (req: Request, res: Response, next: NextFunction) => {
     req.cvId = +req.params.id;

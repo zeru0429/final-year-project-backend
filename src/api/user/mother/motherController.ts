@@ -162,6 +162,53 @@ const motherController = {
     });
     return res.status(200).json(allMothers);
   },
+  getByHsMy: async (req: Request, res: Response, next: NextFunction) => {
+    console.log("Health ");
+    req.hsId = +req.params.id;
+    const userInfo = await prisma.users.findFirst({
+        where: {
+            id: req.user?.id,
+        }
+    });
+    if (!userInfo) {
+        return res.status(404).json({
+            success: false,
+            message: "User not found"
+        });
+    }
+    const allMothers = await prisma.users.findMany({
+        where: {
+            AND: [
+                { role: "MOTHER" },
+                { healthStationId: +userInfo.healthStationId! },
+                userInfo ? { motherProfile: { isNot: null } } : {} // Remove unnecessary curly braces
+            ]
+        },
+        include: {
+            profile: true,
+            motherProfile: {
+                include: {
+                    child: {
+                        include: {
+                            vaccine: true,
+                            appointment: true,
+                            certificate: true,
+                            _count: true
+                        }
+                    },
+                    appointment: true,
+                    vaccine: true
+                }
+            },
+            child: true,
+            motherVaccine: true,
+            childVaccine: true
+        }
+    });
+    console.log(allMothers);
+    return res.status(200).json(allMothers);
+}
+,
   getByMyHs: async (req: Request, res: Response, next: NextFunction) => {
     console.log("hello");
 
@@ -180,6 +227,27 @@ const motherController = {
       include: {
         //   _count: true,
         profile: true,
+        motherProfile:{
+          include: {
+            vaccine: {
+              include: {
+                vaccine: true,
+                registrar: true
+              }
+            },
+            child: {
+              include: {
+                vaccine: {
+                  include:{
+                    vaccine: true,
+                    registrar: true
+                  }
+                },
+                certificate: true,
+              }
+            }
+          }
+        },
         appointment: true,
         certifications: true,
         child: true,

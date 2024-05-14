@@ -130,6 +130,9 @@ const hsController = {
       //     include: {},
       //   },
       // },
+      include:{
+        // location: true,
+      }
     });
     console.log(hs);
     return res.status(200).json(hs);
@@ -147,5 +150,26 @@ const hsController = {
     });
     res.status(200).json(hs);
   },
+  getMothers:  async (req: Request, res: Response, next: NextFunction) => { 
+    const mothers = await prisma.users.findMany({ 
+      where: { 
+        healthStationId: +req.params.id, 
+        role: "MOTHER",
+      }, 
+      include:{
+        _count:true,
+        motherProfile:true,
+        profile: true,
+        child: {
+          include:{
+            _count: true,
+
+          }
+        }
+      }
+    }); 
+    res.status(200).json(mothers); 
+  }, 
+
 };
 export default hsController;

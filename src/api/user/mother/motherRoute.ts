@@ -15,17 +15,21 @@ const motherRouter: Router = Router();
 
 motherRouter.get(
   "/hs/my",
-  [userAuth, isEmployee],
+  // [userAuth, isEmployee],
   errorHandler(motherController.getByMyHs)
 );
 
 motherRouter.get(
   "/all",
-  [userAuth, isEmployee],
+  // [userAuth, isEmployee],
   errorHandler(motherController.getAll)
 );
 
-motherRouter.get("/:id", [userAuth], errorHandler(motherController.getSingle));
+motherRouter.get(
+  "/:id",
+  //  [userAuth],
+  errorHandler(motherController.getSingle)
+);
 
 motherRouter.post(
   "/",

@@ -136,6 +136,7 @@ const motherController = {
     }
     return res.status(200).json(mothers);
   },
+
   getSingle: async (req: Request, res: Response, next: NextFunction) => {
     const motherId = Number(req.params.id);
     req.mId = +req.params.id;

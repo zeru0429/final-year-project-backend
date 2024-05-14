@@ -8,12 +8,16 @@ const childRouter: Router = Router();
 
 childRouter.get(
   "/mother/:id",
-  [userAuth],
+  // [userAuth],
   errorHandler(childController.getAllByMother)
 );
 childRouter.get("/hs/:id", [userAuth], errorHandler(childController.getByHs));
 
-childRouter.get("/:id", [userAuth], errorHandler(childController.getSingle));
+childRouter.get(
+  "/:id",
+  //  [userAuth],
+  errorHandler(childController.getSingle)
+);
 
 childRouter.post("/", [userAuth], errorHandler(childController.register));
 childRouter.put("/:id", [userAuth], errorHandler(childController.update));
